@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OCaml toplevel</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/old.css">
+    <link rel="stylesheet" href="css/materialize/materialize.min.css">
+    <link rel="stylesheet" href="css/codemirror/codemirror.min.css">
+    <link rel="stylesheet" href="css/codemirror/material.css"/>
+    <script src="js/codemirror/codemirror.min.js"></script>
+    <script src="js/codemirror/matchbrackets.min.js"></script>
+    <script src="js/codemirror/closebrackets.js"></script>
+    <script src="js/codemirror/sublime.min.js"></script>
+    <script src="js/codemirror/mllike.min.js"></script>
+    <script src="js/resizer.js"></script>
+    <script type="text/javascript">
+        function load_script(url) {
+            var fileref = document.createElement('script');
+            fileref.setAttribute("type", "text/javascript");
+            fileref.setAttribute("src", url);
+            document.getElementsByTagName("head")[0].appendChild(fileref);
+        }
+        load_script("js/toplevel-4.08.js");
+    </script>
+</head>
+<body>
+
+<div class="fixed-action-btn" style="bottom: 15px; right: 15px;">
+    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_2', 1.1)"><i class="material-icons">add</i></a>
+    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_2', 0.9)"><i class="material-icons">remove</i></a>
+</div>
+
+<div class="fixedab" style="bottom: 15px; left: 15px;">
+    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_1', 1.1)"><i class="material-icons">add</i></a>
+    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_1', 0.9)"><i class="material-icons">remove</i></a>
+</div>
+
+<div class="container horizontal">
+
+    <div id="box_1" class="box" style="display:flex;flex-direction:column">
+        <textarea name="code" id="texarea1" class="materialize-textarea" ></textarea>
+        <script type="text/javascript">
+            let editor = CodeMirror.fromTextArea(document.getElementById('texarea1'), {
+                lineNumbers: true,
+                autoCloseBrackets: true,
+                keyMap : 'sublime',
+                indentUnit: 4,
+                matchBrackets: true,
+                readOnly: false,
+                theme : 'material',
+                mode : 'text/x-ocaml',
+                extraKeys: {
+                    "Ctrl-Enter": function(instance) {
+                        let beforecur = instance.getRange({line: 0,ch: 0}, editor.getCursor());
+                        parse(beforecur.match(/[\S][\s\S]*?(;;)/g).slice(-1)[0]);
+                        instance.focus();
+                        },
+                }
+            });
+            editor.on("change", function (instance, changeObj) {
+                //console.log(instance.getValue().match(/[\S][\s\S]*?(;;)/g).slice(-1)[0]);
+            });
+        </script>
+    </div>
+
+    <div name="resizerH1"></div>
+
+    <div id="box_2" class="box">
+        <div id="toplevel-container" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+            <pre id="output"></pre>
+            <div>
+                <div id="sharp" class="sharp"></div>
+                <textarea id="userinput">Loading ...</textarea>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script src="js/materialize.min.js"></script>
+<script>
+    window.addEventListener("load",function(){
+        new Resizer(document.querySelector('[name=resizerH1]'), 'H');
+        document.getElementById('box_1').style.fontSize = "1em";
+        document.getElementById('box_2').style.fontSize = "1em";
+    },false);
+</script>
+
+<script>
+
+    function parse(str) {
+        textarea = document.getElementById('userinput');
+        cmd = str.split(';;\n');
+        const ke = new KeyboardEvent("keydown", {bubbles: true, cancelable: true, keyCode: 13});
+        for (let i = 0; i < cmd.length; i++) {
+            if (!cmd[i].endsWith(';;')) cmd[i] += ';;';
+            textarea.value = cmd[i];
+            textarea.dispatchEvent(ke);
+        }
+        editor.focus();
+    }
+    function changefontsize(id, a) {
+        document.getElementById(id).style.fontSize = String(parseFloat(document.getElementById(id).style.fontSize.slice(0,-2))*a)+"em";
+    }
+</script>
+
+</body>
+</html>

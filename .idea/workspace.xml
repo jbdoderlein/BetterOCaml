@@ -19,9 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5819a114-1e4f-4cdc-8d7f-477f23af634d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-    </list>
+    <list default="true" id="5819a114-1e4f-4cdc-8d7f-477f23af634d" name="Default Changelist" comment="add gitignore" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -47,7 +45,9 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
@@ -57,6 +57,7 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="web-ide.project.structure" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -76,8 +77,16 @@
       <workItem from="1611664107924" duration="2709000" />
       <workItem from="1611684865474" duration="3412000" />
       <workItem from="1611748470795" duration="10134000" />
-      <workItem from="1611775048263" duration="36000" />
+      <workItem from="1611775048263" duration="224000" />
     </task>
+    <task id="LOCAL-00001" summary="add gitignore">
+      <created>1611775108853</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1611775108853</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -94,11 +103,23 @@
       </map>
     </option>
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="add gitignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="add gitignore" />
+  </component>
   <component name="WindowStateProjectService">
     <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1611666269895">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1611666269895" />
+    <state x="277" y="57" key="SettingsEditor" timestamp="1611775272527">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="277" y="57" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1611775272527" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1611775112548">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1611775112548" />
     <state x="-20" y="173" width="1269" height="810" key="dock-window-1" timestamp="1611687419620">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

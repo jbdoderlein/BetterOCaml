@@ -1,0 +1,122 @@
+code, kbd, pre, samp {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+}
+
+#vertical-line {
+    border-left: 4px solid lightgrey;
+    position: absolute;
+    left: 50%;
+    top: 0%;
+    margin-left: -2px;
+    height: 100%;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #101010;
+    font-size: 1em;
+}
+
+
+
+
+option:hover {
+    background-color: gainsboro;
+}
+
+select {
+    position: absolute;
+    display: none;
+    overflow-y: auto;
+}
+
+#button-container {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+}
+
+#toplevel-container {
+    width: 100%;
+    background-color: #202b30;
+    color: #ccc;
+    overflow: auto;
+    overflow-x: hidden;
+    height: 100%;
+    float: right;
+    padding: 10px;
+    padding-top: 20px;
+}
+
+#toplevel-container pre#output {
+    padding: 0px;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+}
+
+#toplevel-container #output {
+    background-color: transparent;
+    border: none;
+    margin-bottom: 0px;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+}
+
+#toplevel-container textarea {
+    width: 95%;
+    background-color: transparent;
+    color: #fff;
+    border: 0;
+    resize: none;
+    outline: none;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+    font-weight: bold;
+    float: left;
+    margin: 0px;
+    padding: 0px;
+}
+
+#toplevel-container #sharp {
+    float: left;
+    line-height: 18px;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+    white-space: pre;
+}
+
+.sharp:before{
+    content: "# ";
+    line-height: 18px;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+}
+
+.caml{
+    color:rgb(110, 110, 201);
+}
+
+.stderr {
+    color: #d9534f;
+}
+.stdout {
+    color: white;
+}
+.errorloc{
+    border-bottom-width: 3px;
+    border-bottom-style: solid;
+    border-bottom-color: red;
+}
+
+.sharp .id { color: #59B65C ; font-style: italic }
+.sharp .kw0 { color: rgb(64, 75, 190); font-weight: bold ;}
+.sharp .kw1 { color: rgb(150, 0, 108); font-weight: bold ;}
+.sharp .kw2 { color: rgb(23, 100, 42); font-weight: bold ;}
+.sharp .kw3 { color: #59B65C; font-weight: bold ;}
+.sharp .kw4 { color: #59B65C; font-weight: bold ;}
+.sharp .comment { color: #546e7a ; font-style: italic ; }
+.sharp .string { color: #c3e88d; font-weight: bold ; }
+.sharp .text { }
+.sharp .numeric { color: #ff5370; }
+.sharp .directive { font-style: italic ; color : #EB00FF; }
+.sharp .escape { color: #409290 ; }
+.sharp .symbol0 { color: #decb6b ; font-weight: bold ; }
+.sharp .symbol1 { color: #993300 ; font-weight: bold ; }
+.sharp .constant { color: rgb(0, 152, 255); }

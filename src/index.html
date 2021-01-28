@@ -28,14 +28,16 @@
 </head>
 <body>
 
-<div class="fixed-action-btn" style="bottom: 15px; right: 15px;">
-    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_2', 1.1)"><i class="material-icons">add</i></a>
-    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_2', 0.9)"><i class="material-icons">remove</i></a>
-</div>
-
 <div class="fixedab" style="bottom: 15px; left: 15px;">
     <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_1', 1.1)"><i class="material-icons">add</i></a>
     <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_1', 0.9)"><i class="material-icons">remove</i></a>
+    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="console.log('save')"><i class="material-icons">save</i></a>
+    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="console.log('load')"><i class="material-icons">open_in_browser</i></a>
+</div>
+
+<div class="fixed-action-btn" style="bottom: 15px; right: 15px;">
+    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_2', 1.1)"><i class="material-icons">add</i></a>
+    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_2', 0.9)"><i class="material-icons">remove</i></a>
 </div>
 
 <div class="container horizontal">
@@ -79,7 +81,6 @@
             let editor = CodeMirror.fromTextArea(document.getElementById('texarea1'), {
                 lineNumbers: true,
                 autoCloseBrackets: true,
-                showHint: true,
                 keyMap : 'sublime',
                 indentUnit: 4,
                 matchBrackets: true,
@@ -91,7 +92,6 @@
                     "Cmd-Enter" : exec_last,
                     "Shift-Ctrl-Enter": exec_all,
                     "Shift-Cmd-Enter": exec_all,
-                    "Tab": "autocomplete"
                 }
             });
             var current_marker = editor.markText({line: 0}, {line: 0}, {css: "color: #fe4"});

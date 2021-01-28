@@ -51,8 +51,8 @@ select {
 }
 
 #toplevel-container pre#output {
-    padding: 0px;
-    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+    align-content: center;
+    font-style: italic;
 }
 
 #toplevel-container #output {

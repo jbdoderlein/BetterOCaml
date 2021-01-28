@@ -14,6 +14,7 @@
     <script src="js/codemirror/closebrackets.js"></script>
     <script src="js/codemirror/sublime.min.js"></script>
     <script src="js/codemirror/mllike.min.js"></script>
+    <script src="js/codemirror/show-hint.js"></script>
     <script src="js/resizer.js"></script>
     <script type="text/javascript">
         function load_script(url) {
@@ -42,9 +43,43 @@
     <div id="box_1" class="box" style="display:flex;flex-direction:column">
         <textarea name="code" id="texarea1" class="materialize-textarea" ></textarea>
         <script type="text/javascript">
+            let exec_last = function(instance) {
+                let beforecur = instance.getRange({line: 0,ch: 0}, {line: editor.getCursor().line});
+                parse(beforecur.match(/[\S][\s\S]*?(;;)/g).slice(-1)[0] // Get last sentence
+                    .replace(/[(][*][\s\S]*?[*][)][\s]*/g, '')); // Remove comments
+            };
+            let exec_all = function(instance) {
+                parse(instance.getValue().replace(/[(][*][\s\S]*?[*][)][\s]*/g, ''));
+                instance.focus();
+            };
+            let calculate_highlight = function (instance) {
+                try {
+                    var execselected = instance.getRange({line: 0, ch: 0}, {line: editor.getCursor().line})
+                        .match(/[\S][\s\S]*?(;;)/g).slice(-1)[0] // Get last sentence
+                        .replace(/[(][*][\s\S]*?[*][)][\s]*/g, '') // Remove comments
+                        .split("\n"); // Split lines
+                }
+                catch (e){
+                    var execselected = [];
+                }
+
+                let alllines = instance.getValue().split('\n');
+                let highlightlines = []; // Liste des lignes a surligner
+                for (let i = 0; i < alllines.length; i++) {
+                    if(execselected.includes(alllines[i])){
+                        highlightlines.push(i);
+                    }
+                }
+                return {
+                    pos1:{line:Math.min(...highlightlines), ch:0},
+                    // La deuxieme expression récupere la position du dernier caractere de la ligne
+                    pos2:{line:Math.max(...highlightlines), ch:instance.getLineTokens(Math.max(...highlightlines)).slice(-1)[0].end}
+                };
+            };
             let editor = CodeMirror.fromTextArea(document.getElementById('texarea1'), {
                 lineNumbers: true,
                 autoCloseBrackets: true,
+                showHint: true,
                 keyMap : 'sublime',
                 indentUnit: 4,
                 matchBrackets: true,
@@ -52,15 +87,20 @@
                 theme : 'material',
                 mode : 'text/x-ocaml',
                 extraKeys: {
-                    "Ctrl-Enter": function(instance) {
-                        let beforecur = instance.getRange({line: 0,ch: 0}, editor.getCursor());
-                        parse(beforecur.match(/[\S][\s\S]*?(;;)/g).slice(-1)[0]);
-                        instance.focus();
-                        },
+                    "Ctrl-Enter": exec_last,
+                    "Cmd-Enter" : exec_last,
+                    "Shift-Ctrl-Enter": exec_all,
+                    "Shift-Cmd-Enter": exec_all,
+                    "Tab": "autocomplete"
                 }
             });
-            editor.on("change", function (instance, changeObj) {
-                //console.log(instance.getValue().match(/[\S][\s\S]*?(;;)/g).slice(-1)[0]);
+            var current_marker = editor.markText({line: 0}, {line: 0}, {css: "color: #fe4"});
+            editor.on("cursorActivity", function (instance, changeObj) {
+                let positions = calculate_highlight(instance);
+                current_marker.clear();
+                current_marker = editor.markText(positions.pos1, positions.pos2, {
+                    className : "code-highlight"
+                });
             });
         </script>
     </div>
@@ -83,8 +123,9 @@
 <script>
     window.addEventListener("load",function(){
         new Resizer(document.querySelector('[name=resizerH1]'), 'H');
-        document.getElementById('box_1').style.fontSize = "1em";
-        document.getElementById('box_2').style.fontSize = "1em";
+        document.getElementById('box_1').style.fontSize = "1.2em";
+        document.getElementById('box_2').style.fontSize = "1.2em";
+        setTimeout(function(){ editor.focus(); }, 10);
     },false);
 </script>
 
@@ -99,7 +140,7 @@
             textarea.value = cmd[i];
             textarea.dispatchEvent(ke);
         }
-        editor.focus();
+        setTimeout(function(){ editor.focus(); }, 5);
     }
     function changefontsize(id, a) {
         document.getElementById(id).style.fontSize = String(parseFloat(document.getElementById(id).style.fontSize.slice(0,-2))*a)+"em";

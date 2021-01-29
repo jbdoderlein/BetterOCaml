@@ -31,8 +31,13 @@
 <div class="fixedab" style="bottom: 15px; left: 15px;">
     <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_1', 1.1)"><i class="material-icons">add</i></a>
     <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_1', 0.9)"><i class="material-icons">remove</i></a>
-    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="console.log('save')"><i class="material-icons">save</i></a>
-    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="console.log('load')"><i class="material-icons">open_in_browser</i></a>
+    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="program_save(editor)"><i class="material-icons">save</i></a>
+    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="console.log('load')">
+        <label for="file-upload" class="custom-file-upload">
+            <i class="material-icons">open_in_browser</i>
+        </label>
+    </a>
+    <input id="file-upload" type="file" style="display: none;"/>
 </div>
 
 <div class="fixed-action-btn" style="bottom: 15px; right: 15px;">
@@ -47,8 +52,10 @@
         <script type="text/javascript">
             let exec_last = function(instance) {
                 let beforecur = instance.getRange({line: 0,ch: 0}, {line: editor.getCursor().line});
-                parse(beforecur.match(/[\S][\s\S]*?(;;)/g).slice(-1)[0] // Get last sentence
-                    .replace(/[(][*][\s\S]*?[*][)][\s]*/g, '')); // Remove comments
+                parse(beforecur
+                    .replace(/[(][*][\s\S]*?[*][)][\s]*/g, '')
+                    .match(/[\S][\s\S]*?(;;)/g).slice(-1)[0] // Get last sentence
+                ); // Remove comments
             };
             let exec_all = function(instance) {
                 parse(instance.getValue().replace(/[(][*][\s\S]*?[*][)][\s]*/g, ''));
@@ -57,8 +64,8 @@
             let calculate_highlight = function (instance) {
                 try {
                     var execselected = instance.getRange({line: 0, ch: 0}, {line: editor.getCursor().line})
-                        .match(/[\S][\s\S]*?(;;)/g).slice(-1)[0] // Get last sentence
                         .replace(/[(][*][\s\S]*?[*][)][\s]*/g, '') // Remove comments
+                        .match(/[\S][\s\S]*?(;;)/g).slice(-1)[0] // Get last sentence
                         .split("\n"); // Split lines
                 }
                 catch (e){
@@ -102,6 +109,53 @@
                     className : "code-highlight"
                 });
             });
+
+            let program_save = function (instance) {
+                var textToWrite = instance.getValue()
+
+                //var textToWrite = textToWrite.replace(/\n/g, "\r\n");
+                var textFileAsBlob = new Blob([textToWrite], {type:'text/plain'});
+
+                // filename to save as
+                var fileNameToSaveAs = "no_name.ml";
+
+                var downloadLink = document.createElement("a");
+                downloadLink.download = fileNameToSaveAs;
+
+// hidden link title name
+                downloadLink.innerHTML = "LINKTITLE";
+
+                window.URL = window.URL || window.webkitURL;
+
+                downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+
+                downloadLink.onclick = destroyClickedElement;
+                downloadLink.style.display = "none";
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+            }
+
+            function destroyClickedElement(event) {
+                document.body.removeChild(event.target);
+
+            }
+
+            function readSingleFile(e) {
+                var file = e.target.files[0];
+                if (!file) {
+                    return;
+                }
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var contents = e.target.result;
+                    editor.setValue(contents);
+                };
+                reader.readAsText(file);
+            }
+
+            document.getElementById('file-upload')
+                .addEventListener('change', readSingleFile, false);
+
         </script>
     </div>
 

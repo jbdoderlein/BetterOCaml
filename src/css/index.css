@@ -76,3 +76,14 @@ nav i, nav i.material-icons {
 .code-highlight{
     background-color: #3849519c;
 }
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}

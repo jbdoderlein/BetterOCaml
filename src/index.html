@@ -13,12 +13,15 @@
     <link rel="stylesheet" href="css/materialize/materialize.min.css">
     <link rel="stylesheet" href="css/codemirror/codemirror.min.css">
     <link rel="stylesheet" href="css/codemirror/material.css"/>
+    <link rel="stylesheet" href="css/codemirror/dialog.css"/>
     <script src="js/codemirror/codemirror.min.js"></script>
     <script src="js/codemirror/matchbrackets.min.js"></script>
     <script src="js/codemirror/closebrackets.js"></script>
-    <script src="js/codemirror/sublime.min.js"></script>
     <script src="js/codemirror/mllike.min.js"></script>
-    <script src="js/codemirror/show-hint.js"></script>
+    <script src="js/codemirror/dialog.js"></script>
+    <script src="js/codemirror/searchcursor.js"></script>
+    <script src="js/codemirror/search.js"></script>
+    <script src="js/codemirror/jump-to-line.js"></script>
     <script src="js/resizer.js"></script>
     <script type="text/javascript">
         function load_script(url) {
@@ -36,7 +39,7 @@
     <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_1', 1.1)"><i class="material-icons">add</i></a>
     <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_1', 0.9)"><i class="material-icons">remove</i></a>
     <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="program_save(editor)"><i class="material-icons">save</i></a>
-    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="console.log('load')">
+    <a class="btn-floating btn-small waves-effect waves-light teal darken-4">
         <label for="file-upload" class="custom-file-upload">
             <i class="material-icons">folder</i>
         </label>
@@ -54,11 +57,20 @@
     <div id="box_1" class="box" style="display:flex;flex-direction:column">
         <textarea name="code" id="texarea1" class="materialize-textarea" ></textarea>
         <script type="text/javascript">
+            let clean_content=function(content){
+                return content.replace(/[(][*][\s\S]*?[*][)][\s]*/g, '').match(/[\S][\s\S]*?(;;)/g)
+            }
+            let line_with_last = function(instance){
+                let i = instance.getCursor().line
+                while (!instance.getLine(i).includes(";;")){
+                    i++;
+                }
+                return i
+            }
+
             let exec_last = function(instance) {
-                let beforecur = instance.getRange({line: 0,ch: 0}, {line: editor.getCursor().line});
-                parse(beforecur
-                    .replace(/[(][*][\s\S]*?[*][)][\s]*/g, '')
-                    .match(/[\S][\s\S]*?(;;)/g).slice(-1)[0] // Get last sentence
+                let beforecur = instance.getRange({line: 0,ch: 0}, {line: line_with_last(instance)});
+                    parse(clean_content(beforecur).slice(-1)[0]
                 ); // Remove comments
             };
             let exec_all = function(instance) {
@@ -67,33 +79,21 @@
             };
             let calculate_highlight = function (instance) {
                 try {
-                    var execselected = instance.getRange({line: 0, ch: 0}, {line: editor.getCursor().line})
-                        .replace(/[(][*][\s\S]*?[*][)][\s]*/g, '') // Remove comments
+                    var execselected = instance.getRange({line: 0, ch: 0}, {line: line_with_last(instance)})
                         .match(/[\S][\s\S]*?(;;)/g).slice(-1)[0] // Get last sentence
-                        .split("\n"); // Split lines
                 }
                 catch (e){
-                    var execselected = [];
+                    var execselected = "";
                 }
-
-                let alllines = instance.getValue().split('\n');
-                let highlightlines = []; // Liste des lignes a surligner
-                for (let i = 0; i < alllines.length; i++) {
-                    if(execselected.includes(alllines[i])){
-                        highlightlines.push(i);
-                    }
-                }
-                return {
-                    pos1:{line:Math.min(...highlightlines), ch:0},
-                    // La deuxieme expression récupere la position du dernier caractere de la ligne
-                    pos2:{line:Math.max(...highlightlines), ch:instance.getLineTokens(Math.max(...highlightlines)).slice(-1)[0].end}
-                };
+                let cursor = instance.getSearchCursor(execselected)
+                cursor.find();
+                return cursor;
             };
             let editor = CodeMirror.fromTextArea(document.getElementById('texarea1'), {
                 lineNumbers: true,
                 autoCloseBrackets: true,
-                keyMap : 'sublime',
                 indentUnit: 4,
+                dragDrop: true,
                 matchBrackets: true,
                 readOnly: false,
                 theme : 'material',
@@ -103,15 +103,38 @@
                     "Cmd-Enter" : exec_last,
                     "Shift-Ctrl-Enter": exec_all,
                     "Shift-Cmd-Enter": exec_all,
+                    "Ctrl-F" : "find",
                 }
             });
-            var current_marker = editor.markText({line: 0}, {line: 0}, {css: "color: #fe4"});
+            editor.current_marker = editor.markText({line: 0}, {line: 0}, {css: "color: #fe4"});
+
             editor.on("cursorActivity", function (instance, changeObj) {
-                let positions = calculate_highlight(instance);
-                current_marker.clear();
-                current_marker = editor.markText(positions.pos1, positions.pos2, {
-                    className : "code-highlight"
-                });
+                let cursor = calculate_highlight(instance);
+                if (!(cursor.from() === undefined)) {
+                instance.current_marker.clear();
+                instance.current_marker = instance.markText(from = cursor.from(), to = cursor.to(), options = {
+                    className: "code-highlight"
+                });}
+            });
+
+            editor.on('drop', function(data, e) {
+                var file;
+                var files;
+                // Check if files were dropped
+                files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    file = files[0];
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        var contents = e.target.result;
+                        editor.setValue(contents);
+                    };
+                    reader.readAsText(file);
+                    console.log('File: ' + file.name);
+                    return false;
+                }
             });
 
             let program_save = function (instance) {

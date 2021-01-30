@@ -41,15 +41,33 @@
     <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="program_save(editor)"><i class="material-icons">save</i></a>
     <a class="btn-floating btn-small waves-effect waves-light teal darken-4">
         <label for="file-upload" class="custom-file-upload">
-            <i class="material-icons">folder</i>
+            <i class="material-icons">folder</i> <input id="file-upload" type="file" style="display: none;"/>
         </label>
     </a>
-    <input id="file-upload" type="file" style="display: none;"/>
+    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="exec_all(editor)"><i class="material-icons">play_arrow</i></a>
+    <a class="btn-floating btn-small waves-effect waves-light teal darken-4 modal-trigger" href="#help"><i class="material-icons">help_outline</i></a>
 </div>
 
 <div class="fixed-action-btn" style="bottom: 15px; right: 15px;">
     <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_2', 1.1)"><i class="material-icons">add</i></a>
     <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_2', 0.9)"><i class="material-icons">remove</i></a>
+</div>
+
+<div id="help" class="modal help">
+    <div class="modal-content">
+        <h4>Aides</h4>
+
+        <blockquote class="commands">
+            <b>Ctrl + Enter / Cmd + Enter</b> : Execute le bloc code surligné
+        </blockquote>
+        <blockquote class="commands">
+            <b>Ctrl + Shift + Enter / Cmd + Shift + Enter</b> : Execute tout le code
+        </blockquote>
+
+    </div>
+    <div class="modal-footer help">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat white-text">Fermer</a>
+    </div>
 </div>
 
 <div class="container horizontal">
@@ -208,6 +226,10 @@
         document.getElementById('box_2').style.fontSize = "1.2em";
         setTimeout(function(){ editor.focus(); }, 10);
     },false);
+
+    $(document).ready(function(){
+        $('.modal').modal();
+    });
 </script>
 
 <script>

@@ -77,4 +77,14 @@ nav i, nav i.material-icons {
     background-color: #3849519c;
 }
 
+.commands{
+    color: white;
+    border-left-color: #455a6d;
+}
+
+.help{
+    background-color: #2a3439 !important;
+    color: white;
+}
+
 

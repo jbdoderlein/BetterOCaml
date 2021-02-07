@@ -38,7 +38,7 @@
 <div class="fixedab" style="bottom: 15px; left: 15px;">
     <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_1', 1.1)"><i class="material-icons">add</i></a>
     <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_1', 0.9)"><i class="material-icons">remove</i></a>
-    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="program_save(editor)"><i class="material-icons">save</i></a>
+    <a class="btn-floating btn-small waves-effect waves-light teal darken-4 modal-trigger" href="#saveas"><i class="material-icons">save</i></a>
     <a class="btn-floating btn-small waves-effect waves-light teal darken-4">
         <label for="file-upload" class="custom-file-upload">
             <i class="material-icons">folder</i> <input id="file-upload" type="file" style="display: none;"/>
@@ -67,6 +67,20 @@
     </div>
     <div class="modal-footer help">
         <a href="#!" class="modal-close waves-effect waves-green btn-flat white-text">Fermer</a>
+    </div>
+</div>
+
+<div id="saveas" class="modal help">
+    <div class="modal-content">
+        <h4>Enregistrer sous ...</h4>
+        <div class="input-field col s6">
+            <input placeholder="no_name.ml" id="saveas_text" type="text" class="white-text">
+        </div>
+    </div>
+    <div class="modal-footer help">
+        <button class="btn modal-close waves-effect waves-light teal darken-4 right" onclick="program_save(editor)">Enregistrer
+            <i class="material-icons right">send</i>
+        </button>
     </div>
 </div>
 
@@ -162,7 +176,16 @@
                 var textFileAsBlob = new Blob([textToWrite], {type:'text/plain'});
 
                 // filename to save as
+                let potential_filename = document.getElementById('saveas_text').value;
                 var fileNameToSaveAs = "no_name.ml";
+                if (potential_filename!==""){
+                    if (potential_filename.substr(-3,3) === ".ml"){
+                        fileNameToSaveAs = potential_filename
+                    }
+                    else{
+                        fileNameToSaveAs = potential_filename + ".ml"
+                    }
+                }
 
                 var downloadLink = document.createElement("a");
                 downloadLink.download = fileNameToSaveAs;
@@ -178,6 +201,7 @@
                 downloadLink.style.display = "none";
                 document.body.appendChild(downloadLink);
                 downloadLink.click();
+                Materialize.toast('File saved');
             }
 
             function destroyClickedElement(event) {

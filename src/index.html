@@ -9,10 +9,9 @@
     <link rel="manifest" href="/site.webmanifest">
     <link href="css/icon.css" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="css/old.css">
+    <link rel="stylesheet" id="css_theme" href="css/theme/default.css">
     <link rel="stylesheet" href="css/materialize/materialize.min.css">
     <link rel="stylesheet" href="css/codemirror/codemirror.min.css">
-    <link rel="stylesheet" href="css/codemirror/material.css"/>
     <link rel="stylesheet" href="css/codemirror/dialog.css"/>
     <script src="js/codemirror/codemirror.min.js"></script>
     <script src="js/codemirror/matchbrackets.min.js"></script>
@@ -239,6 +238,12 @@
 
             document.getElementById('file-upload')
                 .addEventListener('change', readSingleFile, false);
+
+            function change_theme(name){
+                let href = document.getElementById('css_theme').href;
+                document.getElementById('css_theme').href = href.replace(/[^\/]+$/g, '') + name
+                Materialize.toast('Theme loaded', 3000);
+            }
 
         </script>
     </div>

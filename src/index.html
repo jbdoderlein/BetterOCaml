@@ -23,6 +23,7 @@
     <script src="js/codemirror/search.js"></script>
     <script src="js/codemirror/jump-to-line.js"></script>
     <script src="js/resizer.js"></script>
+    <script async defer src="js/buttons.js"></script>
     <script type="text/javascript">
         function load_script(url) {
             var fileref = document.createElement('script');
@@ -30,27 +31,35 @@
             fileref.setAttribute("src", url);
             document.getElementsByTagName("head")[0].appendChild(fileref);
         }
+
         load_script("js/toplevel-4.08.js");
     </script>
 </head>
 <body>
 
 <div class="fixedab" style="bottom: 15px; left: 15px;">
-    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_1', 1.1)"><i class="material-icons">add</i></a>
-    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_1', 0.9)"><i class="material-icons">remove</i></a>
-    <a class="btn-floating btn-small waves-effect waves-light teal darken-4 modal-trigger" href="#saveas"><i class="material-icons">save</i></a>
+    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_1', 1.1)"><i
+            class="material-icons">add</i></a>
+    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_1', 0.9)"><i
+            class="material-icons">remove</i></a>
+    <a class="btn-floating btn-small waves-effect waves-light teal darken-4 modal-trigger" href="#saveas"><i
+            class="material-icons">save</i></a>
     <a class="btn-floating btn-small waves-effect waves-light teal darken-4">
         <label for="file-upload" class="custom-file-upload">
             <i class="material-icons">folder</i> <input id="file-upload" type="file" style="display: none;"/>
         </label>
     </a>
-    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="exec_all(editor)"><i class="material-icons">play_arrow</i></a>
-    <a class="btn-floating btn-small waves-effect waves-light teal darken-4 modal-trigger" href="#help"><i class="material-icons">help_outline</i></a>
+    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="exec_all(editor)"><i
+            class="material-icons">play_arrow</i></a>
+    <a class="btn-floating btn-small waves-effect waves-light teal darken-4 modal-trigger" href="#help"><i
+            class="material-icons">help_outline</i></a>
 </div>
 
 <div class="fixed-action-btn" style="bottom: 15px; right: 15px;">
-    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_2', 1.1)"><i class="material-icons">add</i></a>
-    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_2', 0.9)"><i class="material-icons">remove</i></a>
+    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_2', 1.1)"><i
+            class="material-icons">add</i></a>
+    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_2', 0.9)"><i
+            class="material-icons">remove</i></a>
 </div>
 
 <div id="help" class="modal help">
@@ -63,6 +72,10 @@
         <blockquote class="commands">
             <b>Ctrl + Shift + Enter / Cmd + Shift + Enter</b> : Execute tout le code
         </blockquote>
+        <a class="github-button" href="https://github.com/jbdo99/betterocaml" data-size="large"
+           aria-label="Issue jbdo99/betterocaml on GitHub">Open in Github</a>
+        <a class="github-button" href="https://github.com/jbdo99/betterocaml/issues" data-icon="octicon-issue-opened"
+           data-size="large" aria-label="Issue jbdo99/betterocaml on GitHub">Issue</a>
 
     </div>
     <div class="modal-footer help">
@@ -78,7 +91,8 @@
         </div>
     </div>
     <div class="modal-footer help">
-        <button class="btn modal-close waves-effect waves-light teal darken-4 right" onclick="program_save(editor)">Enregistrer
+        <button class="btn modal-close waves-effect waves-light teal darken-4 right" onclick="program_save(editor)">
+            Enregistrer
             <i class="material-icons right">send</i>
         </button>
     </div>
@@ -87,25 +101,25 @@
 <div class="container horizontal">
 
     <div id="box_1" class="box" style="display:flex;flex-direction:column">
-        <textarea name="code" id="texarea1" class="materialize-textarea" ></textarea>
+        <textarea name="code" id="texarea1" class="materialize-textarea"></textarea>
         <script type="text/javascript">
-            let clean_content=function(content){
+            let clean_content = function (content) {
                 return content.replace(/[(][*][\s\S]*?[*][)][\s]*/g, '').match(/[\S][\s\S]*?(;;)/g)
             }
-            let line_with_last = function(instance){
+            let line_with_last = function (instance) {
                 let i = instance.getCursor().line
-                while (!instance.getLine(i).includes(";;")){
+                while (!instance.getLine(i).includes(";;")) {
                     i++;
                 }
                 return i
             }
 
-            let exec_last = function(instance) {
-                let beforecur = instance.getRange({line: 0,ch: 0}, {line: line_with_last(instance)});
-                    parse(clean_content(beforecur).slice(-1)[0]
+            let exec_last = function (instance) {
+                let beforecur = instance.getRange({line: 0, ch: 0}, {line: line_with_last(instance)});
+                parse(clean_content(beforecur).slice(-1)[0]
                 ); // Remove comments
             };
-            let exec_all = function(instance) {
+            let exec_all = function (instance) {
                 parse(instance.getValue().replace(/[(][*][\s\S]*?[*][)][\s]*/g, ''));
                 instance.focus();
             };
@@ -113,8 +127,7 @@
                 try {
                     var execselected = instance.getRange({line: 0, ch: 0}, {line: line_with_last(instance)})
                         .match(/[\S][\s\S]*?(;;)/g).slice(-1)[0] // Get last sentence
-                }
-                catch (e){
+                } catch (e) {
                     var execselected = "";
                 }
                 let cursor = instance.getSearchCursor(execselected)
@@ -128,14 +141,14 @@
                 dragDrop: true,
                 matchBrackets: true,
                 readOnly: false,
-                theme : 'material',
-                mode : 'text/x-ocaml',
+                theme: 'material',
+                mode: 'text/x-ocaml',
                 extraKeys: {
                     "Ctrl-Enter": exec_last,
-                    "Cmd-Enter" : exec_last,
+                    "Cmd-Enter": exec_last,
                     "Shift-Ctrl-Enter": exec_all,
                     "Shift-Cmd-Enter": exec_all,
-                    "Ctrl-F" : "find",
+                    "Ctrl-F": "find",
                 }
             });
             editor.current_marker = editor.markText({line: 0}, {line: 0}, {css: "color: #fe4"});
@@ -143,13 +156,14 @@
             editor.on("cursorActivity", function (instance, changeObj) {
                 let cursor = calculate_highlight(instance);
                 if (!(cursor.from() === undefined)) {
-                instance.current_marker.clear();
-                instance.current_marker = instance.markText(from = cursor.from(), to = cursor.to(), options = {
-                    className: "code-highlight"
-                });}
+                    instance.current_marker.clear();
+                    instance.current_marker = instance.markText(from = cursor.from(), to = cursor.to(), options = {
+                        className: "code-highlight"
+                    });
+                }
             });
 
-            editor.on('drop', function(data, e) {
+            editor.on('drop', function (data, e) {
                 var file;
                 var files;
                 // Check if files were dropped
@@ -159,12 +173,13 @@
                     e.stopPropagation();
                     file = files[0];
                     var reader = new FileReader();
-                    reader.onload = function(e) {
+                    reader.onload = function (e) {
                         var contents = e.target.result;
                         editor.setValue(contents);
                     };
                     reader.readAsText(file);
                     console.log('File: ' + file.name);
+                    Materialize.toast('File loaded', 3000);
                     return false;
                 }
             });
@@ -173,16 +188,15 @@
                 var textToWrite = instance.getValue()
 
                 //var textToWrite = textToWrite.replace(/\n/g, "\r\n");
-                var textFileAsBlob = new Blob([textToWrite], {type:'text/plain'});
+                var textFileAsBlob = new Blob([textToWrite], {type: 'text/plain'});
 
                 // filename to save as
                 let potential_filename = document.getElementById('saveas_text').value;
                 var fileNameToSaveAs = "no_name.ml";
-                if (potential_filename!==""){
-                    if (potential_filename.substr(-3,3) === ".ml"){
+                if (potential_filename !== "") {
+                    if (potential_filename.substr(-3, 3) === ".ml") {
                         fileNameToSaveAs = potential_filename
-                    }
-                    else{
+                    } else {
                         fileNameToSaveAs = potential_filename + ".ml"
                     }
                 }
@@ -201,7 +215,7 @@
                 downloadLink.style.display = "none";
                 document.body.appendChild(downloadLink);
                 downloadLink.click();
-                Materialize.toast('File saved');
+                Materialize.toast('File saved', 3000);
             }
 
             function destroyClickedElement(event) {
@@ -215,11 +229,12 @@
                     return;
                 }
                 var reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     var contents = e.target.result;
                     editor.setValue(contents);
                 };
                 reader.readAsText(file);
+                Materialize.toast('File loaded', 3000);
             }
 
             document.getElementById('file-upload')
@@ -244,18 +259,20 @@
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script src="js/materialize.min.js"></script>
 <script>
-    window.addEventListener("load",function(){
+    window.addEventListener("load", function () {
         new Resizer(document.querySelector('[name=resizerH1]'), 'H');
         document.getElementById('box_1').style.fontSize = "1.2em";
         document.getElementById('box_2').style.fontSize = "1.2em";
-        setTimeout(function(){ editor.focus(); }, 10);
-    },false);
+        setTimeout(function () {
+            editor.focus();
+        }, 10);
+    }, false);
 
-    window.onbeforeunload = function(){
+    window.onbeforeunload = function () {
         return 'Are you sure you want to leave?';
     };
 
-    $(document).ready(function(){
+    $(document).ready(function () {
         $('.modal').modal();
     });
 </script>
@@ -271,10 +288,13 @@
             textarea.value = cmd[i];
             textarea.dispatchEvent(ke);
         }
-        setTimeout(function(){ editor.focus(); }, 5);
+        setTimeout(function () {
+            editor.focus();
+        }, 5);
     }
+
     function changefontsize(id, a) {
-        document.getElementById(id).style.fontSize = String(parseFloat(document.getElementById(id).style.fontSize.slice(0,-2))*a)+"em";
+        document.getElementById(id).style.fontSize = String(parseFloat(document.getElementById(id).style.fontSize.slice(0, -2)) * a) + "em";
     }
 </script>
 

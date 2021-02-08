@@ -1,5 +1,9 @@
 /* Theme Console */
 
+nav {
+    background-color: #202b30 !important;
+}
+
 .code-highlight{
     background-color: rgb(212, 14, 246);
 }

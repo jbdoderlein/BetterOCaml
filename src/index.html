@@ -8,7 +8,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="icon/favicon-16x16.png">
     <link href="css/icon.css" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" id="css_theme" href="css/theme/default.css">
+    <link rel="stylesheet" id="css_theme" href="css/theme/material.css">
     <link rel="stylesheet" href="css/materialize/materialize.min.css">
     <link rel="stylesheet" href="css/codemirror/codemirror.min.css">
     <link rel="stylesheet" href="css/codemirror/dialog.css"/>
@@ -37,7 +37,7 @@
 
 <nav>
     <div class="nav-wrapper">
-        <a href="#!" class="brand-logo hide-on-med-and-down">BetterOCaml</a>
+        <a href="#!" class="brand-logo hide-on-small-only">BetterOCaml</a>
         <ul class="right">
             <li><a onclick="exec_all(editor)"><i class="material-icons">play_arrow</i></a></li>
             <li><a class="modal-trigger" href="#saveas"><i class="material-icons">save</i></a></li>
@@ -55,16 +55,16 @@
 </nav>
 
 <div class="fixedab" style="bottom: 15px; left: 15px;">
-    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_1', 1.1)"><i
+    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_1', 1.1)"><i
             class="material-icons">add</i></a>
-    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_1', 0.9)"><i
+    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_1', 0.9)"><i
             class="material-icons">remove</i></a>
 </div>
 
 <div class="fixed-action-btn" style="bottom: 15px; right: 15px;">
-    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_2', 1.1)"><i
+    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_2', 1.1)"><i
             class="material-icons">add</i></a>
-    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_2', 0.9)"><i
+    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_2', 0.9)"><i
             class="material-icons">remove</i></a>
 </div>
 
@@ -73,10 +73,9 @@
 
         <h4>Themes</h4>
         <select name="theme" id="theme-select">
-            <option value="default">Default</option>
-            <option value="pycharm">Pycharm</option>
-            <option value="vim">Vim</option>
-            <option value="test">Test</option>
+            <option value="material">Default</option>
+            <option value="monokai">Monokai</option>
+            <option value="mdn-like">MDN</option>
         </select>
 
         <h4>Aides</h4>
@@ -106,7 +105,7 @@
         </div>
     </div>
     <div class="modal-footer help">
-        <button class="btn modal-close waves-effect waves-light teal darken-4 right" onclick="program_save(editor)">
+        <button class="btn modal-close waves-effect waves-light zoom-button right" onclick="program_save(editor)">
             Enregistrer
             <i class="material-icons right">send</i>
         </button>
@@ -268,6 +267,7 @@
                 .addEventListener('change',
                     function (e) {
                         change_theme(e.target.value + ".css");
+                        editor.setOption("theme", e.target.value);
                         setCookie("theme", e.target.value, 30)
                     }, false);
 
@@ -304,6 +304,7 @@
                 var user = getCookie("theme");
                 if (user != "") {
                     change_theme(user + ".css")
+                    editor.setOption("theme", user);
                 } else {
                     change_theme('default.css')
                 }

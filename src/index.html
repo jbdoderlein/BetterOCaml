@@ -6,10 +6,9 @@
     <link rel="apple-touch-icon" sizes="180x180" href="icon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="icon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="icon/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
     <link href="css/icon.css" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" id="css_theme" href="css/theme/default.css">
+    <link rel="stylesheet" id="css_theme" href="css/theme/material.css">
     <link rel="stylesheet" href="css/materialize/materialize.min.css">
     <link rel="stylesheet" href="css/codemirror/codemirror.min.css">
     <link rel="stylesheet" href="css/codemirror/dialog.css"/>
@@ -36,33 +35,49 @@
 </head>
 <body>
 
+<nav>
+    <div class="nav-wrapper">
+        <a href="#!" class="brand-logo hide-on-small-only">BetterOCaml</a>
+        <ul class="right">
+            <li><a onclick="exec_all(editor)"><i class="material-icons">play_arrow</i></a></li>
+            <li><a class="modal-trigger" href="#saveas"><i class="material-icons">save</i></a></li>
+            <li>
+                <a>
+                    <label for="file-upload" class="custom-file-upload">
+                        <i class="material-icons">folder</i> <input id="file-upload" type="file"
+                                                                    style="display: none;"/>
+                    </label>
+                </a>
+            </li>
+            <li><a class="modal-trigger" href="#help"><i class="material-icons">settings</i></a></li>
+        </ul>
+    </div>
+</nav>
+
 <div class="fixedab" style="bottom: 15px; left: 15px;">
-    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_1', 1.1)"><i
+    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_1', 1.1)"><i
             class="material-icons">add</i></a>
-    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_1', 0.9)"><i
+    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_1', 0.9)"><i
             class="material-icons">remove</i></a>
-    <a class="btn-floating btn-small waves-effect waves-light teal darken-4 modal-trigger" href="#saveas"><i
-            class="material-icons">save</i></a>
-    <a class="btn-floating btn-small waves-effect waves-light teal darken-4">
-        <label for="file-upload" class="custom-file-upload">
-            <i class="material-icons">folder</i> <input id="file-upload" type="file" style="display: none;"/>
-        </label>
-    </a>
-    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="exec_all(editor)"><i
-            class="material-icons">play_arrow</i></a>
-    <a class="btn-floating btn-small waves-effect waves-light teal darken-4 modal-trigger" href="#help"><i
-            class="material-icons">help_outline</i></a>
 </div>
 
 <div class="fixed-action-btn" style="bottom: 15px; right: 15px;">
-    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_2', 1.1)"><i
+    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_2', 1.1)"><i
             class="material-icons">add</i></a>
-    <a class="btn-floating btn-small waves-effect waves-light teal darken-4" onclick="changefontsize('box_2', 0.9)"><i
+    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_2', 0.9)"><i
             class="material-icons">remove</i></a>
 </div>
 
 <div id="help" class="modal help">
     <div class="modal-content">
+
+        <h4>Themes</h4>
+        <select name="theme" id="theme-select">
+            <option value="material">Default</option>
+            <option value="monokai">Monokai</option>
+            <option value="mdn-like">MDN</option>
+        </select>
+
         <h4>Aides</h4>
 
         <blockquote class="commands">
@@ -90,7 +105,7 @@
         </div>
     </div>
     <div class="modal-footer help">
-        <button class="btn modal-close waves-effect waves-light teal darken-4 right" onclick="program_save(editor)">
+        <button class="btn modal-close waves-effect waves-light zoom-button right" onclick="program_save(editor)">
             Enregistrer
             <i class="material-icons right">send</i>
         </button>
@@ -172,13 +187,17 @@
                     e.stopPropagation();
                     file = files[0];
                     var reader = new FileReader();
-                    reader.onload = function (e) {
-                        var contents = e.target.result;
-                        editor.setValue(contents);
-                    };
-                    reader.readAsText(file);
-                    console.log('File: ' + file.name);
-                    Materialize.toast('File loaded', 3000);
+                    let confirmation = get_confirm();
+                    if (confirmation) {
+                        reader.onload = function (e) {
+                            var contents = e.target.result;
+                            editor.setValue(contents);
+                        };
+                        reader.readAsText(file);
+                        M.toast({html: 'File loaded'})
+                    } else {
+                        M.toast({html: 'File not loaded'})
+                    }
                     return false;
                 }
             });
@@ -214,7 +233,7 @@
                 downloadLink.style.display = "none";
                 document.body.appendChild(downloadLink);
                 downloadLink.click();
-                Materialize.toast('File saved', 3000);
+                M.toast({html: 'File saved'})
             }
 
             function destroyClickedElement(event) {
@@ -228,21 +247,75 @@
                     return;
                 }
                 var reader = new FileReader();
-                reader.onload = function (e) {
-                    var contents = e.target.result;
-                    editor.setValue(contents);
-                };
-                reader.readAsText(file);
-                Materialize.toast('File loaded', 3000);
+                let confirmation = get_confirm();
+                if (confirmation) {
+                    reader.onload = function (e) {
+                        var contents = e.target.result;
+                        editor.setValue(contents);
+                    };
+                    reader.readAsText(file);
+                    M.toast({html: 'File loaded'})
+                } else {
+                    M.toast({html: 'File not loaded'})
+                }
             }
 
             document.getElementById('file-upload')
                 .addEventListener('change', readSingleFile, false);
 
-            function change_theme(name){
+            document.getElementById('theme-select')
+                .addEventListener('change',
+                    function (e) {
+                        change_theme(e.target.value + ".css");
+                        editor.setOption("theme", e.target.value);
+                        setCookie("theme", e.target.value, 30)
+                    }, false);
+
+            function change_theme(name) {
                 let href = document.getElementById('css_theme').href;
                 document.getElementById('css_theme').href = href.replace(/[^\/]+$/g, '') + name
-                Materialize.toast('Theme loaded', 3000);
+                M.toast({html: 'Theme loaded'})
+            }
+
+            function setCookie(cname, cvalue, exdays) {
+                var d = new Date();
+                d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+                var expires = "expires=" + d.toUTCString();
+                document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+            }
+
+            function getCookie(cname) {
+                var name = cname + "=";
+                var decodedCookie = decodeURIComponent(document.cookie);
+                var ca = decodedCookie.split(';');
+                for (var i = 0; i < ca.length; i++) {
+                    var c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(name) == 0) {
+                        return c.substring(name.length, c.length);
+                    }
+                }
+                return "";
+            }
+
+            function autoload_theme() {
+                var user = getCookie("theme");
+                if (user != "") {
+                    change_theme(user + ".css")
+                    editor.setOption("theme", user);
+                } else {
+                    change_theme('default.css')
+                }
+            }
+
+            function get_confirm() {
+                if (editor.getValue() != "") {
+                    return confirm("Charger ce document effacera celui sur votre écran.\nVoulez vous continuer ?");
+                } else {
+                    return true
+                }
             }
 
         </script>
@@ -279,6 +352,7 @@
 
     $(document).ready(function () {
         $('.modal').modal();
+        autoload_theme();
     });
 </script>
 

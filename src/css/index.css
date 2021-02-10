@@ -54,6 +54,10 @@ nav i, nav i.material-icons {
 	width: 100% !important;
 }
 
+.code-box{
+    height: 100% !important;
+}
+
 
 
 #vertical-line {
@@ -133,5 +137,22 @@ code, kbd, pre, samp {
 }
 
 
+.indicator{
+    display: none;
+}
 
+.tabs{
+    background-color: #202b30 !important;
+    color: whitesmoke !important;
+}
+
+.onglet {
+    background-color: #273237!important;
+    border-top-right-radius: 0.8rem;
+    border-top-left-radius: 0.8rem;
+}
+
+.tabs .tab a:hover, .tabs .tab a.active {
+    b
+}
 

@@ -144,15 +144,32 @@ code, kbd, pre, samp {
 .tabs{
     background-color: #202b30 !important;
     color: whitesmoke !important;
+    font-size: 0.9rem;
 }
+
 
 .onglet {
-    background-color: #273237!important;
+    background-color: #202a2d !important;
     border-top-right-radius: 0.8rem;
     border-top-left-radius: 0.8rem;
+    text-transform: none!important;
 }
 
-.tabs .tab a:hover, .tabs .tab a.active {
-    b
+.tabs .tab a {
+    color: #9f9f9f !important;
+}
+
+.tabs .tab a.active {
+    background-color: #273237 !important;
+    border-top-right-radius: 0.8rem;
+    border-top-left-radius: 0.8rem;
+    font-size: 1.1rem !important;
+    color: white !important;
+}
+
+.mini-icon{
+    font-size: 0.8rem;
+    margin-right: -0.8rem;
+    margin-left: 1rem;
 }
 

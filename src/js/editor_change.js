@@ -136,8 +136,72 @@ function get_confirm(editor) {
     }
 }
 
-function create_editor(id) {
-    let editor = CodeMirror.fromTextArea(document.getElementById(id), {
+function cursor_activity(instance, changeObj) {
+    let cursor = calculate_highlight(instance);
+    if (!(cursor.from() === undefined)) {
+        instance.current_marker.clear();
+        instance.current_marker = instance.markText(from = cursor.from(), to = cursor.to(), options = {
+            className: "code-highlight"
+        });
+    }
+}
+
+function editor_drop(data, e) {
+    var file;
+    var files;
+    // Check if files were dropped
+    files = e.dataTransfer.files;
+    if (files.length > 0) {
+        e.preventDefault();
+        e.stopPropagation();
+        file = files[0];
+        var reader = new FileReader();
+        let confirmation = get_confirm(editor);
+        if (confirmation) {
+            reader.onload = function (e) {
+                var contents = e.target.result;
+                editor.setValue(contents);
+            };
+            reader.readAsText(file);
+            M.toast({html: 'File loaded'})
+        } else {
+            M.toast({html: 'File not loaded'})
+        }
+        return false;
+    }
+}
+
+function create_div(id, name, ul, div) {
+    // the li
+    let li = document.createElement('li');
+    li.className = "tab col s3 onglet";
+    let a = document.createElement('a');
+    a.href = "#editor_a_"+String(id);
+    let i = document.createElement('i');
+    i.className = "material-icons center mini-icon";
+    i.onclick = function() {
+        console.log(this)
+    };
+    i.appendChild(document.createTextNode('close'));
+    a.appendChild(document.createTextNode(name));
+    a.appendChild(i);
+    li.appendChild(a);
+    // the div
+    let divi = document.createElement('div');
+    divi.id = "editor_tab_"+String(id);
+    divi.className = "col s12 blue code-box";
+    let textarea = document.createElement('textarea');
+    textarea.name = "editor_"+String(id);
+    textarea.id = "editor_"+String(id);
+    textarea.className = "materialize-textarea";
+    divi.appendChild(textarea)
+    // add element
+    ul.appendChild(li);
+    div.appendChild(divi);
+}
+
+function create_editor(id,name) {
+    let editor = CodeMirror.fromTextArea(document.getElementById("editor_"+String(id)), {
         lineNumbers: true,
         autoCloseBrackets: true,
         indentUnit: 4,
@@ -153,42 +217,10 @@ function create_editor(id) {
             "Shift-Cmd-Enter": exec_all
         }
     });
+    editor.name = name
     editor.current_marker = editor.markText({line: 0}, {line: 0}, {css: "color: #fe4"});
-
-    editor.on("cursorActivity", function (instance, changeObj) {
-        let cursor = calculate_highlight(instance);
-        if (!(cursor.from() === undefined)) {
-            instance.current_marker.clear();
-            instance.current_marker = instance.markText(from = cursor.from(), to = cursor.to(), options = {
-                className: "code-highlight"
-            });
-        }
-    });
-
-    editor.on('drop', function (data, e) {
-        var file;
-        var files;
-        // Check if files were dropped
-        files = e.dataTransfer.files;
-        if (files.length > 0) {
-            e.preventDefault();
-            e.stopPropagation();
-            file = files[0];
-            var reader = new FileReader();
-            let confirmation = get_confirm(editor);
-            if (confirmation) {
-                reader.onload = function (e) {
-                    var contents = e.target.result;
-                    editor.setValue(contents);
-                };
-                reader.readAsText(file);
-                M.toast({html: 'File loaded'})
-            } else {
-                M.toast({html: 'File not loaded'})
-            }
-            return false;
-        }
-    });
+    editor.on("cursorActivity", cursor_activity);
+    editor.on('drop', editor_drop);
     return editor
 }
 

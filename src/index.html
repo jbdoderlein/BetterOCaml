@@ -39,6 +39,7 @@
     <div class="nav-wrapper">
         <a href="#!" class="brand-logo hide-on-small-only">BetterOCaml</a>
         <ul class="right">
+            <li><a onclick="alert('add an editro')"><i class="material-icons">add</i></a></li>
             <li><a onclick="exec_all(actual_editor(editors))"><i class="material-icons">play_arrow</i></a></li>
             <li><a class="modal-trigger" href="#saveas"><i class="material-icons">save</i></a></li>
             <li>
@@ -105,7 +106,8 @@
         </div>
     </div>
     <div class="modal-footer help">
-        <button class="btn modal-close waves-effect waves-light zoom-button right" onclick="program_save(actual_editor(editors))">
+        <button class="btn modal-close waves-effect waves-light zoom-button right"
+                onclick="program_save(actual_editor(editors))">
             Enregistrer
             <i class="material-icons right">send</i>
         </button>
@@ -115,15 +117,16 @@
 <div class="container horizontal">
 
     <div id="box_1" class="box" style="display:flex;flex-direction:column">
+
         <ul id="editor-files" class="tabs">
-            <li class="tab col s3 onglet"><a class="active" href="#editor_tab_0">file1.ml</a></li>
-            <li class="tab col s3 onglet"><a href="#editor_tab_1">file2.ml</a></li>
+            <li class="tab col s3 onglet">
+                <a class="active" href="#editor_tab_0">
+                    file1.ml <i class="material-icons center mini-icon" onclick="alert('ok')">close</i>
+                </a>
+            </li>
         </ul>
         <div id="editor_tab_0" class="col s12 blue code-box">
             <textarea name="editor_0" id="editor_0" class="materialize-textarea"></textarea>
-        </div>
-        <div id="editor_tab_1" class="col s12 blue code-box">
-            <textarea name="editor_1" id="editor_1" class="materialize-textarea"></textarea>
         </div>
     </div>
 
@@ -147,8 +150,9 @@
 <script type="text/javascript">
     // Editors
     let editors = []
-    editors.push(create_editor('editor_0'))
-    editors.push(create_editor('editor_1'))
+    let editors_ul = document.getElementById('editor-files');
+    let editors_div = document.getElementById('box_1');
+    editors.push(create_editor(id=0,name='untitled.ml'));
 </script>
 <script>
     // Chargement et events
@@ -177,7 +181,6 @@
                 change_theme(e.target.value, editors);
             }, false);
 </script>
-
 
 
 </body>

@@ -37,6 +37,12 @@ nav i, nav i.material-icons {
   white-space: nowrap;
 }
 
+.errorloc{
+    border-bottom-width: 3px;
+    border-bottom-style: solid;
+    border-bottom-color: red;
+}
+
 .resizer {
   flex: 0 0 auto;
 }

@@ -171,37 +171,14 @@ function editor_drop(data, e) {
     }
 }
 
-function create_div(id, name, ul, div) {
-    // the li
-    let li = document.createElement('li');
-    li.className = "tab col s3 onglet";
-    let a = document.createElement('a');
-    a.href = "#editor_a_"+String(id);
-    let i = document.createElement('i');
-    i.className = "material-icons center mini-icon";
-    i.onclick = function() {
-        console.log(this)
-    };
-    i.appendChild(document.createTextNode('close'));
-    a.appendChild(document.createTextNode(name));
-    a.appendChild(i);
-    li.appendChild(a);
-    // the div
-    let divi = document.createElement('div');
-    divi.id = "editor_tab_"+String(id);
-    divi.className = "col s12 blue code-box";
-    let textarea = document.createElement('textarea');
-    textarea.name = "editor_"+String(id);
-    textarea.id = "editor_"+String(id);
-    textarea.className = "materialize-textarea";
-    divi.appendChild(textarea)
-    // add element
-    ul.appendChild(li);
-    div.appendChild(divi);
-}
+function create_editor(id, name) {
+    var $tabs = $('#editor-files');
+    $tabs.children().removeAttr('style');
 
-function create_editor(id,name) {
-    let editor = CodeMirror.fromTextArea(document.getElementById("editor_"+String(id)), {
+    $tabs.append("<li id='li_tab_" + String(id) + "' class='tab col s3 onglet'><a href='#editor_tab_" + String(id) + "'>" + name + "<i class='material-icons center mini-icon' onclick='remove_editor(" + String(id) + ")'>close</i></a></li>");
+    $("#editorCollection").append("<div id='editor_tab_" + String(id) + "' class='col s12 blue code-box'><textarea name='editor_" + String(id) + "' id='editor_" + String(id) + "' class='materialize-textarea'></textarea></div>");
+
+    let editor = CodeMirror.fromTextArea(document.getElementById("editor_" + String(id)), {
         lineNumbers: true,
         autoCloseBrackets: true,
         indentUnit: 4,
@@ -217,13 +194,28 @@ function create_editor(id,name) {
             "Shift-Cmd-Enter": exec_all
         }
     });
+    editor.id = id
     editor.name = name
     editor.current_marker = editor.markText({line: 0}, {line: 0}, {css: "color: #fe4"});
     editor.on("cursorActivity", cursor_activity);
     editor.on('drop', editor_drop);
+    $tabs.tabs().tabs('select', 'editor_tab_' + String(id));
     return editor
 }
 
 function actual_editor(editors) {
     return editors[document.getElementById('editor-files').M_Tabs.index]
 }
+
+function delete_editor(id) {
+    var $tabs = $('#editor-files');
+    $tabs.children().removeAttr('style');
+    $tabs.children().remove('#li_tab_'+ String(id));
+    $("#editorCollection").children().remove('#editor_tab_' + String(id));
+    $tabs.tabs()
+}
+
+function select_editor(id) {
+    $('#editor-files').tabs('select', 'editor_tab_' + String(id));
+}
+

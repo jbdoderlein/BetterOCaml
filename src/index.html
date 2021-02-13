@@ -35,11 +35,13 @@
 </head>
 <body>
 
-<nav>
+<nav class="nav-extended">
     <div class="nav-wrapper">
         <a href="#!" class="brand-logo hide-on-small-only">BetterOCaml</a>
         <ul class="right">
-            <li><a onclick="alert('add an editro')"><i class="material-icons">add</i></a></li>
+            <li>
+                <a onclick="editors[Object.keys(editors).length] = create_editor(id = Object.keys(editors).length, name = 'untitled.ml');"><i
+                        class="material-icons">add</i></a></li>
             <li><a onclick="exec_all(actual_editor(editors))"><i class="material-icons">play_arrow</i></a></li>
             <li><a class="modal-trigger" href="#saveas"><i class="material-icons">save</i></a></li>
             <li>
@@ -51,6 +53,12 @@
                 </a>
             </li>
             <li><a class="modal-trigger" href="#help"><i class="material-icons">settings</i></a></li>
+        </ul>
+    </div>
+    <div class="nav-content">
+        <ul id="editor-files" class="tabs">
+            <li class="tab col s3 onglet">
+            </li>
         </ul>
     </div>
 </nav>
@@ -114,19 +122,12 @@
     </div>
 </div>
 
-<div class="container horizontal">
 
+<div class="container horizontal">
     <div id="box_1" class="box" style="display:flex;flex-direction:column">
 
-        <ul id="editor-files" class="tabs">
-            <li class="tab col s3 onglet">
-                <a class="active" href="#editor_tab_0">
-                    file1.ml <i class="material-icons center mini-icon" onclick="alert('ok')">close</i>
-                </a>
-            </li>
-        </ul>
-        <div id="editor_tab_0" class="col s12 blue code-box">
-            <textarea name="editor_0" id="editor_0" class="materialize-textarea"></textarea>
+
+        <div class="editorCollection" id="editorCollection">
         </div>
     </div>
 
@@ -149,10 +150,16 @@
 <script src="js/editor_change.js"></script>
 <script type="text/javascript">
     // Editors
-    let editors = []
-    let editors_ul = document.getElementById('editor-files');
-    let editors_div = document.getElementById('box_1');
-    editors.push(create_editor(id=0,name='untitled.ml'));
+    let editors = {}
+    editors[0] = create_editor(id = 0, name = 'untitled.ml');
+
+    function remove_editor(id) {
+        if (Object.keys(editors).length > 1) {
+            delete_editor(id);
+            delete editors[id];
+            select_editor(Math.min(...Object.keys(editors).map(x => +x))) // le premier
+        }
+    }
 </script>
 <script>
     // Chargement et events
@@ -162,9 +169,9 @@
         document.getElementById('box_2').style.fontSize = "1.2em";
     }, false);
 
-    window.onbeforeunload = function () {
-        return 'Are you sure you want to leave?';
-    };
+    //window.onbeforeunload = function () {
+    //    return 'Are you sure you want to leave?';
+    //};
 
     $(document).ready(function () {
         $('.modal').modal();

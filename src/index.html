@@ -40,7 +40,7 @@
         <a href="#!" class="brand-logo hide-on-small-only">BetterOCaml</a>
         <ul class="right">
             <li>
-                <a onclick="editors[Object.keys(editors).length] = create_editor(id = Object.keys(editors).length, name = 'untitled.ml');"><i
+                <a onclick="editors[Math.max(...Object.keys(editors).map(x => +x))+1] = create_editor(id = Math.max(...Object.keys(editors).map(x => +x))+1, name = 'untitled.ml');"><i
                         class="material-icons">add</i></a></li>
             <li><a onclick="exec_all(actual_editor(editors))"><i class="material-icons">play_arrow</i></a></li>
             <li><a class="modal-trigger" href="#saveas"><i class="material-icons">save</i></a></li>
@@ -57,8 +57,6 @@
     </div>
     <div class="nav-content">
         <ul id="editor-files" class="tabs">
-            <li class="tab col s3 onglet">
-            </li>
         </ul>
     </div>
 </nav>
@@ -155,9 +153,9 @@
 
     function remove_editor(id) {
         if (Object.keys(editors).length > 1) {
-            delete_editor(id);
             delete editors[id];
-            select_editor(Math.min(...Object.keys(editors).map(x => +x))) // le premier
+            delete_editor(id, Math.min(...Object.keys(editors).map(x => +x)));
+            $('#editor-files').tabs();
         }
     }
 </script>

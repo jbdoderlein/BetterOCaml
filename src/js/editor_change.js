@@ -207,15 +207,12 @@ function actual_editor(editors) {
     return editors[document.getElementById('editor-files').M_Tabs.index]
 }
 
-function delete_editor(id) {
+function delete_editor(id, next) {
     var $tabs = $('#editor-files');
     $tabs.children().removeAttr('style');
     $tabs.children().remove('#li_tab_'+ String(id));
     $("#editorCollection").children().remove('#editor_tab_' + String(id));
-    $tabs.tabs()
+    $tabs.tabs();
 }
 
-function select_editor(id) {
-    $('#editor-files').tabs('select', 'editor_tab_' + String(id));
-}
 

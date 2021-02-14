@@ -8,7 +8,7 @@ body, html {
 }
 
 nav{
-    height: 15vh!important;
+    height: auto!important;
 }
 
 nav .brand-logo {
@@ -17,7 +17,7 @@ nav .brand-logo {
 }
 
 nav i, nav i.material-icons {
-	font-size: 18px !important;
+	display: inline !important;
 }
 
 .container {
@@ -184,9 +184,10 @@ code, kbd, pre, samp {
 }
 
 .mini-icon{
-    font-size: 0.8rem;
+    font-size: 0.8rem!important;
     margin-right: -0.8rem;
     margin-left: 1rem;
+    line-height: 1!important;
 }
 
 .editorCollection{

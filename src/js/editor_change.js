@@ -203,16 +203,25 @@ function create_editor(id, name) {
     return editor
 }
 
-function actual_editor(editors) {
-    return editors[document.getElementById('editor-files').M_Tabs.index]
+function actual_editor() {
+    let instance = M.Tabs.getInstance(document.getElementById('editor-files'));
+    return instance.$tabLinks[instance.index].href.match(/editor_tab_[0-9]+/g)[0].substr(11);
 }
 
-function delete_editor(id, next) {
+function delete_editor(id) {
     var $tabs = $('#editor-files');
     $tabs.children().removeAttr('style');
     $tabs.children().remove('#li_tab_'+ String(id));
     $("#editorCollection").children().remove('#editor_tab_' + String(id));
     $tabs.tabs();
+}
+
+function select_editor(id) {
+    let instance = M.Tabs.getInstance(document.getElementById('editor-files'));
+    instance.select('editor_tab_'+ String(id));
+    setTimeout(function () {
+        document.querySelector('a[href="#editor_tab_'+ String(id) + '"]').click();
+    }, 5);
 }
 
 

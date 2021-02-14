@@ -153,9 +153,15 @@
 
     function remove_editor(id) {
         if (Object.keys(editors).length > 1) {
+            let act = actual_editor();
             delete editors[id];
-            delete_editor(id, Math.min(...Object.keys(editors).map(x => +x)));
-            $('#editor-files').tabs();
+            delete_editor(id);
+            if (id==act){
+                select_editor(Math.max(...Object.keys(editors).map(x => +x)));
+            }
+            else{
+                select_editor(act)
+            }
         }
     }
 </script>

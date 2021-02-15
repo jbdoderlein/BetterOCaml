@@ -46,7 +46,6 @@ nav i, nav i.material-icons {
 .errorloc{
     border-bottom-width: 3px;
     border-bottom-style: solid;
-    border-bottom-color: red;
 }
 
 .resizer {
@@ -154,14 +153,11 @@ code, kbd, pre, samp {
 }
 
 .tabs{
-    background-color: #202b30 !important;
-    color: whitesmoke !important;
     font-size: 0.9rem;
 }
 
 
 .onglet {
-    background-color: #202a2d !important;
     border-top-right-radius: 0.8rem;
     border-top-left-radius: 0.8rem;
     text-transform: none!important;
@@ -171,16 +167,10 @@ code, kbd, pre, samp {
     height: auto!important;
 }
 
-.tabs .tab a {
-    color: #9f9f9f !important;
-}
-
 .tabs .tab a.active {
-    background-color: #273237 !important;
     border-top-right-radius: 0.8rem;
     border-top-left-radius: 0.8rem;
     font-size: 1.1rem !important;
-    color: white !important;
 }
 
 .mini-icon{

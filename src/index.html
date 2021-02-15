@@ -40,10 +40,10 @@
         <a href="#!" class="brand-logo hide-on-small-only">BetterOCaml</a>
         <ul class="right">
             <li>
-                <a onclick="editors[Math.max(...Object.keys(editors).map(x => +x))+1] = create_editor(id = Math.max(...Object.keys(editors).map(x => +x))+1, name = 'untitled.ml');"><i
+                <a onclick="editors[Math.max(...Object.keys(editors).map(x => +x))+1] = create_editor(id = Math.max(...Object.keys(editors).map(x => +x))+1, name = 'untitled.ml', theme= editors[Math.min(...Object.keys(editors).map(x => +x))].getOption('theme'));"><i
                         class="material-icons">add</i></a></li>
-            <li><a onclick="exec_all(actual_editor(editors))"><i class="material-icons">play_arrow</i></a></li>
-            <li><a class="modal-trigger" href="#saveas"><i class="material-icons">save</i></a></li>
+            <li><a onclick="exec_all(editors[actual_editor()])"><i class="material-icons">play_arrow</i></a></li>
+            <li><a onclick="save(editors[actual_editor()]);"><i class="material-icons">save</i></a></li>
             <li>
                 <a>
                     <label for="file-upload" class="custom-file-upload">
@@ -108,14 +108,14 @@
     <div class="modal-content">
         <h4>Enregistrer sous ...</h4>
         <div class="input-field col s6">
-            <input placeholder="no_name.ml" id="saveas_text" type="text" class="white-text">
+            <input placeholder="untitled.ml" id="saveas_text" type="text" class="white-text">
         </div>
     </div>
     <div class="modal-footer help">
         <button class="btn modal-close waves-effect waves-light zoom-button right"
-                onclick="program_save(actual_editor(editors))">
+                onclick="name_and_save(editors[actual_editor()]);">
             Enregistrer
-            <i class="material-icons right">send</i>
+            <i class="material-icons right">save</i>
         </button>
     </div>
 </div>
@@ -144,7 +144,6 @@
 </div>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script src="js/materialize.min.js"></script>
-<script src="js/utility.js"></script>
 <script src="js/editor_change.js"></script>
 <script type="text/javascript">
     // Editors

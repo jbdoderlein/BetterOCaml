@@ -66,6 +66,30 @@ code, kbd, pre, samp {
 }
 
 
+.errorloc{
+    border-bottom-color: red;
+}
+
+.tabs{
+    background-color: #07a !important;
+    color: whitesmoke !important;
+}
+
+
+.onglet {
+    background-color: #006994 !important;
+}
+
+.tabs .tab a {
+    color: #b5b5b5 !important;
+}
+
+.tabs .tab a.active {
+    background-color: #0084bf !important;
+    color: white !important;
+}
+
+
 .sharp .id { color: #59B65C ; font-style: italic }
 .sharp .kw0 { color: rgb(64, 75, 190); font-weight: bold ;}
 .sharp .kw1 { color: #6262FF; font-weight: bold ;}

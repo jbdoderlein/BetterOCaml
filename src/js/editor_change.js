@@ -1,3 +1,23 @@
+function parse(str, editor) {
+    textarea = document.getElementById('userinput');
+    cmd = str.split(';;\n');
+    const ke = new KeyboardEvent("keydown", {bubbles: true, cancelable: true, keyCode: 13});
+    for (let i = 0; i < cmd.length; i++) {
+        if (!cmd[i].endsWith(';;')) cmd[i] += ';;';
+        textarea.value = cmd[i];
+        textarea.dispatchEvent(ke);
+    }
+    if (editor != null) {
+        setTimeout(function () {
+            editor.focus();
+        }, 5);
+    }
+}
+
+function changefontsize(id, a) {
+    document.getElementById(id).style.fontSize = String(parseFloat(document.getElementById(id).style.fontSize.slice(0, -2)) * a) + "em";
+}
+
 let clean_content = function (content) {
     return content.replace(/[(][*][\s\S]*?[*][)][\s]*/g, '').match(/[\S][\s\S]*?(;;)/g)
 }
@@ -14,7 +34,12 @@ let exec_last = function (instance) {
     parse(clean_content(beforecur).slice(-1)[0], instance); // Remove comments
 };
 let exec_all = function (instance) {
-    parse(instance.getValue().replace(/[(][*][\s\S]*?[*][)][\s]*/g, ''), instance);
+    let commands = clean_content(instance.getValue());
+    for (let commandsKey in commands) {
+        setTimeout(function () {
+            parse(commands[commandsKey])
+        }, 200);
+    }
 };
 let calculate_highlight = function (instance) {
     try {
@@ -28,15 +53,17 @@ let calculate_highlight = function (instance) {
     return cursor;
 };
 
-let program_save = function (instance) {
-    var textToWrite = instance.getValue()
+function save(instance) {
+    if (instance.name == "untitled.ml") {
+        M.Modal.getInstance(document.getElementById('saveas')).open()
+    } else {
+        program_save(instance);
+    }
+}
 
-    //var textToWrite = textToWrite.replace(/\n/g, "\r\n");
-    var textFileAsBlob = new Blob([textToWrite], {type: 'text/plain'});
-
-    // filename to save as
+function name_and_save(instance) {
     let potential_filename = document.getElementById('saveas_text').value;
-    var fileNameToSaveAs = "no_name.ml";
+    let fileNameToSaveAs = "untitled.ml";
     if (potential_filename !== "") {
         if (potential_filename.substr(-3, 3) === ".ml") {
             fileNameToSaveAs = potential_filename
@@ -44,6 +71,21 @@ let program_save = function (instance) {
             fileNameToSaveAs = potential_filename + ".ml"
         }
     }
+    instance.name = fileNameToSaveAs;
+    change_name(instance.id, fileNameToSaveAs);
+    document.getElementById('saveas_text').value = "";
+    ;
+    program_save(instance);
+}
+
+let program_save = function (instance) {
+    var textToWrite = instance.getValue()
+
+    //var textToWrite = textToWrite.replace(/\n/g, "\r\n");
+    var textFileAsBlob = new Blob([textToWrite], {type: 'text/plain'});
+
+    // filename to save as
+    var fileNameToSaveAs = instance.name;
 
     var downloadLink = document.createElement("a");
     downloadLink.download = fileNameToSaveAs;
@@ -72,17 +114,16 @@ function readSingleFile(e, editor) {
         return;
     }
     var reader = new FileReader();
-    let confirmation = get_confirm();
-    if (confirmation) {
-        reader.onload = function (e) {
-            var contents = e.target.result;
-            editor.setValue(contents);
-        };
-        reader.readAsText(file);
-        M.toast({html: 'File loaded'})
-    } else {
-        M.toast({html: 'File not loaded'})
-    }
+    reader.onload = function (e) {
+        var contents = e.target.result;
+        let next = Math.max(...Object.keys(editors).map(x => +x)) + 1;
+        let theme = editors[Math.min(...Object.keys(editors).map(x => +x))].getOption('theme')
+        editors[next] = create_editor(id = next, name = file.name, theme=theme);
+        editors[next].setValue(contents)
+
+    };
+    reader.readAsText(file);
+    return false;
 }
 
 
@@ -128,14 +169,6 @@ function autoload_theme() {
     }
 }
 
-function get_confirm(editor) {
-    if (editor.getValue() != "") {
-        return confirm("Charger ce document effacera celui sur votre écran.\nVoulez vous continuer ?");
-    } else {
-        return true
-    }
-}
-
 function cursor_activity(instance, changeObj) {
     let cursor = calculate_highlight(instance);
     if (!(cursor.from() === undefined)) {
@@ -155,23 +188,22 @@ function editor_drop(data, e) {
         e.preventDefault();
         e.stopPropagation();
         file = files[0];
+        console.log(file);
         var reader = new FileReader();
-        let confirmation = get_confirm(editor);
-        if (confirmation) {
-            reader.onload = function (e) {
-                var contents = e.target.result;
-                editor.setValue(contents);
-            };
-            reader.readAsText(file);
-            M.toast({html: 'File loaded'})
-        } else {
-            M.toast({html: 'File not loaded'})
-        }
+        reader.onload = function (e) {
+            var contents = e.target.result;
+            let next = Math.max(...Object.keys(editors).map(x => +x)) + 1;
+            let theme = editors[Math.min(...Object.keys(editors).map(x => +x))].getOption('theme')
+            editors[next] = create_editor(id = next, name = file.name, theme=theme);
+            editors[next].setValue(contents)
+
+        };
+        reader.readAsText(file);
         return false;
     }
 }
 
-function create_editor(id, name) {
+function create_editor(id, name, theme='material') {
     var $tabs = $('#editor-files');
     $tabs.children().removeAttr('style');
 
@@ -185,7 +217,7 @@ function create_editor(id, name) {
         dragDrop: true,
         matchBrackets: true,
         readOnly: false,
-        theme: 'material',
+        theme: theme,
         mode: 'text/x-ocaml',
         extraKeys: {
             "Ctrl-Enter": exec_last,
@@ -211,17 +243,22 @@ function actual_editor() {
 function delete_editor(id) {
     var $tabs = $('#editor-files');
     $tabs.children().removeAttr('style');
-    $tabs.children().remove('#li_tab_'+ String(id));
+    $tabs.children().remove('#li_tab_' + String(id));
     $("#editorCollection").children().remove('#editor_tab_' + String(id));
     $tabs.tabs();
 }
 
 function select_editor(id) {
     let instance = M.Tabs.getInstance(document.getElementById('editor-files'));
-    instance.select('editor_tab_'+ String(id));
+    instance.select('editor_tab_' + String(id));
     setTimeout(function () {
-        document.querySelector('a[href="#editor_tab_'+ String(id) + '"]').click();
+        document.querySelector('a[href="#editor_tab_' + String(id) + '"]').click();
     }, 5);
+}
+
+function change_name(id, name) {
+    let ele = document.querySelector('a[href="#editor_tab_' + String(id) + '"]');
+    ele.innerHTML = name + ele.innerHTML.substr(-79);
 }
 
 

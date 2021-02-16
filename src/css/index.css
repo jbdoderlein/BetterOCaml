@@ -175,7 +175,6 @@ code, kbd, pre, samp {
 
 .mini-icon{
     font-size: 0.8rem!important;
-    margin-right: -0.8rem;
     margin-left: 1rem;
     line-height: 1!important;
 }
@@ -184,3 +183,13 @@ code, kbd, pre, samp {
     height: 100%;
 }
 
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    @supports (not (-ms-accelerator:true))
+    and (not (-moz-appearance:none)) {
+        .mini-icon{
+            font-size: 0.8rem!important;
+            margin-right: -0.8rem;
+            margin-left: 1rem;
+            line-height: 1!important;
+        }
+    } }

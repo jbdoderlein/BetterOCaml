@@ -69,6 +69,8 @@
 </div>
 
 <div class="fixed-action-btn" style="bottom: 15px; right: 15px;">
+    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="document.getElementById('output').innerHTML=''"><i
+            class="material-icons">delete</i></a>
     <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_2', 1.1)"><i
             class="material-icons">add</i></a>
     <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_2', 0.9)"><i
@@ -153,6 +155,11 @@
     function remove_editor(id) {
         if (Object.keys(editors).length > 1) {
             let act = actual_editor();
+            if (! editors[act].is_saved){
+                if (!confirm("Document non sauvegardé, voulez vous continuer ?")){
+                    return 
+                }
+            }
             delete editors[id];
             delete_editor(id);
             if (id==act){

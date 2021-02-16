@@ -59,6 +59,7 @@ function save(instance) {
     } else {
         program_save(instance);
     }
+
 }
 
 function name_and_save(instance) {
@@ -102,6 +103,7 @@ let program_save = function (instance) {
     document.body.appendChild(downloadLink);
     downloadLink.click();
     M.toast({html: 'File saved'})
+    instance.is_saved = true;
 }
 
 function destroyClickedElement(event) {
@@ -177,6 +179,7 @@ function cursor_activity(instance, changeObj) {
             className: "code-highlight"
         });
     }
+    instance.is_saved = false;
 }
 
 function editor_drop(data, e) {
@@ -228,6 +231,7 @@ function create_editor(id, name, theme='material') {
     });
     editor.id = id
     editor.name = name
+    editor.is_saved = true
     editor.current_marker = editor.markText({line: 0}, {line: 0}, {css: "color: #fe4"});
     editor.on("cursorActivity", cursor_activity);
     editor.on('drop', editor_drop);

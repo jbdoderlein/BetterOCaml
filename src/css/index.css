@@ -7,12 +7,17 @@ body, html {
     font-size: 1em;
 }
 
+nav{
+    height: auto!important;
+}
+
 nav .brand-logo {
 	padding-left: 1rem !important;
+    font-size: 1.8rem!important;
 }
 
 nav i, nav i.material-icons {
-	font-size: 18px !important;
+	display: inline !important;
 }
 
 .container {
@@ -20,8 +25,9 @@ nav i, nav i.material-icons {
   flex: 1 1 auto;
   width: 100% !important;
   max-width: 80000px !important;
-  height: 100% !important;
+    height: 85vh!important;
 }
+
 .horizontal {
   flex-direction: row;
 }
@@ -30,7 +36,7 @@ nav i, nav i.material-icons {
 }
 
 .box {
-  flex: 1 1 0px;
+  flex: 1 1 0;
   display: flex;
   overflow-x: hidden;
   overflow-y: auto;
@@ -40,7 +46,6 @@ nav i, nav i.material-icons {
 .errorloc{
     border-bottom-width: 3px;
     border-bottom-style: solid;
-    border-bottom-color: red;
 }
 
 .resizer {
@@ -60,13 +65,17 @@ nav i, nav i.material-icons {
 	width: 100% !important;
 }
 
+.code-box{
+    height: 100% !important;
+}
+
 
 
 #vertical-line {
     border-left: 4px solid lightgrey;
     position: absolute;
     left: 50%;
-    top: 0%;
+    top: 0;
     margin-left: -2px;
     height: 100%;
 }
@@ -108,7 +117,7 @@ code, kbd, pre, samp {
 #toplevel-container #output {
     background-color: transparent;
     border: none;
-    margin-bottom: 0px;
+    margin-bottom: 0;
     font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
 }
 
@@ -121,8 +130,8 @@ code, kbd, pre, samp {
     font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
     font-weight: bold;
     float: left;
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
 }
 
 #toplevel-container #sharp {
@@ -139,5 +148,48 @@ code, kbd, pre, samp {
 }
 
 
+.indicator{
+    display: none;
+}
+
+.tabs{
+    font-size: 0.9rem;
+}
 
 
+.onglet {
+    border-top-right-radius: 0.8rem;
+    border-top-left-radius: 0.8rem;
+    text-transform: none!important;
+}
+
+.tabs{
+    height: auto!important;
+}
+
+.tabs .tab a.active {
+    border-top-right-radius: 0.8rem;
+    border-top-left-radius: 0.8rem;
+    font-size: 1.1rem !important;
+}
+
+.mini-icon{
+    font-size: 0.8rem!important;
+    margin-left: 1rem;
+    line-height: 1!important;
+}
+
+.editorCollection{
+    height: 100%;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    @supports (not (-ms-accelerator:true))
+    and (not (-moz-appearance:none)) {
+        .mini-icon{
+            font-size: 0.8rem!important;
+            margin-right: -0.8rem;
+            margin-left: 1rem;
+            line-height: 1!important;
+        }
+    } }

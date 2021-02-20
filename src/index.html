@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html manifest="cache.appcache">
 <head>
     <title>OCaml toplevel</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -157,7 +157,7 @@
             let act = actual_editor();
             if (! editors[act].is_saved){
                 if (!confirm("Document non sauvegardé, voulez vous continuer ?")){
-                    return 
+                    return
                 }
             }
             delete editors[id];

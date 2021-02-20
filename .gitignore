@@ -1,3 +1,7 @@
 .idea
 
 release/
+
+node_modules/
+out/
+release-builds/

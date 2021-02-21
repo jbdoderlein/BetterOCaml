@@ -28,6 +28,16 @@ Betterocaml is made with :
 - [Materialize](https://materializecss.com/) : CSS ans js framework
 - [Codemirror](https://codemirror.net/) : js code editor
 
+## Use offline?
+### On a laptop or desktop
+- If you visit [the editor](https://BetterOCaml.ml/editor) webpage using your favorite browser, and if it works fine, you can add the link to your :star: "favorites", and then later on, if you open the direct link, it should work and load back BetterOCaml... even if your browser is offline!
+- This can only work if you don't clean-up or delete the cache of your browser, but it should work even if you turn-off and turn-on again your laptop!
+
+- If you want a nicer user experience, [@Naereen](https://GitHub.com/Naereen) recommends trying [WebCatalog](https://webcatalog.app/), a multi-platform desktop app (for \*NIX, Windows and Mac OS), and you can then use it to "install" [the BetterOCaml editor](https://BetterOCaml.ml/editor), along with its integrated OCaml interpreter (of course), as a "native" desktop app. It then appears in the menu of your system, and it works offline! See [this 1:30min tutorial in video](https://github.com/jbdo99/BetterOCaml/issues/6#issuecomment-780269129)
+
+### On a smartphone
+- It should also work, but the support could be improved (or the website could be bundled as a iOS/Android app!).
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 

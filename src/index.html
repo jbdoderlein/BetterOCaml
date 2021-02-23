@@ -49,6 +49,10 @@
                         </label>
                     </a>
                 </li>
+                <li><a class="btn-floating waves-effect btn-small waves-light zoom-button" onclick="changefontsize('box_1', 1.1); changefontsize('box_2', 1.1)"><i
+                        class="material-icons">add</i></a></li>
+                <li><a class="btn-floating waves-effect btn-small waves-light zoom-button" onclick="changefontsize('box_1', 0.9); changefontsize('box_2', 0.9)"><i
+                        class="material-icons">remove</i></a></li>
                 <li><a class="modal-trigger" href="#help"><i class="material-icons">settings</i></a></li>
             </ul>
         </div>
@@ -61,18 +65,10 @@
     <div class="fixed-action-btn toplevel-container-btn">
         <a class="btn-floating waves-effect waves-light zoom-button"
             onclick="document.getElementById('output').innerHTML=''"><i class="material-icons">delete</i></a>
-        <a class="btn-floating waves-effect waves-light zoom-button" onclick="changefontsize('box_2', 1.1)"><i
-                class="material-icons">add</i></a>
-        <a class="btn-floating waves-effect waves-light zoom-button" onclick="changefontsize('box_2', 0.9)"><i
-                class="material-icons">remove</i></a>
     </div>
 
     <div class="fixed-action-btn editor-container-btn">
         <a class="btn-floating waves-effect waves-light zoom-button" onclick="exec_all(editors[actual_editor()])"><i class="material-icons">play_arrow</i></a>
-        <a class="btn-floating waves-effect waves-light zoom-button" onclick="changefontsize('box_1', 1.1)"><i
-                class="material-icons">add</i></a>
-        <a class="btn-floating waves-effect waves-light zoom-button" onclick="changefontsize('box_1', 0.9)"><i
-                class="material-icons">remove</i></a>
     </div>
 
     <div id="help" class="modal help">

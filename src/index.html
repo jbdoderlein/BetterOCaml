@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html manifest="cache.appcache">
+
 <head>
     <title>OCaml toplevel</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.75, maximum-scale=1.75">
     <link rel="apple-touch-icon" sizes="180x180" href="icon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="icon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="icon/favicon-16x16.png">
@@ -11,7 +13,7 @@
     <link rel="stylesheet" id="css_theme" href="css/theme/material.css">
     <link rel="stylesheet" href="css/materialize/materialize.min.css">
     <link rel="stylesheet" href="css/codemirror/codemirror.min.css">
-    <link rel="stylesheet" href="css/codemirror/dialog.css"/>
+    <link rel="stylesheet" href="css/codemirror/dialog.css" />
     <script src="js/codemirror/codemirror.min.js"></script>
     <script src="js/codemirror/matchbrackets.min.js"></script>
     <script src="js/codemirror/closebrackets.js"></script>
@@ -22,183 +24,181 @@
     <script src="js/codemirror/jump-to-line.js"></script>
     <script src="js/resizer.js"></script>
     <script async defer src="js/buttons.js"></script>
-    <script type="text/javascript">
-        function load_script(url) {
-            var fileref = document.createElement('script');
-            fileref.setAttribute("type", "text/javascript");
-            fileref.setAttribute("src", url);
-            document.getElementsByTagName("head")[0].appendChild(fileref);
-        }
-
-        load_script("js/toplevel-4.08.js");
-    </script>
+    <script src="js/toplevel-4.08.js"></script>
 </head>
+
 <body>
 
-<nav class="nav-extended">
-    <div class="nav-wrapper">
-        <a href="#!" class="brand-logo hide-on-small-only">BetterOCaml</a>
-        <ul class="right">
-            <li>
-                <a onclick="editors[Math.max(...Object.keys(editors).map(x => +x))+1] = create_editor(id = Math.max(...Object.keys(editors).map(x => +x))+1, name = 'untitled.ml', theme= editors[Math.min(...Object.keys(editors).map(x => +x))].getOption('theme'));"><i
-                        class="material-icons">add</i></a></li>
-            <li><a onclick="exec_all(editors[actual_editor()])"><i class="material-icons">play_arrow</i></a></li>
-            <li><a onclick="save(editors[actual_editor()]);"><i class="material-icons">save</i></a></li>
-            <li>
-                <a>
-                    <label for="file-upload" class="custom-file-upload">
-                        <i class="material-icons">folder</i> <input id="file-upload" type="file"
-                                                                    style="display: none;"/>
-                    </label>
-                </a>
-            </li>
-            <li><a class="modal-trigger" href="#help"><i class="material-icons">settings</i></a></li>
-        </ul>
-    </div>
-    <div class="nav-content">
-        <ul id="editor-files" class="tabs">
-        </ul>
-    </div>
-</nav>
-
-<div class="fixedab" style="bottom: 15px; left: 15px;">
-    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_1', 1.1)"><i
-            class="material-icons">add</i></a>
-    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_1', 0.9)"><i
-            class="material-icons">remove</i></a>
-</div>
-
-<div class="fixed-action-btn" style="bottom: 15px; right: 15px;">
-    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="document.getElementById('output').innerHTML=''"><i
-            class="material-icons">delete</i></a>
-    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_2', 1.1)"><i
-            class="material-icons">add</i></a>
-    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_2', 0.9)"><i
-            class="material-icons">remove</i></a>
-</div>
-
-<div id="help" class="modal help">
-    <div class="modal-content">
-
-        <h4>Themes</h4>
-        <select name="theme" id="theme-select">
-            <option value="material">Default</option>
-            <option value="monokai">Monokai</option>
-            <option value="mdn-like">MDN</option>
-        </select>
-
-        <h4>Aides</h4>
-
-        <blockquote class="commands">
-            <b>Ctrl + Enter / Cmd + Enter</b> : Execute le bloc code surligné
-        </blockquote>
-        <blockquote class="commands">
-            <b>Ctrl + Shift + Enter / Cmd + Shift + Enter</b> : Execute tout le code
-        </blockquote>
-        <a class="github-button" href="https://github.com/jbdo99/betterocaml" data-size="large"
-           aria-label="Issue jbdo99/betterocaml on GitHub">Open in Github</a>
-        <a class="github-button" href="https://github.com/jbdo99/betterocaml/issues" data-icon="octicon-issue-opened"
-           data-size="large" aria-label="Issue jbdo99/betterocaml on GitHub">Issue</a>
-
-    </div>
-    <div class="modal-footer help">
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat white-text">Fermer</a>
-    </div>
-</div>
-
-<div id="saveas" class="modal help">
-    <div class="modal-content">
-        <h4>Enregistrer sous ...</h4>
-        <div class="input-field col s6">
-            <input placeholder="untitled.ml" id="saveas_text" type="text" class="white-text">
+    <nav class="nav-extended">
+        <div class="nav-wrapper">
+            <a href="#!" class="brand-logo hide-on-small-only">BetterOCaml</a>
+            <ul class="right">
+                <li>
+                    <a
+                        onclick="editors[Math.max(...Object.keys(editors).map(x => +x))+1] = create_editor(id = Math.max(...Object.keys(editors).map(x => +x))+1, name = 'untitled.ml', theme= editors[Math.min(...Object.keys(editors).map(x => +x))].getOption('theme'));"><i
+                            class="material-icons">add</i>
+                    </a>
+                </li>
+                <li><a onclick="exec_all(editors[actual_editor()])"><i class="material-icons">play_arrow</i></a></li>
+                <li><a onclick="save(editors[actual_editor()]);"><i class="material-icons">save</i></a></li>
+                <li>
+                    <a>
+                        <label for="file-upload" class="custom-file-upload">
+                            <i class="material-icons">folder</i> <input id="file-upload" type="file"
+                                style="display: none;" />
+                        </label>
+                    </a>
+                </li>
+                <li><a class="modal-trigger" href="#help"><i class="material-icons">settings</i></a></li>
+            </ul>
         </div>
+        <div class="nav-content">
+            <ul id="editor-files" class="tabs">
+            </ul>
+        </div>
+    </nav>
+
+    <div class="fixed-action-btn toplevel-container-btn">
+        <a class="btn-floating waves-effect waves-light zoom-button"
+            onclick="document.getElementById('output').innerHTML=''"><i class="material-icons">delete</i></a>
+        <a class="btn-floating waves-effect waves-light zoom-button" onclick="changefontsize('box_2', 1.1)"><i
+                class="material-icons">add</i></a>
+        <a class="btn-floating waves-effect waves-light zoom-button" onclick="changefontsize('box_2', 0.9)"><i
+                class="material-icons">remove</i></a>
     </div>
-    <div class="modal-footer help">
-        <button class="btn modal-close waves-effect waves-light zoom-button right"
-                onclick="name_and_save(editors[actual_editor()]);">
-            Enregistrer
-            <i class="material-icons right">save</i>
-        </button>
+
+    <div class="fixed-action-btn editor-container-btn">
+        <a class="btn-floating waves-effect waves-light zoom-button" onclick="exec_all(editors[actual_editor()])"><i class="material-icons">play_arrow</i></a>
+        <a class="btn-floating waves-effect waves-light zoom-button" onclick="changefontsize('box_1', 1.1)"><i
+                class="material-icons">add</i></a>
+        <a class="btn-floating waves-effect waves-light zoom-button" onclick="changefontsize('box_1', 0.9)"><i
+                class="material-icons">remove</i></a>
     </div>
-</div>
 
+    <div id="help" class="modal help">
+        <div class="modal-content">
 
-<div class="container horizontal">
-    <div id="box_1" class="box" style="display:flex;flex-direction:column">
+            <h4>Thèmes</h4>
+            <select name="theme" id="theme-select">
+                <option value="material">Default</option>
+                <option value="monokai">Monokai</option>
+                <option value="mdn-like">MDN</option>
+            </select>
 
+            <h4>Aides</h4>
 
-        <div class="editorCollection" id="editorCollection">
+            <blockquote class="commands">
+                <b>Ctrl + Enter / Cmd + Enter</b> : Exécute le bloc code surligné
+            </blockquote>
+            <blockquote class="commands">
+                <b>Ctrl + Shift + Enter / Cmd + Shift + Enter</b> : Exécute tout le code
+            </blockquote>
+            <a class="github-button" href="https://github.com/jbdo99/betterocaml" data-size="large"
+                aria-label="Issue @jbdo99/betterocaml on GitHub">Ouvrir sur Github</a>
+            <a class="github-button" href="https://github.com/jbdo99/betterocaml/issues"
+                data-icon="octicon-issue-opened" data-size="large"
+                aria-label="Issue @jbdo99/betterocaml on GitHub">Issue</a>
+
+        </div>
+        <div class="modal-footer help">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat white-text">Fermer</a>
         </div>
     </div>
 
-    <div name="resizerH1"></div>
-
-    <div id="box_2" class="box">
-        <div id="toplevel-container" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
-            <pre id="output"></pre>
-            <div>
-                <div id="sharp" class="sharp"></div>
-                <textarea id="userinput">Loading ...</textarea>
+    <div id="saveas" class="modal help">
+        <div class="modal-content">
+            <h4>Enregistrer sous ...</h4>
+            <div class="input-field col s6">
+                <input placeholder="untitled.ml" id="saveas_text" type="text" class="white-text">
             </div>
         </div>
+        <div class="modal-footer help">
+            <button class="btn modal-close waves-effect waves-light zoom-button right"
+                onclick="name_and_save(editors[actual_editor()]);">
+                Enregistrer
+                <i class="material-icons right">save</i>
+            </button>
+        </div>
     </div>
 
-</div>
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script src="js/materialize.min.js"></script>
-<script src="js/editor_change.js"></script>
-<script type="text/javascript">
-    // Editors
-    let editors = {}
-    editors[0] = create_editor(id = 0, name = 'untitled.ml');
+    <!-- TODO make a better responsive app for small screen smartphones:
+        - container should be horizontal on large screen, vertical otherwise!
+    -->
+    <!-- <div class="container horizontal"> -->
+    <div class="container vertical">
+        <div id="box_2" class="box">
+            <div id="toplevel-container" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+                <pre id="output"></pre>
+                <div>
+                    <div id="sharp" class="sharp"></div>
+                    <textarea id="userinput">Loading ...</textarea>
+                </div>
+            </div>
+        </div>
 
-    function remove_editor(id) {
-        if (Object.keys(editors).length > 1) {
-            let act = actual_editor();
-            if (! editors[act].is_saved){
-                if (!confirm("Document non sauvegardé, voulez vous continuer ?")){
-                    return
+        <div name="resizerH1"></div>
+
+        <div id="box_1" class="box" style="display:flex;flex-direction:column;">
+            <div class="editorCollection" id="editorCollection">
+            </div>
+        </div>
+
+    </div>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script src="js/materialize.min.js"></script>
+    <script src="js/editor_change.js"></script>
+    <script type="text/javascript">
+        // Editors
+        let editors = {}
+        editors[0] = create_editor(id = 0, name = 'untitled.ml');
+
+        function remove_editor(id) {
+            if (Object.keys(editors).length > 1) {
+                let act = actual_editor();
+                if (!editors[act].is_saved) {
+                    if (!confirm("Document non sauvegardé, voulez vous continuer ?")) {
+                        return
+                    }
+                }
+                delete editors[id];
+                delete_editor(id);
+                if (id == act) {
+                    select_editor(Math.max(...Object.keys(editors).map(x => +x)));
+                }
+                else {
+                    select_editor(act)
                 }
             }
-            delete editors[id];
-            delete_editor(id);
-            if (id==act){
-                select_editor(Math.max(...Object.keys(editors).map(x => +x)));
-            }
-            else{
-                select_editor(act)
-            }
         }
-    }
-</script>
-<script>
-    // Chargement et events
-    window.addEventListener("load", function () {
-        new Resizer(document.querySelector('[name=resizerH1]'), 'H');
-        document.getElementById('box_1').style.fontSize = "1.2em";
-        document.getElementById('box_2').style.fontSize = "1.2em";
-    }, false);
+    </script>
+    <script>
+        // Chargement et events
+        window.addEventListener("load", function () {
+            new Resizer(document.querySelector('[name=resizerH1]'), 'V');
+            document.getElementById('box_1').style.fontSize = "1.2em";
+            document.getElementById('box_2').style.fontSize = "1.2em";
+        }, false);
 
-    //window.onbeforeunload = function () {
-    //    return 'Are you sure you want to leave?';
-    //};
+        //window.onbeforeunload = function () {
+        //    return 'Are you sure you want to leave?';
+        //};
 
-    $(document).ready(function () {
-        $('.modal').modal();
-        $('.tabs').tabs();
-        autoload_theme();
-    });
+        $(document).ready(function () {
+            $('.modal').modal();
+            $('.tabs').tabs();
+            autoload_theme();
+        });
 
-    document.getElementById('file-upload')
-        .addEventListener('change', readSingleFile, false);
+        document.getElementById('file-upload')
+            .addEventListener('change', readSingleFile, false);
 
-    document.getElementById('theme-select')
-        .addEventListener('change',
-            function (e) {
-                change_theme(e.target.value, editors);
-            }, false);
-</script>
-
+        document.getElementById('theme-select')
+            .addEventListener('change',
+                function (e) {
+                    change_theme(e.target.value, editors);
+                }, false);
+    </script>
 
 </body>
+
 </html>

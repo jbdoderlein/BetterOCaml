@@ -13,6 +13,7 @@ nav{
 
 nav .brand-logo {
 	padding-left: 1rem !important;
+    left: 20% !important;
     font-size: 1.8rem!important;
 }
 
@@ -41,6 +42,7 @@ nav i, nav i.material-icons {
   overflow-x: hidden;
   overflow-y: auto;
   white-space: nowrap;
+  font-size: 1.1em;
 }
 
 .errorloc{
@@ -141,6 +143,16 @@ code, kbd, pre, samp {
     white-space: pre;
 }
 
+.toplevel-container-btn {
+    top: 16%;
+    left: 83%;
+}
+
+.editor-container-btn {
+    bottom: 15px;
+    left: 83%;
+}
+
 .sharp:before{
     content: "# ";
     line-height: 18px;
@@ -182,6 +194,11 @@ code, kbd, pre, samp {
 .editorCollection{
     height: 100%;
 }
+
+/* TODO: take my changes, and put them here so it's responsive */
+/* @media screen (max-width 650px){
+
+} */
 
 @media screen and (-webkit-min-device-pixel-ratio:0) {
     @supports (not (-ms-accelerator:true))

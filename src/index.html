@@ -69,6 +69,13 @@
             class="material-icons">remove</i></a>
 </div>
 
+<div class="fixed-action-btn mobile-button hide-on-med-and-up" style="bottom: 15px; right: 15px;">
+    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="exec_all(editors[actual_editor()])"><i
+            class="material-icons">play_arrow</i></a>
+    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="document.getElementById('output').innerHTML=''"><i
+            class="material-icons">delete</i></a>
+</div>
+
 <div id="help" class="modal help">
     <div class="modal-content">
 
@@ -116,7 +123,7 @@
 
 
 <div class="container horizontal">
-    <div id="box_1" class="box" style="display:flex;flex-direction:column">
+    <div id="box_1" class="box editor-box" style="display:flex;flex-direction:column">
 
 
         <div class="editorCollection" id="editorCollection">
@@ -125,7 +132,7 @@
 
     <div name="resizerH1"></div>
 
-    <div id="box_2" class="box">
+    <div id="box_2" class="box console-box">
         <div id="toplevel-container" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
             <pre id="output"></pre>
             <div>

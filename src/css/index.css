@@ -60,6 +60,19 @@ nav i, nav i.material-icons {
   white-space: nowrap;
 }
 
+@media (max-width:600px){
+    .console-box {
+        flex: 0.8 1.2 0!important;
+    }
+    .editor-box {
+        flex: 1.2 0.8 0!important;
+    }
+}
+
+.zoom-button{
+    margin: 2px;
+}
+
 .errorloc{
     border-bottom-width: 3px;
     border-bottom-style: solid;
@@ -105,6 +118,22 @@ nav i, nav i.material-icons {
     padding-top:15px;
     margin-bottom:0;
     z-index:997;
+}
+
+.mobile-button{
+    left: 92%;
+}
+
+@media (max-width:450px){
+    .mobile-button{
+        left: 90%;
+    }
+}
+
+@media (max-width:350px){
+    .mobile-button{
+        left: 87%;
+    }
 }
 
 select {

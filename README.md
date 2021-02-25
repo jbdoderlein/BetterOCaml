@@ -1,13 +1,14 @@
+# BetterOCaml
 [![Website betterocaml.ml](https://img.shields.io/website-up-down-green-red/https/betterocaml.ml.svg)](https://betterocaml.ml/)
 [![GitHub license](https://img.shields.io/github/license/jbdo99/betterocaml)](https://github.com/jbdo99/betterocaml/blob/master/LICENSE)
 ![Compatibility](https://img.shields.io/badge/browser-chrome--firefox--edge-green)
-# BetterOCaml
 
-An efficient, intuitive and cross-platform web Ocaml IDE 
+An efficient, intuitive and cross-platform web [OCaml](https://www.ocaml.org/) IDE, with code running in your browser!
 
 ## Installation / Usage
 
-The IDE is hosted [here](https://betterocaml/editor) but you can host a your own version by simply copy files from `src` directory on your host
+The IDE is hosted [here](https://betterocaml/editor), <https://betterocaml/editor>, but you can host a your own version by simply copy files from `src` directory on your host (on a folder of your laptop, or a folder of your web-server).
+It is a *purely static website*: once your browser downloads the files from the server, it will run the OCaml code in its javascript engine, without sending anything to a distant server!
 
 ## How to use ?
 
@@ -18,15 +19,17 @@ The editor is made of 4 parts :
  - **2 Tabs** : This is where you can switch between multiple files
  - **3 Editor** : You can type code here and execute with ctrl+enter
  - **4 Output & Console** : This the output of ocaml, you can also type command here
-## Theme
-You can choose the theme in the settings in the top right corner
-If you have any suggestion for theme, open an issue :)
 
-## Library
-Betterocaml is made with :
-- [js_of_ocaml](https://ocsigen.org/js_of_ocaml/3.7.0/manual/overview) : compile ocaml to js
-- [Materialize](https://materializecss.com/) : CSS ans js framework
-- [Codemirror](https://codemirror.net/) : js code editor
+## Theme
+You can choose the theme in the settings in the top right corner.
+There are currently three themes.
+If you have any suggestion for theme, [open an issue](https://github.com/jbdo99/BetterOCaml/issues/new) :+1: !
+
+## Dependencies
+BetterOCaml is made with :
+- [js_of_ocaml](https://ocsigen.org/js_of_ocaml/3.7.0/manual/overview) : compile ocaml to js;
+- [Materialize](https://materializecss.com/) : CSS and js framework;
+- [Codemirror](https://codemirror.net/) : js code editor.
 
 ## Use offline?
 ### On a laptop or desktop

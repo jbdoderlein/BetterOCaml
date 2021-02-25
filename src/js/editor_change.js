@@ -31,7 +31,13 @@ let line_with_last = function (instance) {
 
 let exec_last = function (instance) {
     let beforecur = instance.getRange({line: 0, ch: 0}, {line: line_with_last(instance)});
-    parse(clean_content(beforecur).slice(-1)[0], instance); // Remove comments
+    if ($(window).width() < 600){
+        parse(clean_content(beforecur).slice(-1)[0]); // Remove comments
+    }
+    else{
+        parse(clean_content(beforecur).slice(-1)[0], instance); // Remove comments
+    }
+
 };
 let exec_all = function (instance) {
     let commands = clean_content(instance.getValue());

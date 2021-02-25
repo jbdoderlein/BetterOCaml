@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html manifest="cache.appcache">
 <head>
-    <title>OCaml toplevel</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>BetterOCaml</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="apple-touch-icon" sizes="180x180" href="icon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="icon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="icon/favicon-16x16.png">
@@ -22,22 +23,13 @@
     <script src="js/codemirror/jump-to-line.js"></script>
     <script src="js/resizer.js"></script>
     <script async defer src="js/buttons.js"></script>
-    <script type="text/javascript">
-        function load_script(url) {
-            var fileref = document.createElement('script');
-            fileref.setAttribute("type", "text/javascript");
-            fileref.setAttribute("src", url);
-            document.getElementsByTagName("head")[0].appendChild(fileref);
-        }
-
-        load_script("js/toplevel-4.08.js");
-    </script>
+    <script src="js/toplevel-4.08.js"></script>
 </head>
 <body>
 
 <nav class="nav-extended">
     <div class="nav-wrapper">
-        <a href="#!" class="brand-logo hide-on-small-only">BetterOCaml</a>
+        <a href="#!" class="brand-logo hide-on-small-and-down">BetterOCaml</a>
         <ul class="right">
             <li>
                 <a onclick="editors[Math.max(...Object.keys(editors).map(x => +x))+1] = create_editor(id = Math.max(...Object.keys(editors).map(x => +x))+1, name = 'untitled.ml', theme= editors[Math.min(...Object.keys(editors).map(x => +x))].getOption('theme'));"><i
@@ -55,20 +47,20 @@
             <li><a class="modal-trigger" href="#help"><i class="material-icons">settings</i></a></li>
         </ul>
     </div>
-    <div class="nav-content">
+    <div  class="nav-content">
         <ul id="editor-files" class="tabs">
         </ul>
     </div>
 </nav>
 
-<div class="fixedab" style="bottom: 15px; left: 15px;">
+<div class="fixedab hide-on-small-and-down" style="bottom: 15px; left: 15px;">
     <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_1', 1.1)"><i
             class="material-icons">add</i></a>
     <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_1', 0.9)"><i
             class="material-icons">remove</i></a>
 </div>
 
-<div class="fixed-action-btn" style="bottom: 15px; right: 15px;">
+<div class="fixed-action-btn hide-on-small-and-down" style="bottom: 15px; right: 15px;">
     <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="document.getElementById('output').innerHTML=''"><i
             class="material-icons">delete</i></a>
     <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_2', 1.1)"><i
@@ -186,6 +178,7 @@
     $(document).ready(function () {
         $('.modal').modal();
         $('.tabs').tabs();
+        $('.sidenav').sidenav();
         autoload_theme();
     });
 

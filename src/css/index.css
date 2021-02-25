@@ -16,6 +16,14 @@ nav .brand-logo {
     font-size: 1.8rem!important;
 }
 
+@media only screen and (max-width: 992px){
+    nav .brand-logo {
+        left: 6rem!important;
+        padding-left: 1rem !important;
+        font-size: 1.8rem!important;
+    }
+}
+
 nav i, nav i.material-icons {
 	display: inline !important;
 }
@@ -29,8 +37,17 @@ nav i, nav i.material-icons {
 }
 
 .horizontal {
-  flex-direction: row;
+    flex-direction: row;
 }
+
+@media (max-width:600px){
+    .horizontal {
+        flex-direction: column;
+    }
+}
+
+
+
 .vertical {
   flex-direction: column;
 }

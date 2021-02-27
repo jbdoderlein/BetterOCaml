@@ -4,6 +4,7 @@
     <title>BetterOCaml</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" sizes="180x180" href="icon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="icon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="icon/favicon-16x16.png">
@@ -172,15 +173,35 @@
 </script>
 <script>
     // Chargement et events
+    function change_resize_bar(resize_obj, type) {
+        resize_obj.resizer.type = type;
+        resize_obj.resizer.node.setAttribute('data-resizer-type', type);
+    }
+
     window.addEventListener("load", function () {
-        new Resizer(document.querySelector('[name=resizerH1]'), 'H');
+        resize_bar = new Resizer(document.querySelector('[name=resizerH1]'), 'H');
+        if (window.innerWidth <= 600){
+            change_resize_bar(resize_bar, "V")
+        }
+        else{
+            change_resize_bar(resize_bar, "H")
+        }
         document.getElementById('box_1').style.fontSize = "1.2em";
         document.getElementById('box_2').style.fontSize = "1.2em";
     }, false);
 
-    //window.onbeforeunload = function () {
-    //    return 'Are you sure you want to leave?';
-    //};
+    window.onbeforeunload = function () {
+       return 'Are you sure you want to leave?';
+    };
+
+    window.onresize = function () {
+        if (window.innerWidth <= 600){
+            change_resize_bar(resize_bar, "V")
+        }
+        else{
+            change_resize_bar(resize_bar, "H")
+        }
+    };
 
     $(document).ready(function () {
         $('.modal').modal();

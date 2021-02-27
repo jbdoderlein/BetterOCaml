@@ -60,15 +60,6 @@ nav i, nav i.material-icons {
   white-space: nowrap;
 }
 
-@media (max-width:600px){
-    .console-box {
-        flex: 0.8 1.2 0!important;
-    }
-    .editor-box {
-        flex: 1.2 0.8 0!important;
-    }
-}
-
 .zoom-button{
     margin: 2px;
 }

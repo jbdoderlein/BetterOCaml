@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html manifest="cache.appcache">
+<html>
 <head>
-    <title>OCaml toplevel</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>BetterOCaml</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" sizes="180x180" href="icon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="icon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="icon/favicon-16x16.png">
@@ -22,22 +24,13 @@
     <script src="js/codemirror/jump-to-line.js"></script>
     <script src="js/resizer.js"></script>
     <script async defer src="js/buttons.js"></script>
-    <script type="text/javascript">
-        function load_script(url) {
-            var fileref = document.createElement('script');
-            fileref.setAttribute("type", "text/javascript");
-            fileref.setAttribute("src", url);
-            document.getElementsByTagName("head")[0].appendChild(fileref);
-        }
-
-        load_script("js/toplevel-4.08.js");
-    </script>
+    <script src="js/toplevel-4.08.js"></script>
 </head>
 <body>
 
 <nav class="nav-extended">
     <div class="nav-wrapper">
-        <a href="#!" class="brand-logo hide-on-small-only">BetterOCaml</a>
+        <a href="#!" class="brand-logo hide-on-small-and-down">BetterOCaml</a>
         <ul class="right">
             <li>
                 <a onclick="editors[Math.max(...Object.keys(editors).map(x => +x))+1] = create_editor(id = Math.max(...Object.keys(editors).map(x => +x))+1, name = 'untitled.ml', theme= editors[Math.min(...Object.keys(editors).map(x => +x))].getOption('theme'));"><i
@@ -55,26 +48,33 @@
             <li><a class="modal-trigger" href="#help"><i class="material-icons">settings</i></a></li>
         </ul>
     </div>
-    <div class="nav-content">
+    <div  class="nav-content">
         <ul id="editor-files" class="tabs">
         </ul>
     </div>
 </nav>
 
-<div class="fixedab" style="bottom: 15px; left: 15px;">
+<div class="fixedab hide-on-small-and-down" style="bottom: 15px; left: 15px;">
     <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_1', 1.1)"><i
             class="material-icons">add</i></a>
     <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_1', 0.9)"><i
             class="material-icons">remove</i></a>
 </div>
 
-<div class="fixed-action-btn" style="bottom: 15px; right: 15px;">
+<div class="fixed-action-btn hide-on-small-and-down" style="bottom: 15px; right: 15px;">
     <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="document.getElementById('output').innerHTML=''"><i
             class="material-icons">delete</i></a>
     <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_2', 1.1)"><i
             class="material-icons">add</i></a>
     <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_2', 0.9)"><i
             class="material-icons">remove</i></a>
+</div>
+
+<div class="fixed-action-btn mobile-button hide-on-med-and-up" style="bottom: 15px; right: 15px;">
+    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="exec_all(editors[actual_editor()])"><i
+            class="material-icons">play_arrow</i></a>
+    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="document.getElementById('output').innerHTML=''"><i
+            class="material-icons">delete</i></a>
 </div>
 
 <div id="help" class="modal help">
@@ -124,7 +124,7 @@
 
 
 <div class="container horizontal">
-    <div id="box_1" class="box" style="display:flex;flex-direction:column">
+    <div id="box_1" class="box editor-box" style="display:flex;flex-direction:column">
 
 
         <div class="editorCollection" id="editorCollection">
@@ -133,7 +133,7 @@
 
     <div name="resizerH1"></div>
 
-    <div id="box_2" class="box">
+    <div id="box_2" class="box console-box">
         <div id="toplevel-container" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
             <pre id="output"></pre>
             <div>
@@ -173,19 +173,49 @@
 </script>
 <script>
     // Chargement et events
+    function change_resize_bar(resize_obj, type) {
+        resize_obj.resizer.type = type;
+        resize_obj.resizer.node.setAttribute('data-resizer-type', type);
+    }
+
     window.addEventListener("load", function () {
-        new Resizer(document.querySelector('[name=resizerH1]'), 'H');
+        resize_bar = new Resizer(document.querySelector('[name=resizerH1]'), 'H');
+        if (window.innerWidth <= 600){
+            change_resize_bar(resize_bar, "V")
+        }
+        else{
+            change_resize_bar(resize_bar, "H")
+        }
         document.getElementById('box_1').style.fontSize = "1.2em";
         document.getElementById('box_2').style.fontSize = "1.2em";
+
+        if('serviceWorker' in navigator){
+            try {
+                navigator.serviceWorker.register('serviceWorker.js');
+                console.log("Service Worker Registered");
+            } catch (error) {
+                console.log("Service Worker Registration Failed");
+            }
+        }
     }, false);
 
-    //window.onbeforeunload = function () {
-    //    return 'Are you sure you want to leave?';
-    //};
+    window.onbeforeunload = function () {
+       return 'Are you sure you want to leave?';
+    };
+
+    window.onresize = function () {
+        if (window.innerWidth <= 600){
+            change_resize_bar(resize_bar, "V")
+        }
+        else{
+            change_resize_bar(resize_bar, "H")
+        }
+    };
 
     $(document).ready(function () {
         $('.modal').modal();
         $('.tabs').tabs();
+        $('.sidenav').sidenav();
         autoload_theme();
     });
 

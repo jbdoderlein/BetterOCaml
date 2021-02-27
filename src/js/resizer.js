@@ -35,6 +35,7 @@ if (typeof Resizer === 'undefined') {
 		this.afterBox.node.style.flexBasis = 0;
 		// ajout des events
 		this.resizer.node.addEventListener('mousedown', this.startProcess.bind(this), false);
+		this.resizer.node.addEventListener('touchdown', this.startProcess.bind(this), false);
 	};
 
 	Resizer.prototype = {
@@ -60,8 +61,10 @@ if (typeof Resizer === 'undefined') {
 			// lancer le processus
 			this.stopProcessFunctionBinded = this.stopProcess.bind(this);
 			document.addEventListener('mouseup', this.stopProcessFunctionBinded, false);
+			document.addEventListener('touchend', this.stopProcessFunctionBinded, false);
 			this.processFunctionBinded = this.process.bind(this);
 			document.addEventListener('mousemove', this.processFunctionBinded, false);
+			document.addEventListener('touchmove', this.processFunctionBinded, false);
 		},
 		process: function(event) {
 			if (!this.processing) {
@@ -94,9 +97,11 @@ if (typeof Resizer === 'undefined') {
 		},
 		stopProcess: function(event) {
 			// stopper le processus
-     	document.removeEventListener('mousemove', this.processFunctionBinded, false);
+     		document.removeEventListener('mousemove', this.processFunctionBinded, false);
+			document.removeEventListener('touchmove', this.processFunctionBinded, false);
 			this.processFunctionBinded = null;
 			document.removeEventListener('mouseup', this.stopProcessFunctionBinded, false);
+			document.removeEventListener('touchend', this.stopProcessFunctionBinded, false);
 			this.stopProcessFunctionBinded = null;
 			// afficher la barre
 			if (this.hidebar) {
@@ -113,3 +118,4 @@ if (typeof Resizer === 'undefined') {
 } else {
 	console.error('"Resizer" class already exists !');
 }
+

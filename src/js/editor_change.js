@@ -89,7 +89,7 @@ let program_save = function (instance) {
     var textToWrite = instance.getValue()
 
     //var textToWrite = textToWrite.replace(/\n/g, "\r\n");
-    var textFileAsBlob = new Blob([textToWrite], {type: 'text/plain'});
+    var textFileAsBlob = new Blob([textToWrite], {type: 'text/x-ocaml'});
 
     // filename to save as
     var fileNameToSaveAs = instance.name;

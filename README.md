@@ -7,7 +7,7 @@ An efficient, intuitive and cross-platform web [OCaml](https://www.ocaml.org/) I
 
 ## Installation / Usage
 
-The IDE is hosted [here](https://betterocaml/editor), <https://betterocaml/editor>, but you can host a your own version by simply copy files from `src` directory on your host (on a folder of your laptop, or a folder of your web-server).
+The IDE is hosted [here](https://betterocaml/), <https://betterocaml/editor>, but you can host a your own version by simply copy files from `src` directory on your host (on a folder of your laptop, or a folder of your web-server).
 It is a *purely static website*: once your browser downloads the files from the server, it will run the OCaml code in its javascript engine, without sending anything to a distant server!
 
 ## How to use ?
@@ -33,10 +33,10 @@ BetterOCaml is made with :
 
 ## Use offline?
 ### On a laptop or desktop
-- If you visit [the editor](https://BetterOCaml.ml/editor) webpage using your favorite browser, and if it works fine, you can add the link to your :star: "favorites", and then later on, if you open the direct link, it should work and load back BetterOCaml... even if your browser is offline!
+- If you visit [the editor](https://BetterOCaml.ml/) webpage using your favorite browser, and if it works fine, you can add the link to your :star: "favorites", and then later on, if you open the direct link, it should work and load back BetterOCaml... even if your browser is offline!
 - This can only work if you don't clean-up or delete the cache of your browser, but it should work even if you turn-off and turn-on again your laptop!
 
-- If you want a nicer user experience, [@Naereen](https://GitHub.com/Naereen) recommends trying [WebCatalog](https://webcatalog.app/), a multi-platform desktop app (for \*NIX, Windows and Mac OS), and you can then use it to "install" [the BetterOCaml editor](https://BetterOCaml.ml/editor), along with its integrated OCaml interpreter (of course), as a "native" desktop app. It then appears in the menu of your system, and it works offline! See [this 1:30min tutorial in video](https://github.com/jbdo99/BetterOCaml/issues/6#issuecomment-780269129)
+- If you want a nicer user experience, [@Naereen](https://GitHub.com/Naereen) recommends trying [WebCatalog](https://webcatalog.app/), a multi-platform desktop app (for \*NIX, Windows and Mac OS), and you can then use it to "install" [the BetterOCaml editor](https://BetterOCaml.ml), along with its integrated OCaml interpreter (of course), as a "native" desktop app. It then appears in the menu of your system, and it works offline! See [this 1:30min tutorial in video](https://github.com/jbdo99/BetterOCaml/issues/6#issuecomment-780269129)
 
 ### On a smartphone
 - It should also work, but the support could be improved (or the website could be bundled as a iOS/Android app!).

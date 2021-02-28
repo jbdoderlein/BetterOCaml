@@ -11,7 +11,7 @@ An efficient, intuitive and cross-platform web IDE for the [OCaml](https://www.o
 The IDE is hosted [here](https://betterocaml/), <https://BetterOCaml.ml/>, but you can host your own version by simply copying the files from the `src/` directory on your host (on a folder of your laptop, or a folder of your web-server, see <http://ocaml.besson.link/> for an example).
 
 It is a *purely static website*: once your browser downloads the files from the server (about 35 Mb), it will run the OCaml code in its javascript engine, without sending anything to a distant server!
-Your data is secure, and this website does not use any cookie :no_good_man: :cookie:.
+Your data is secure, and this website does not use any third party service cookie :no_good_man: :cookie:.
 
 Without installing any software on your laptop or smartphone, use [this web-based editor](https://BetterOCaml.ml/) to access to a complete OCaml REPL and text editor, with syntax highlighting, a full support of recent OCaml syntax and [the entire standard library](https://caml.inria.fr/pub/docs/manual-ocaml/libref/) (except for `Graphics`, `Unix` modules and `Sys.command` function), and multiple-files that you can save to or load from your computer.
 

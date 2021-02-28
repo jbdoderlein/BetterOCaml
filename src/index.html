@@ -87,6 +87,15 @@
             <option value="mdn-like">MDN</option>
         </select>
 
+        <div class="switch hide-on-small-and-down">
+            <label>
+                Row style
+                <input type="checkbox" onclick="switch_rc_style(resize_bar);">
+                <span class="lever"></span>
+                Column Style
+            </label>
+        </div>
+
         <h4>Aides</h4>
 
         <blockquote class="commands">
@@ -155,7 +164,7 @@
     function remove_editor(id) {
         if (Object.keys(editors).length > 1) {
             let act = actual_editor();
-            if (! editors[act].is_saved){
+            if (! editors[id].is_saved){
                 if (!confirm("Document non sauvegardé, voulez vous continuer ?")){
                     return
                 }
@@ -176,6 +185,16 @@
     function change_resize_bar(resize_obj, type) {
         resize_obj.resizer.type = type;
         resize_obj.resizer.node.setAttribute('data-resizer-type', type);
+    }
+    function switch_rc_style(resize_obj) {
+        if (document.getElementsByClassName("horizontal")[0].style.flexDirection == "column"){
+            change_resize_bar(resize_obj, "H");
+            document.getElementsByClassName("horizontal")[0].style.flexDirection = "row";
+        }
+        else{
+            change_resize_bar(resize_obj, "V");
+            document.getElementsByClassName("horizontal")[0].style.flexDirection = "column";
+        }
     }
 
     window.addEventListener("load", function () {

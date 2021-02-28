@@ -1,19 +1,34 @@
 body, html {
     margin: 0;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     overflow: hidden;
     background-color: #101010;
     font-size: 1em;
 }
 
+body {
+    min-height: 100vh;
+    /* mobile viewport bug fix */
+    min-height: -webkit-fill-available;
+}
+
+html {
+    height: -webkit-fill-available;
+}
+
 nav{
-    height: auto!important;
+    line-height: 0px!important;
 }
 
 nav .brand-logo {
 	padding-left: 1rem !important;
     font-size: 1.8rem!important;
+    line-height: 64px!important;
+}
+
+.tabs {
+    display: flex;
 }
 
 @media only screen and (max-width: 992px){
@@ -31,13 +46,15 @@ nav i, nav i.material-icons {
 .container {
   display: flex;
   flex: 1 1 auto;
-  width: 100% !important;
-  max-width: 80000px !important;
-    height: 85vh!important;
+    width: 100% !important;
+    max-width: 80000px !important;
+    height: inherit;
+    max-height: calc(85vh - 10px);
 }
 
 .horizontal {
     flex-direction: row;
+
 }
 
 @media (max-width:600px){
@@ -202,6 +219,7 @@ code, kbd, pre, samp {
 
 .tabs{
     height: auto!important;
+    overflow-x: scroll!important;
 }
 
 .tabs .tab a.active {
@@ -230,3 +248,37 @@ code, kbd, pre, samp {
             line-height: 1!important;
         }
     } }
+
+.switch{
+    margin: 3%;
+}
+
+.switch label input[type=checkbox]:before {
+    background-color: black;
+}
+
+.switch label input[type=checkbox]:after {
+    background-color: whitesmoke;
+}
+
+
+/* width */
+::-webkit-scrollbar {
+    height: 10px;
+    width: 20px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #202b30;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #2a3439;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #2a3439;
+}

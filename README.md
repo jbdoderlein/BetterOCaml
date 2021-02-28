@@ -13,7 +13,8 @@ The IDE is hosted [here](https://betterocaml/), <https://BetterOCaml.ml/>, but y
 It is a *purely static website*: once your browser downloads the files from the server (about 35 Mb), it will run the OCaml code in its javascript engine, without sending anything to a distant server!
 Your data is secure, and this website does not use any third party service cookie :no_good_man: :cookie:.
 
-Without installing any software on your laptop or smartphone, use [this web-based editor](https://BetterOCaml.ml/) to access to a complete OCaml REPL and text editor, with syntax highlighting, a full support of recent OCaml syntax and [the entire standard library](https://caml.inria.fr/pub/docs/manual-ocaml/libref/) (except for `Graphics`, `Unix` modules and `Sys.command` function), and multiple-files that you can save to or load from your computer.
+Without installing any software on your laptop or smartphone, use [this web-based editor](https://BetterOCaml.ml/) to access to a complete OCaml REPL and text editor, with syntax highlighting, a full support of recent OCaml syntax and [the entire standard library](https://caml.inria.fr/pub/docs/manual-ocaml/libref/), and multiple-files that you can save to or load from your computer.
+Note that there is only a partial support for [`Graphics`](https://github.com/ocaml/graphics/tree/master/examples) and it works better on Google Chrome or Chromum, no support for [`Unix*`](http://caml.inria.fr/pub/docs/manual-ocaml/libref/Unix.html) modules, and of course no [`Sys.command`](http://caml.inria.fr/pub/docs/manual-ocaml/libref/Sys.html#VALcommand) function.
 
 ## How to use ?
 

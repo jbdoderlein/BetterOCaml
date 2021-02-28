@@ -47,8 +47,9 @@ nav i, nav i.material-icons {
   display: flex;
   flex: 1 1 auto;
     width: 100% !important;
+    max-width: 80000px !important;
     height: inherit;
-    max-height: 80vh;
+    max-height: calc(85vh - 10px);
 }
 
 .horizontal {
@@ -218,6 +219,7 @@ code, kbd, pre, samp {
 
 .tabs{
     height: auto!important;
+    overflow-x: scroll!important;
 }
 
 .tabs .tab a.active {
@@ -246,3 +248,37 @@ code, kbd, pre, samp {
             line-height: 1!important;
         }
     } }
+
+.switch{
+    margin: 3%;
+}
+
+.switch label input[type=checkbox]:before {
+    background-color: black;
+}
+
+.switch label input[type=checkbox]:after {
+    background-color: whitesmoke;
+}
+
+
+/* width */
+::-webkit-scrollbar {
+    height: 10px;
+    width: 20px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #202b30;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #2a3439;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #2a3439;
+}

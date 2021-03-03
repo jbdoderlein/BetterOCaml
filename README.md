@@ -4,7 +4,7 @@
 ![Compatibility](https://img.shields.io/badge/browser-chrome--firefox--edge-green)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/jbdo99/BetterOCaml/graphs/commit-activity)
 
-An efficient, intuitive and cross-platform web IDE for the [OCaml](https://www.ocaml.org/) language (recent: v4.08.1), with your code interpreted and running in your browser! (no server is needed!)
+An efficient, intuitive and cross-platform web IDE for the [OCaml](https://www.ocaml.org/) language (recent: v4.11.1), with your code interpreted and running in your browser! (no server is needed!)
 
 ## Installation / Usage
 

@@ -29,7 +29,7 @@ const staticAssets = [
     './js/jquery.min.js',
     './js/materialize.min.js',
     './js/resizer.js',
-    './js/toplevel-4.08.js',
+    './js/toplevel-4.11.1.js',
     './js/codemirror/closebrackets.js',
     './js/codemirror/codemirror.min.js',
     './js/codemirror/dialog.js',

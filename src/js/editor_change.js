@@ -14,6 +14,13 @@ function parse(str, editor) {
     }
 }
 
+function reset_ocaml() {
+    document.getElementById('output').innerHTML=''
+    textarea = document.getElementById('userinput');
+    const ke = new KeyboardEvent("keydown", {bubbles: true, cancelable: true, ctrlKey:true, keyCode: 75});
+    textarea.dispatchEvent(ke);
+}
+
 function changefontsize(id, a) {
     document.getElementById(id).style.fontSize = String(parseFloat(document.getElementById(id).style.fontSize.slice(0, -2)) * a) + "em";
 }

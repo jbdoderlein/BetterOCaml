@@ -96,6 +96,8 @@
             </label>
         </div>
 
+        <a class="waves-effect waves-light btn" onclick="reset_ocaml();"><i class="material-icons right">refresh</i>Reset Ocaml Interpreter</a>
+
         <h4>Aides</h4>
 
         <blockquote class="commands">
@@ -246,6 +248,10 @@
             function (e) {
                 change_theme(e.target.value, editors);
             }, false);
+
+    document.getElementById("toplevel-container").addEventListener("click", (event) => {
+        if (event.target == event.currentTarget) document.getElementById('userinput').focus();
+    });
 </script>
 
 

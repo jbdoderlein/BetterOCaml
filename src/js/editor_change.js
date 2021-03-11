@@ -219,6 +219,60 @@ function editor_drop(data, e) {
     }
 }
 
+let includer = function(l,w){
+    let r = [];
+    for (var i = 0; i < l.length; i++){
+        if (l[i].startsWith(w)){
+            r.push(l[i]);
+        }
+    }
+    return r;
+}
+
+function isNumeric(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+var basic_hint = [
+    "as", "do", "else", "end", "if", "in", "let", "of", "open", "rec", "then", "type",
+    "while", "with", "and", "assert", "begin", "class", "done", "function", "match",
+    "to", "try", "value", "when", "failwith", "true", "false", "exit", "print_string",
+    "print_endline", "print_int", "print_float", "int", "float", "bool", "char", "string",
+    "unit", "List", "Array", "Array.make", "Array.length"]
+
+function autocompletion_update(cm, change) {
+    console.log(change)
+    if (change["text"] == " "){
+        var cursor = cm.getCursor(), line = cm.getLine(cursor.line)
+        var start = cursor.ch, end = cursor.ch
+        while (start && /\w/.test(line.charAt(start - 1))) --start
+        while (end < line.length && /\w/.test(line.charAt(end))) ++end
+        var word = line.slice(start, end).toLowerCase()
+        if (word.length > 0 && !isNumeric(word) && !cm.hint_list.includes(word)) {
+            cm.hint_list.unshift(word);
+        }
+    }
+}
+
+function hint_prediction(cm, option) {
+    return new Promise(function(accept) {
+        setTimeout(function() {
+            var cursor = cm.getCursor(), line = cm.getLine(cursor.line)
+            var start = cursor.ch, end = cursor.ch
+            while (start && /\w/.test(line.charAt(start - 1))) --start
+            while (end < line.length && /\w/.test(line.charAt(end))) ++end
+            var word = line.slice(start, end)
+            let correspondance = includer(cm.hint_list,word);
+            if (word.length != 0 && correspondance.length != 0) {
+                return accept({list: correspondance.slice(0, 5),
+                    from: CodeMirror.Pos(cursor.line, start),
+                    to: CodeMirror.Pos(cursor.line, end)})
+            }
+            return accept(null)
+        }, 100)
+    })
+}
+
 function create_editor(id, name, theme='material') {
     var $tabs = $('#editor-files');
     $tabs.children().removeAttr('style');
@@ -239,15 +293,20 @@ function create_editor(id, name, theme='material') {
             "Ctrl-Enter": exec_last,
             "Cmd-Enter": exec_last,
             "Shift-Ctrl-Enter": exec_all,
-            "Shift-Cmd-Enter": exec_all
-        }
+            "Shift-Cmd-Enter": exec_all,
+            "Ctrl-Space": "autocomplete",
+            "Cmd-Space": "autocomplete"
+        },
+        hintOptions: {hint: hint_prediction}
     });
     editor.id = id
     editor.name = name
     editor.is_saved = true
+    editor.hint_list = basic_hint
     editor.current_marker = editor.markText({line: 0}, {line: 0}, {css: "color: #fe4"});
     editor.on("cursorActivity", cursor_activity);
     editor.on('drop', editor_drop);
+    editor.on("beforeChange", autocompletion_update);
     $tabs.tabs().tabs('select', 'editor_tab_' + String(id));
     return editor
 }

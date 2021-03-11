@@ -267,18 +267,3 @@ code, kbd, pre, samp {
     height: 10px;
     width: 20px;
 }
-
-/* Track */
-::-webkit-scrollbar-track {
-    background: #202b30;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: #2a3439;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #2a3439;
-}

@@ -267,3 +267,8 @@ code, kbd, pre, samp {
     height: 10px;
     width: 20px;
 }
+
+.CodeMirror-hints {
+    max-height: 10rem !important;
+    overflow-y: hidden !important;
+}

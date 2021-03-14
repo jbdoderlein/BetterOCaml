@@ -261,20 +261,6 @@ var MODULE_HINT = {
         "yellow", "cyan", "magenta", "point_color", "current_x", "current_y", "current_point", "curveto", "draw_rect",
         "fill_rect", "draw_poly_line", "draw_poly", "fill_poly", "draw_segments", "draw_arc", "fill_arc", "draw_ellipse",
         "fill_ellipse", "draw_char", "draw_string", "set_text_size", "text_size"],
-    'Variable': []
-}
-
-function autocompletion_update(cm, change) {
-    if (change["text"] == " ") {
-        var cursor = cm.getCursor(), line = cm.getLine(cursor.line)
-        var start = cursor.ch, end = cursor.ch
-        while (start && /\w/.test(line.charAt(start - 1))) --start
-        while (end < line.length && /\w/.test(line.charAt(end))) ++end
-        var word = line.slice(start, end).toLowerCase()
-        if (word.length > 0 && !isNumeric(word) && !cm.hint_list["Base"].includes(word) && !cm.hint_list["Variable"].includes(word)) {
-            cm.hint_list["Variable"].unshift(word);
-        }
-    }
 }
 
 function hint_prediction(cm, option) {
@@ -307,7 +293,8 @@ function hint_prediction(cm, option) {
                     }
                 }
             }
-            let correspondance = includer(cm.hint_list["Variable"].concat(cm.hint_list["Base"]), word);
+            let variables = cm.getValue().replace(/[(][*][\s\S]*?[*][)][\s]*/g, '').match(/((?<=let rec )|(?<=let )|(?<=and ))(\w+\b(?<!\brec))/g)
+            let correspondance = includer(variables.concat(cm.hint_list["Base"]), word);
             if (word.length != 0 && correspondance.length != 0) {
                 return accept({
                     list: correspondance.slice(0, 5),
@@ -353,7 +340,6 @@ function create_editor(id, name, theme = 'material') {
     editor.current_marker = editor.markText({line: 0}, {line: 0}, {css: "color: #fe4"});
     editor.on("cursorActivity", cursor_activity);
     editor.on('drop', editor_drop);
-    editor.on("beforeChange", autocompletion_update);
     $tabs.tabs().tabs('select', 'editor_tab_' + String(id));
     return editor
 }

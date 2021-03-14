@@ -223,7 +223,11 @@
     }, false);
 
     window.onbeforeunload = function () {
-       return 'Are you sure you want to leave?';
+        if (Object.keys(editors).length > 1) {
+            if (! editors[id].is_saved){
+                return "Your code is not saved, do you really want to leave ?"
+            }
+        }
     };
 
     window.onresize = function () {

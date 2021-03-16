@@ -263,6 +263,19 @@ var MODULE_HINT = {
         "fill_ellipse", "draw_char", "draw_string", "set_text_size", "text_size"],
 }
 
+function automodule_complete(cm, option) {
+    var cursor = cm.getCursor(), line = cm.getLine(cursor.line)
+    var start = cursor.ch
+    if (option.text[0] == "."){
+        let nstart = start - 1;
+        while (nstart && /\w/.test(line.charAt(nstart - 1))) --nstart
+        let module = line.slice(nstart, start);
+        if (MODULE_HINT.hasOwnProperty(module)) {
+            cm.showHint();
+        }
+    }
+}
+
 function hint_prediction(cm, option) {
     return new Promise(function (accept) {
         setTimeout(function () {
@@ -276,7 +289,6 @@ function hint_prediction(cm, option) {
                 while (nstart && /\w/.test(line.charAt(nstart - 1))) --nstart
                 let module = line.slice(nstart, start - 1);
                 if (MODULE_HINT.hasOwnProperty(module)) {
-                    console.log(word)
                     if (word.length==0){
                         return accept({
                             list: MODULE_HINT[module],
@@ -293,8 +305,13 @@ function hint_prediction(cm, option) {
                     }
                 }
             }
+            let t0 = performance.now()
             let variables = cm.getValue().replace(/[(][*][\s\S]*?[*][)][\s]*/g, '').match(/((?<=let rec )|(?<=let )|(?<=and ))(\w+\b(?<!\brec))/g)
+            if (variables==null){variables = []}
+            let t1 = performance.now()
             let correspondance = includer(variables.concat(cm.hint_list["Base"]), word);
+            let t2 = performance.now()
+            console.log("Var calculation " + (t1 - t0) + " ms, Matcher calc" + (t2-t1))
             if (word.length != 0 && correspondance.length != 0) {
                 return accept({
                     list: correspondance.slice(0, 5),
@@ -340,6 +357,7 @@ function create_editor(id, name, theme = 'material') {
     editor.current_marker = editor.markText({line: 0}, {line: 0}, {css: "color: #fe4"});
     editor.on("cursorActivity", cursor_activity);
     editor.on('drop', editor_drop);
+    editor.on("beforeChange", automodule_complete)
     $tabs.tabs().tabs('select', 'editor_tab_' + String(id));
     return editor
 }

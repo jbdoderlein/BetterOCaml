@@ -1,13 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>BetterOCaml</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" sizes="180x180" href="icon/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="57x57" href="icon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="icon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="icon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="icon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="icon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="icon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="icon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="icon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="icon/android-icon-192x192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="icon/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="icon/favicon-16x16.png">
+    <meta name="msapplication-TileColor" content="#263238">
+    <meta name="msapplication-TileImage" content="icon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#263238">
     <link href="css/icon.css" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" id="css_theme" href="css/theme/material.css">
@@ -24,15 +37,27 @@
     <script src="js/codemirror/search.js"></script>
     <script src="js/codemirror/jump-to-line.js"></script>
     <script src="js/codemirror/show-hint.js"></script>
-    <script src="js/resizer.js"></script>
+    <script async src="js/resizer.js"></script>
     <script async defer src="js/buttons.js"></script>
-    <script src="js/toplevel-4.11.1.js"></script>
+    <script async src="js/toplevel-4.11.1.js"></script>
 </head>
+
+<div id="loader-wrapper">
+    <div id="loader" class="container">
+        <img src="icon/banner.png">
+        <h2 class="center white-text">Loading Ocaml Interpreter</h2>
+        <p class="center white-text">BetterOcaml will be ready in few seconds ...</p>
+        <div class="progress">
+            <div class="indeterminate"></div>
+        </div>
+    </div>
+</div>
+
 <body>
 
 <nav class="nav-extended">
     <div class="nav-wrapper">
-        <a href="#!" class="brand-logo hide-on-small-and-down">BetterOCaml</a>
+        <a class="brand-logo hide-on-small-and-down">BetterOCaml</a>
         <ul class="right">
             <li>
                 <a onclick="editors[Math.max(...Object.keys(editors).map(x => +x))+1] = create_editor(id = Math.max(...Object.keys(editors).map(x => +x))+1, name = 'untitled.ml', theme= editors[Math.min(...Object.keys(editors).map(x => +x))].getOption('theme'));"><i
@@ -115,7 +140,7 @@
 
     </div>
     <div class="modal-footer help">
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat white-text">Fermer</a>
+        <a href="" class="modal-close waves-effect waves-green btn-flat white-text">Fermer</a>
     </div>
 </div>
 
@@ -136,7 +161,7 @@
 </div>
 
 
-<div class="container horizontal">
+<div class="container-boc container horizontal">
     <div id="box_1" class="box editor-box" style="display:flex;flex-direction:column">
 
 
@@ -222,6 +247,19 @@
         }
     }, false);
 
+    $('body').on('DOMNodeInserted', 'pre', function () {
+        console.log("it s loaded  2 ! "+ performance.now() + document.readyState)
+        $('#loader-wrapper').addClass("tester")
+    });
+
+    document.getElementById("loader-wrapper").addEventListener("animationend", (ev) => {
+        if (ev.type === "animationend") {
+            console.log("stop")
+            document.getElementById("loader-wrapper").style.display = "none";
+            $('body').off('DOMNodeInserted');
+        }
+    }, false);
+
     window.onbeforeunload = function () {
         if (Object.keys(editors).length > 1) {
             if (! editors[id].is_saved){
@@ -258,6 +296,7 @@
     document.getElementById("toplevel-container").addEventListener("click", (event) => {
         if (event.target == event.currentTarget) document.getElementById('userinput').focus();
     });
+
 </script>
 
 

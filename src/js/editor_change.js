@@ -148,7 +148,6 @@ function change_theme(name, editors) {
         editors[i].setOption("theme", name);
     }
     setCookie("theme", name, 30)
-    M.toast({html: 'Theme loaded'})
 }
 
 function setCookie(cname, cvalue, exdays) {

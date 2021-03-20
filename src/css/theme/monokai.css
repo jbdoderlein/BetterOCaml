@@ -148,3 +148,18 @@ code, kbd, pre, samp {
     text-decoration: underline;
     color: white !important;
 }
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #202b30;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #2a3439;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #2a3439;
+}

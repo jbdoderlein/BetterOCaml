@@ -202,7 +202,6 @@ function editor_drop(data, e) {
         e.preventDefault();
         e.stopPropagation();
         file = files[0];
-        console.log(file);
         var reader = new FileReader();
         reader.onload = function (e) {
             var contents = e.target.result;
@@ -265,7 +264,7 @@ var MODULE_HINT = {
 function automodule_complete(cm, option) {
     var cursor = cm.getCursor(), line = cm.getLine(cursor.line)
     var start = cursor.ch
-    if (option.text[0] == "."){
+    if (option.text[0] == "."){ // Detect when . is typed + if module name before, show hint
         let nstart = start - 1;
         while (nstart && /\w/.test(line.charAt(nstart - 1))) --nstart
         let module = line.slice(nstart, start);
@@ -278,12 +277,13 @@ function automodule_complete(cm, option) {
 function hint_prediction(cm, option) {
     return new Promise(function (accept) {
         setTimeout(function () {
+            // Get theword before the cursor position
             var cursor = cm.getCursor(), line = cm.getLine(cursor.line)
             var start = cursor.ch, end = cursor.ch
             while (start && /\w/.test(line.charAt(start - 1))) --start
             while (end < line.length && /\w/.test(line.charAt(end))) ++end
             var word = line.slice(start, end)
-            if (/\./.test(line.charAt(start - 1))) {
+            if (/\./.test(line.charAt(start - 1))) { // Special module case
                 let nstart = start - 1;
                 while (nstart && /\w/.test(line.charAt(nstart - 1))) --nstart
                 let module = line.slice(nstart, start - 1);
@@ -304,13 +304,11 @@ function hint_prediction(cm, option) {
                     }
                 }
             }
-            let t0 = performance.now()
+
+            // Magic formula to remove comment and find all variables
             let variables = cm.getValue().replace(/[(][*][\s\S]*?[*][)][\s]*/g, '').match(/((?<=let rec )|(?<=let )|(?<=and ))(\w+\b(?<!\brec))/g)
             if (variables==null){variables = []}
-            let t1 = performance.now()
             let correspondance = includer(variables.concat(cm.hint_list["Base"]), word);
-            let t2 = performance.now()
-            console.log("Var calculation " + (t1 - t0) + " ms, Matcher calc" + (t2-t1))
             if (word.length != 0 && correspondance.length != 0) {
                 return accept({
                     list: correspondance.slice(0, 5),

@@ -140,7 +140,7 @@
 
     </div>
     <div class="modal-footer help">
-        <a href="" class="modal-close waves-effect waves-green btn-flat white-text">Fermer</a>
+        <a href="#" class="modal-close waves-effect waves-green btn-flat white-text">Fermer</a>
     </div>
 </div>
 
@@ -248,13 +248,11 @@
     }, false);
 
     $('body').on('DOMNodeInserted', 'pre', function () {
-        console.log("it s loaded  2 ! "+ performance.now() + document.readyState)
         $('#loader-wrapper').addClass("tester")
     });
 
     document.getElementById("loader-wrapper").addEventListener("animationend", (ev) => {
         if (ev.type === "animationend") {
-            console.log("stop")
             document.getElementById("loader-wrapper").style.display = "none";
             $('body').off('DOMNodeInserted');
         }

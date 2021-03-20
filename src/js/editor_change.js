@@ -15,9 +15,9 @@ function parse(str, editor) {
 }
 
 function reset_ocaml() {
-    document.getElementById('output').innerHTML=''
+    document.getElementById('output').innerHTML = ''
     textarea = document.getElementById('userinput');
-    const ke = new KeyboardEvent("keydown", {bubbles: true, cancelable: true, ctrlKey:true, keyCode: 75});
+    const ke = new KeyboardEvent("keydown", {bubbles: true, cancelable: true, ctrlKey: true, keyCode: 75});
     textarea.dispatchEvent(ke);
 }
 
@@ -38,10 +38,9 @@ let line_with_last = function (instance) {
 
 let exec_last = function (instance) {
     let beforecur = instance.getRange({line: 0, ch: 0}, {line: line_with_last(instance)});
-    if ($(window).width() < 600){
+    if ($(window).width() < 600) {
         parse(clean_content(beforecur).slice(-1)[0]); // Remove comments
-    }
-    else{
+    } else {
         parse(clean_content(beforecur).slice(-1)[0], instance); // Remove comments
     }
 
@@ -88,7 +87,7 @@ function name_and_save(instance) {
     instance.name = fileNameToSaveAs;
     change_name(instance.id, fileNameToSaveAs);
     document.getElementById('saveas_text').value = "";
-    ;
+
     program_save(instance);
 }
 
@@ -133,7 +132,7 @@ function readSingleFile(e, editor) {
         var contents = e.target.result;
         let next = Math.max(...Object.keys(editors).map(x => +x)) + 1;
         let theme = editors[Math.min(...Object.keys(editors).map(x => +x))].getOption('theme')
-        editors[next] = create_editor(id = next, name = file.name, theme=theme);
+        editors[next] = create_editor(id = next, name = file.name, theme = theme);
         editors[next].setValue(contents)
 
     };
@@ -149,7 +148,6 @@ function change_theme(name, editors) {
         editors[i].setOption("theme", name);
     }
     setCookie("theme", name, 30)
-    M.toast({html: 'Theme loaded'})
 }
 
 function setCookie(cname, cvalue, exdays) {
@@ -204,13 +202,12 @@ function editor_drop(data, e) {
         e.preventDefault();
         e.stopPropagation();
         file = files[0];
-        console.log(file);
         var reader = new FileReader();
         reader.onload = function (e) {
             var contents = e.target.result;
             let next = Math.max(...Object.keys(editors).map(x => +x)) + 1;
             let theme = editors[Math.min(...Object.keys(editors).map(x => +x))].getOption('theme')
-            editors[next] = create_editor(id = next, name = file.name, theme=theme);
+            editors[next] = create_editor(id = next, name = file.name, theme = theme);
             editors[next].setValue(contents)
 
         };
@@ -219,7 +216,112 @@ function editor_drop(data, e) {
     }
 }
 
-function create_editor(id, name, theme='material') {
+let includer = function (l, w) {
+    let r = [];
+    for (var i = 0; i < l.length; i++) {
+        if (l[i].startsWith(w)) {
+            r.push(l[i]);
+        }
+    }
+    return r;
+}
+
+
+
+
+function isNumeric(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+var MODULE_HINT = {
+    'Base': [
+        "and", "as", "assert", "asr", "begin", "class", "constraint", "decr", "Division_by_zero", "do",
+        "done", "downto", "else", "end", "epsilon_float", "exception", "external", "Failure", "failwith",
+        "false", "for", "fst", "function", "functor", "if", "in", "include", "incr", "inherit", "initializer",
+        "land", "lazy", "let", "lor", "lsl", "lsr", "lxor", "match", "max_float", "max_int", "method",
+        "min_float", "min_int", "mod", "module", "mutable", "new", "nonrec", "not", "object", "of", "open",
+        "or", "Out_of_memory", "private", "raise", "rec", "ref", "sig", "snd", "struct", "then", "to", "true",
+        "try", "type", "val", "virtual", "when", "while", "with", "print_int", "print_float", "print_string",
+        "print_endline", "print_newline", "int_of_float", "float_of_int", "int_of_string", "float_of_string", "bool_of_string",
+        "string_of_int", "string_of_float", "string_of_bool", "int_of_char", "char_of_int", "sqrt", "max", "min", "exp", "log",
+        "log10", "cos", "acos", "sin", "asin", "tan", "atan", "atan2", "hypot", "cosh", "sinh", "tanh", "floor", "ceil",
+        "truncate", "abs_float", "abs",
+        "Sys", "Array", "Random", "List", "Graphics"
+    ],
+    'Sys': ["time", "unix", "win32", "word_size", "int_size", "max_string_length", "max_array_length", "ocaml_version"],
+    'Array' : ["make", "make_matrix", "append", "concat", "copy", "fill", "map", "exists", "mem", "sort", "length", "get", "set", "sub"],
+    'Random' : ["init", "int", "float", "bool"],
+    'List' : ["hd", "tl", "concat", "mem", "filter", "exists", "iter", "map", "nth", "rev", "sort"],
+    'Graphics' : [
+        "open_graph", "close_graph", "width", "height", "size_x", "size_y", "clear_graph", "set_window_title",
+        "resize_window", "plot", "plots", "moveto", "rmoveto", "lineto", "rlineto", "draw_circle", "fill_circle",
+        "set_color", "set_line_width", "rgb", "background", "foreground", "black", "white", "red", "green", "blue",
+        "yellow", "cyan", "magenta", "point_color", "current_x", "current_y", "current_point", "curveto", "draw_rect",
+        "fill_rect", "draw_poly_line", "draw_poly", "fill_poly", "draw_segments", "draw_arc", "fill_arc", "draw_ellipse",
+        "fill_ellipse", "draw_char", "draw_string", "set_text_size", "text_size"],
+}
+
+function automodule_complete(cm, option) {
+    var cursor = cm.getCursor(), line = cm.getLine(cursor.line)
+    var start = cursor.ch
+    if (option.text[0] == "."){ // Detect when . is typed + if module name before, show hint
+        let nstart = start - 1;
+        while (nstart && /\w/.test(line.charAt(nstart - 1))) --nstart
+        let module = line.slice(nstart, start);
+        if (MODULE_HINT.hasOwnProperty(module)) {
+            cm.showHint();
+        }
+    }
+}
+
+function hint_prediction(cm, option) {
+    return new Promise(function (accept) {
+        setTimeout(function () {
+            // Get theword before the cursor position
+            var cursor = cm.getCursor(), line = cm.getLine(cursor.line)
+            var start = cursor.ch, end = cursor.ch
+            while (start && /\w/.test(line.charAt(start - 1))) --start
+            while (end < line.length && /\w/.test(line.charAt(end))) ++end
+            var word = line.slice(start, end)
+            if (/\./.test(line.charAt(start - 1))) { // Special module case
+                let nstart = start - 1;
+                while (nstart && /\w/.test(line.charAt(nstart - 1))) --nstart
+                let module = line.slice(nstart, start - 1);
+                if (MODULE_HINT.hasOwnProperty(module)) {
+                    if (word.length==0){
+                        return accept({
+                            list: MODULE_HINT[module],
+                            from: CodeMirror.Pos(cursor.line, start),
+                            to: CodeMirror.Pos(cursor.line, end)
+                        })
+                    }
+                    else {
+                        return accept({
+                            list: includer(MODULE_HINT[module], word),
+                            from: CodeMirror.Pos(cursor.line, start),
+                            to: CodeMirror.Pos(cursor.line, end)
+                        })
+                    }
+                }
+            }
+
+            // Magic formula to remove comment and find all variables
+            let variables = cm.getValue().replace(/[(][*][\s\S]*?[*][)][\s]*/g, '').match(/((?<=let rec )|(?<=let )|(?<=and ))(\w+\b(?<!\brec))/g)
+            if (variables==null){variables = []}
+            let correspondance = includer(variables.concat(cm.hint_list["Base"]), word);
+            if (word.length != 0 && correspondance.length != 0) {
+                return accept({
+                    list: correspondance.slice(0, 5),
+                    from: CodeMirror.Pos(cursor.line, start),
+                    to: CodeMirror.Pos(cursor.line, end)
+                })
+            }
+            return accept(null)
+        }, 100)
+    })
+}
+
+function create_editor(id, name, theme = 'material') {
     var $tabs = $('#editor-files');
     $tabs.children().removeAttr('style');
 
@@ -239,15 +341,20 @@ function create_editor(id, name, theme='material') {
             "Ctrl-Enter": exec_last,
             "Cmd-Enter": exec_last,
             "Shift-Ctrl-Enter": exec_all,
-            "Shift-Cmd-Enter": exec_all
-        }
+            "Shift-Cmd-Enter": exec_all,
+            "Ctrl-Space": "autocomplete",
+            "Cmd-Space": "autocomplete"
+        },
+        hintOptions: {hint: hint_prediction}
     });
     editor.id = id
     editor.name = name
     editor.is_saved = true
+    editor.hint_list = MODULE_HINT
     editor.current_marker = editor.markText({line: 0}, {line: 0}, {css: "color: #fe4"});
     editor.on("cursorActivity", cursor_activity);
     editor.on('drop', editor_drop);
+    editor.on("beforeChange", automodule_complete)
     $tabs.tabs().tabs('select', 'editor_tab_' + String(id));
     return editor
 }

@@ -227,8 +227,6 @@ let includer = function (l, w) {
 }
 
 
-
-
 function isNumeric(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
@@ -249,10 +247,10 @@ var MODULE_HINT = {
         "Sys", "Array", "Random", "List", "Graphics"
     ],
     'Sys': ["time", "unix", "win32", "word_size", "int_size", "max_string_length", "max_array_length", "ocaml_version"],
-    'Array' : ["make", "make_matrix", "append", "concat", "copy", "fill", "map", "exists", "mem", "sort", "length", "get", "set", "sub"],
-    'Random' : ["init", "int", "float", "bool"],
-    'List' : ["hd", "tl", "concat", "mem", "filter", "exists", "iter", "map", "nth", "rev", "sort"],
-    'Graphics' : [
+    'Array': ["make", "make_matrix", "append", "concat", "copy", "fill", "map", "exists", "mem", "sort", "length", "get", "set", "sub"],
+    'Random': ["init", "int", "float", "bool"],
+    'List': ["hd", "tl", "concat", "mem", "filter", "exists", "iter", "map", "nth", "rev", "sort"],
+    'Graphics': [
         "open_graph", "close_graph", "width", "height", "size_x", "size_y", "clear_graph", "set_window_title",
         "resize_window", "plot", "plots", "moveto", "rmoveto", "lineto", "rlineto", "draw_circle", "fill_circle",
         "set_color", "set_line_width", "rgb", "background", "foreground", "black", "white", "red", "green", "blue",
@@ -264,6 +262,8 @@ var MODULE_HINT = {
 function automodule_complete(cm, option) {
     var cursor = cm.getCursor(), line = cm.getLine(cursor.line)
     var start = cursor.ch
+    cm.showHint();
+    /*
     if (option.text[0] == "."){ // Detect when . is typed + if module name before, show hint
         let nstart = start - 1;
         while (nstart && /\w/.test(line.charAt(nstart - 1))) --nstart
@@ -272,6 +272,7 @@ function automodule_complete(cm, option) {
             cm.showHint();
         }
     }
+    */
 }
 
 function hint_prediction(cm, option) {
@@ -288,28 +289,32 @@ function hint_prediction(cm, option) {
                 while (nstart && /\w/.test(line.charAt(nstart - 1))) --nstart
                 let module = line.slice(nstart, start - 1);
                 if (MODULE_HINT.hasOwnProperty(module)) {
-                    if (word.length==0){
+                    if (word.length == 0) {
                         return accept({
                             list: MODULE_HINT[module],
                             from: CodeMirror.Pos(cursor.line, start),
                             to: CodeMirror.Pos(cursor.line, end)
                         })
-                    }
-                    else {
-                        return accept({
-                            list: includer(MODULE_HINT[module], word),
-                            from: CodeMirror.Pos(cursor.line, start),
-                            to: CodeMirror.Pos(cursor.line, end)
-                        })
+                    } else {
+                        if (!MODULE_HINT[module].includes(word)) {
+                            return accept({
+                                list: includer(MODULE_HINT[module], word),
+                                from: CodeMirror.Pos(cursor.line, start),
+                                to: CodeMirror.Pos(cursor.line, end)
+                            })
+                        }
                     }
                 }
             }
-
+            console.log(word)
             // Magic formula to remove comment and find all variables
             let variables = cm.getValue().replace(/[(][*][\s\S]*?[*][)][\s]*/g, '').match(/((?<=let rec )|(?<=let )|(?<=and ))(\w+\b(?<!\brec))/g)
-            if (variables==null){variables = []}
-            let correspondance = includer(variables.concat(cm.hint_list["Base"]), word);
-            if (word.length != 0 && correspondance.length != 0) {
+            if (variables == null) {
+                variables = []
+            }
+            let possibilities = variables.concat(cm.hint_list["Base"]);
+            let correspondance = includer(possibilities, word);
+            if (word.length != 0 && correspondance.length != 0 && !possibilities.includes(word)) {
                 return accept({
                     list: correspondance.slice(0, 5),
                     from: CodeMirror.Pos(cursor.line, start),

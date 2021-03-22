@@ -123,6 +123,16 @@
             </label>
         </div>
 
+        <p>
+            <label>
+                <input type="checkbox" checked="checked" onclick="
+                    config_hard_autocomplete=!config_hard_autocomplete;
+                    localStorage.setItem('betterocaml-autocomplete', config_hard_autocomplete);
+                "/>
+                <span>Autocomplete</span>
+            </label>
+        </p>
+
         <a class="waves-effect waves-light btn" onclick="reset_ocaml();"><i class="material-icons right">refresh</i>Reset Ocaml Interpreter</a>
 
         <h4>Aides</h4>
@@ -187,46 +197,13 @@
 <script src="js/editor_change.js"></script>
 <script type="text/javascript">
     // Editors
+    var config_hard_autocomplete;
     let editors = {}
     editors[0] = create_editor(id = 0, name = 'untitled.ml');
 
-    function remove_editor(id) {
-        if (Object.keys(editors).length > 1) {
-            let act = actual_editor();
-            if (! editors[id].is_saved){
-                if (!confirm("Document non sauvegardé, voulez vous continuer ?")){
-                    return
-                }
-            }
-            delete editors[id];
-            delete_editor(id);
-            if (id==act){
-                select_editor(Math.max(...Object.keys(editors).map(x => +x)));
-            }
-            else{
-                select_editor(act)
-            }
-        }
-    }
-</script>
-<script>
-    // Chargement et events
-    function change_resize_bar(resize_obj, type) {
-        resize_obj.resizer.type = type;
-        resize_obj.resizer.node.setAttribute('data-resizer-type', type);
-    }
-    function switch_rc_style(resize_obj) {
-        if (document.getElementsByClassName("horizontal")[0].style.flexDirection == "column"){
-            change_resize_bar(resize_obj, "H");
-            document.getElementsByClassName("horizontal")[0].style.flexDirection = "row";
-        }
-        else{
-            change_resize_bar(resize_obj, "V");
-            document.getElementsByClassName("horizontal")[0].style.flexDirection = "column";
-        }
-    }
-
+    // Loading function
     window.addEventListener("load", function () {
+        // Crete the resize bar
         resize_bar = new Resizer(document.querySelector('[name=resizerH1]'), 'H');
         if (window.innerWidth <= 600){
             change_resize_bar(resize_bar, "V")
@@ -234,9 +211,27 @@
         else{
             change_resize_bar(resize_bar, "H")
         }
+        // Set text zoom
         document.getElementById('box_1').style.fontSize = "1.2em";
         document.getElementById('box_2').style.fontSize = "1.2em";
 
+        //Load stored config
+        if (localStorage.getItem('betterocaml-theme') != null){
+            change_theme(localStorage.getItem('betterocaml-theme'), editors);
+        }
+        else {
+            localStorage.setItem('betterocaml-theme', 'material');
+            change_theme("material", editors);
+        }
+        if (localStorage.getItem('betterocaml-autocomplete') != null){
+            config_hard_autocomplete = Boolean(localStorage.getItem('betterocaml-autocomplete'));
+        }
+        else {
+            localStorage.setItem('betterocaml-autocomplete', true);
+            config_hard_autocomplete = Boolean(localStorage.getItem('betterocaml-autocomplete'))
+        }
+
+        // Service Worker
         if('serviceWorker' in navigator){
             try {
                 navigator.serviceWorker.register('serviceWorker.js');
@@ -247,10 +242,10 @@
         }
     }, false);
 
+    // Loading Animation
     $('body').on('DOMNodeInserted', 'pre', function () {
         $('#loader-wrapper').addClass("tester")
     });
-
     document.getElementById("loader-wrapper").addEventListener("animationend", (ev) => {
         if (ev.type === "animationend") {
             document.getElementById("loader-wrapper").style.display = "none";
@@ -258,6 +253,7 @@
         }
     }, false);
 
+    // Prevent exiting without saving
     window.onbeforeunload = function () {
         if (Object.keys(editors).length > 1) {
             if (! editors[id].is_saved){
@@ -266,6 +262,7 @@
         }
     };
 
+    // Change disposition when small screen (need rework)
     window.onresize = function () {
         if (window.innerWidth <= 600){
             change_resize_bar(resize_bar, "V")
@@ -275,22 +272,25 @@
         }
     };
 
+    // Load Materialize Components
     $(document).ready(function () {
         $('.modal').modal();
         $('.tabs').tabs();
         $('.sidenav').sidenav();
-        autoload_theme();
     });
 
+    // Open file
     document.getElementById('file-upload')
         .addEventListener('change', readSingleFile, false);
 
+    // Change theme
     document.getElementById('theme-select')
         .addEventListener('change',
             function (e) {
                 change_theme(e.target.value, editors);
             }, false);
 
+    // Autotarget the console
     document.getElementById("toplevel-container").addEventListener("click", (event) => {
         if (event.target == event.currentTarget) document.getElementById('userinput').focus();
     });

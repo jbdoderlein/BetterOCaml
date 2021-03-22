@@ -147,39 +147,7 @@ function change_theme(name, editors) {
     for (let i in editors) {
         editors[i].setOption("theme", name);
     }
-    setCookie("theme", name, 30)
-}
-
-function setCookie(cname, cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    var expires = "expires=" + d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-
-function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
-
-function autoload_theme() {
-    var theme = getCookie("theme");
-    if (theme != "") {
-        change_theme(theme)
-    } else {
-        change_theme('material')
-    }
+    localStorage.setItem('betterocaml-theme', name);
 }
 
 function cursor_activity(instance, changeObj) {
@@ -259,21 +227,6 @@ var MODULE_HINT = {
         "fill_ellipse", "draw_char", "draw_string", "set_text_size", "text_size"],
 }
 
-function automodule_complete(cm, option) {
-    var cursor = cm.getCursor(), line = cm.getLine(cursor.line)
-    var start = cursor.ch
-    cm.showHint();
-    /*
-    if (option.text[0] == "."){ // Detect when . is typed + if module name before, show hint
-        let nstart = start - 1;
-        while (nstart && /\w/.test(line.charAt(nstart - 1))) --nstart
-        let module = line.slice(nstart, start);
-        if (MODULE_HINT.hasOwnProperty(module)) {
-            cm.showHint();
-        }
-    }
-    */
-}
 
 function hint_prediction(cm, option) {
     return new Promise(function (accept) {
@@ -306,12 +259,11 @@ function hint_prediction(cm, option) {
                     }
                 }
             }
-            console.log(word)
             // Magic formula to remove comment and find all variables
-            let variables = cm.getValue().replace(/[(][*][\s\S]*?[*][)][\s]*/g, '').match(/((?<=let rec )|(?<=let )|(?<=and ))(\w+\b(?<!\brec))/g)
-            if (variables == null) {
-                variables = []
-            }
+            let variables = [...new Set(
+                cm.getValue()
+                    .replace(/[(][*][\s\S]*?[*][)][\s]*/g, '')
+                    .match(/((?<=let rec )|(?<=let )|(?<=and ))(\w+\b(?<!\brec))/g))]
             let possibilities = variables.concat(cm.hint_list["Base"]);
             let correspondance = includer(possibilities, word);
             if (word.length != 0 && correspondance.length != 0 && !possibilities.includes(word)) {
@@ -322,7 +274,7 @@ function hint_prediction(cm, option) {
                 })
             }
             return accept(null)
-        }, 100)
+        }, 200)
     })
 }
 
@@ -359,7 +311,13 @@ function create_editor(id, name, theme = 'material') {
     editor.current_marker = editor.markText({line: 0}, {line: 0}, {css: "color: #fe4"});
     editor.on("cursorActivity", cursor_activity);
     editor.on('drop', editor_drop);
-    editor.on("beforeChange", automodule_complete)
+    editor.on("keyup", function (cm, event) {
+        if (config_hard_autocomplete && // Only trigger if jetbrain style autocompletion is activated
+            !cm.state.completionActive && /*Enables keyboard navigation in autocomplete list*/
+            event.keyCode != 13) {        /*Enter - do not open autocomplete list just after item has been selected in it*/
+            CodeMirror.commands.autocomplete(cm, null, {completeSingle: false});
+        }
+    });
     $tabs.tabs().tabs('select', 'editor_tab_' + String(id));
     return editor
 }
@@ -390,4 +348,37 @@ function change_name(id, name) {
     ele.innerHTML = name + ele.innerHTML.substr(-79);
 }
 
+function change_resize_bar(resize_obj, type) {
+    resize_obj.resizer.type = type;
+    resize_obj.resizer.node.setAttribute('data-resizer-type', type);
+}
+function switch_rc_style(resize_obj) {
+    if (document.getElementsByClassName("horizontal")[0].style.flexDirection == "column"){
+        change_resize_bar(resize_obj, "H");
+        document.getElementsByClassName("horizontal")[0].style.flexDirection = "row";
+    }
+    else{
+        change_resize_bar(resize_obj, "V");
+        document.getElementsByClassName("horizontal")[0].style.flexDirection = "column";
+    }
+}
+
+function remove_editor(id) {
+    if (Object.keys(editors).length > 1) {
+        let act = actual_editor();
+        if (! editors[id].is_saved){
+            if (!confirm("Document non sauvegardé, voulez vous continuer ?")){
+                return
+            }
+        }
+        delete editors[id];
+        delete_editor(id);
+        if (id==act){
+            select_editor(Math.max(...Object.keys(editors).map(x => +x)));
+        }
+        else{
+            select_editor(act)
+        }
+    }
+}
 

@@ -151,15 +151,69 @@ code, kbd, pre, samp {
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: #202b30;
+    background: #21221d;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #2a3439;
+    background: #2a2b25;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #2a3439;
+    background: #2e3029;
+}
+
+#loader-wrapper {
+    background: #21221d;
+}
+
+.progress{
+    background-color: #21221d!important;
+}
+
+.progress .indeterminate {
+    background-color: whitesmoke!important;
+}
+
+.theme-select, .select-dropdown{
+    color: white !important;
+}
+
+.caret {
+    fill: white!important;
+}
+
+.select-wrapper input.select-dropdown:focus {
+    border-bottom: 1px solid whitesmoke!important;
+}
+
+label{
+    color: whitesmoke!important;
+}
+
+.dropdown-content{
+    background-color: #252d32fc!important;
+
+}
+
+.dropdown-content li>a, .dropdown-content li>span {
+    color: white!important;
+}
+
+.switch label input[type=checkbox]:checked+.lever{
+    background-color: #546e7a!important;
+}
+
+.switch label input[type=checkbox]:checked+.lever:after{
+    background-color: whitesmoke!important;
+}
+
+[type="checkbox"]:checked+span:not(.lever):before {
+    border-right: 2px solid white!important;
+    border-bottom: 2px solid white!important;
+}
+
+.btn.config-element {
+    background-color: #454646!important;
 }

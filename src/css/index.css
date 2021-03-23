@@ -143,11 +143,11 @@ nav i, nav i.material-icons {
         left: 87%;
     }
 }
-
+/*
 select {
     display: block !important;
 }
-
+*/
 
 code, kbd, pre, samp {
     font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
@@ -249,8 +249,8 @@ code, kbd, pre, samp {
         }
     } }
 
-.switch{
-    margin: 3%;
+.config-element{
+    margin-top: 4%;
 }
 
 .switch label input[type=checkbox]:before {
@@ -278,7 +278,6 @@ code, kbd, pre, samp {
     top: 0;
     width: 100%;
     height: 100%;
-    background: #263238;
     z-index: 1000;
 }
 
@@ -311,9 +310,8 @@ img {
 
 .progress{
     top: 30%!important;
-    background-color: #263238!important;
 }
 
-.progress .indeterminate {
-    background-color: whitesmoke!important;
+.config-section{
+    margin: 2%;
 }

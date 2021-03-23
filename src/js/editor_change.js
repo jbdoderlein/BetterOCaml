@@ -22,7 +22,9 @@ function reset_ocaml() {
 }
 
 function changefontsize(id, a) {
-    document.getElementById(id).style.fontSize = String(parseFloat(document.getElementById(id).style.fontSize.slice(0, -2)) * a) + "em";
+    let newsize = String(parseFloat(document.getElementById(id).style.fontSize.slice(0, -2)) * a) + "em";
+    document.getElementById(id).style.fontSize = newsize;
+    localStorage.setItem("betterocaml-text-"+id, newsize)
 }
 
 let clean_content = function (content) {
@@ -141,47 +143,6 @@ function readSingleFile(e, editor) {
 }
 
 
-function change_theme(name, editors) {
-    let href = document.getElementById('css_theme').href;
-    document.getElementById('css_theme').href = href.replace(/[^\/]+$/g, '') + name + ".css"
-    for (let i in editors) {
-        editors[i].setOption("theme", name);
-    }
-    setCookie("theme", name, 30)
-}
-
-function setCookie(cname, cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    var expires = "expires=" + d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-
-function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
-
-function autoload_theme() {
-    var theme = getCookie("theme");
-    if (theme != "") {
-        change_theme(theme)
-    } else {
-        change_theme('material')
-    }
-}
-
 function cursor_activity(instance, changeObj) {
     let cursor = calculate_highlight(instance);
     if (!(cursor.from() === undefined)) {
@@ -227,8 +188,6 @@ let includer = function (l, w) {
 }
 
 
-
-
 function isNumeric(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
@@ -241,7 +200,7 @@ var MODULE_HINT = {
         "land", "lazy", "let", "lor", "lsl", "lsr", "lxor", "match", "max_float", "max_int", "method",
         "min_float", "min_int", "mod", "module", "mutable", "new", "nonrec", "not", "object", "of", "open",
         "or", "Out_of_memory", "private", "raise", "rec", "ref", "sig", "snd", "struct", "then", "to", "true",
-        "try", "type", "val", "virtual", "when", "while", "with", "print_int", "print_float", "print_string",
+        "try", "type", "val", "virtual", "when", "while", "with", "prerr_endline", "print_int", "print_float", "print_string",
         "print_endline", "print_newline", "int_of_float", "float_of_int", "int_of_string", "float_of_string", "bool_of_string",
         "string_of_int", "string_of_float", "string_of_bool", "int_of_char", "char_of_int", "sqrt", "max", "min", "exp", "log",
         "log10", "cos", "acos", "sin", "asin", "tan", "atan", "atan2", "hypot", "cosh", "sinh", "tanh", "floor", "ceil",
@@ -249,10 +208,10 @@ var MODULE_HINT = {
         "Sys", "Array", "Random", "List", "Graphics"
     ],
     'Sys': ["time", "unix", "win32", "word_size", "int_size", "max_string_length", "max_array_length", "ocaml_version"],
-    'Array' : ["make", "make_matrix", "append", "concat", "copy", "fill", "map", "exists", "mem", "sort", "length", "get", "set", "sub"],
-    'Random' : ["init", "int", "float", "bool"],
-    'List' : ["hd", "tl", "concat", "mem", "filter", "exists", "iter", "map", "nth", "rev", "sort"],
-    'Graphics' : [
+    'Array': ["make", "make_matrix", "append", "concat", "copy", "fill", "map", "exists", "mem", "sort", "length", "get", "set", "sub"],
+    'Random': ["init", "int", "float", "bool"],
+    'List': ["hd", "tl", "concat", "mem", "filter", "exists", "iter", "map", "nth", "rev", "sort"],
+    'Graphics': [
         "open_graph", "close_graph", "width", "height", "size_x", "size_y", "clear_graph", "set_window_title",
         "resize_window", "plot", "plots", "moveto", "rmoveto", "lineto", "rlineto", "draw_circle", "fill_circle",
         "set_color", "set_line_width", "rgb", "background", "foreground", "black", "white", "red", "green", "blue",
@@ -261,18 +220,6 @@ var MODULE_HINT = {
         "fill_ellipse", "draw_char", "draw_string", "set_text_size", "text_size"],
 }
 
-function automodule_complete(cm, option) {
-    var cursor = cm.getCursor(), line = cm.getLine(cursor.line)
-    var start = cursor.ch
-    if (option.text[0] == "."){ // Detect when . is typed + if module name before, show hint
-        let nstart = start - 1;
-        while (nstart && /\w/.test(line.charAt(nstart - 1))) --nstart
-        let module = line.slice(nstart, start);
-        if (MODULE_HINT.hasOwnProperty(module)) {
-            cm.showHint();
-        }
-    }
-}
 
 function hint_prediction(cm, option) {
     return new Promise(function (accept) {
@@ -288,28 +235,31 @@ function hint_prediction(cm, option) {
                 while (nstart && /\w/.test(line.charAt(nstart - 1))) --nstart
                 let module = line.slice(nstart, start - 1);
                 if (MODULE_HINT.hasOwnProperty(module)) {
-                    if (word.length==0){
+                    if (word.length == 0) {
                         return accept({
                             list: MODULE_HINT[module],
                             from: CodeMirror.Pos(cursor.line, start),
                             to: CodeMirror.Pos(cursor.line, end)
                         })
-                    }
-                    else {
-                        return accept({
-                            list: includer(MODULE_HINT[module], word),
-                            from: CodeMirror.Pos(cursor.line, start),
-                            to: CodeMirror.Pos(cursor.line, end)
-                        })
+                    } else {
+                        if (!MODULE_HINT[module].includes(word)) {
+                            return accept({
+                                list: includer(MODULE_HINT[module], word),
+                                from: CodeMirror.Pos(cursor.line, start),
+                                to: CodeMirror.Pos(cursor.line, end)
+                            })
+                        }
                     }
                 }
             }
-
             // Magic formula to remove comment and find all variables
-            let variables = cm.getValue().replace(/[(][*][\s\S]*?[*][)][\s]*/g, '').match(/((?<=let rec )|(?<=let )|(?<=and ))(\w+\b(?<!\brec))/g)
-            if (variables==null){variables = []}
-            let correspondance = includer(variables.concat(cm.hint_list["Base"]), word);
-            if (word.length != 0 && correspondance.length != 0) {
+            let variables = [...new Set(
+                cm.getValue()
+                    .replace(/[(][*][\s\S]*?[*][)][\s]*/g, '')
+                    .match(/((?<=let rec )|(?<=let )|(?<=and ))(\w+\b(?<!\brec))/g))]
+            let possibilities = variables.concat(cm.hint_list["Base"]);
+            let correspondance = includer(possibilities, word);
+            if (word.length != 0 && correspondance.length != 0 && !possibilities.includes(word)) {
                 return accept({
                     list: correspondance.slice(0, 5),
                     from: CodeMirror.Pos(cursor.line, start),
@@ -317,11 +267,11 @@ function hint_prediction(cm, option) {
                 })
             }
             return accept(null)
-        }, 100)
+        }, 200)
     })
 }
 
-function create_editor(id, name, theme = 'material') {
+function create_editor(id, name) {
     var $tabs = $('#editor-files');
     $tabs.children().removeAttr('style');
 
@@ -335,7 +285,7 @@ function create_editor(id, name, theme = 'material') {
         dragDrop: true,
         matchBrackets: true,
         readOnly: false,
-        theme: theme,
+        theme: localStorage.getItem("betterocaml-theme")||"material",
         mode: 'text/x-ocaml',
         extraKeys: {
             "Ctrl-Enter": exec_last,
@@ -350,11 +300,18 @@ function create_editor(id, name, theme = 'material') {
     editor.id = id
     editor.name = name
     editor.is_saved = true
+    editor.ext_autocomplete = localStorage.getItem("betterocaml-autocomplete") === "true"
     editor.hint_list = MODULE_HINT
     editor.current_marker = editor.markText({line: 0}, {line: 0}, {css: "color: #fe4"});
     editor.on("cursorActivity", cursor_activity);
     editor.on('drop', editor_drop);
-    editor.on("beforeChange", automodule_complete)
+    editor.on("keyup", function (cm, event) {
+        if (cm.ext_autocomplete && // Only trigger if jetbrain style autocompletion is activated
+            !cm.state.completionActive && /*Enables keyboard navigation in autocomplete list*/
+            event.keyCode != 13) {        /*Enter - do not open autocomplete list just after item has been selected in it*/
+            CodeMirror.commands.autocomplete(cm, null, {completeSingle: false});
+        }
+    });
     $tabs.tabs().tabs('select', 'editor_tab_' + String(id));
     return editor
 }
@@ -385,4 +342,74 @@ function change_name(id, name) {
     ele.innerHTML = name + ele.innerHTML.substr(-79);
 }
 
+function change_resize_bar(resize_obj, type) {
+    resize_obj.resizer.type = type;
+    resize_obj.resizer.node.setAttribute('data-resizer-type', type);
+    if (type==="H"){
+        document.getElementsByClassName("horizontal")[0].style.flexDirection = "row";
+    }
+    else{
+        document.getElementsByClassName("horizontal")[0].style.flexDirection = "column";
+    }
+    localStorage.setItem("betterocaml-resize-bar", type);
+}
 
+
+function remove_editor(id) {
+    if (Object.keys(editors).length > 1) {
+        let act = actual_editor();
+        if (! editors[id].is_saved){
+            if (!confirm("Document non sauvegardé, voulez vous continuer ?")){
+                return
+            }
+        }
+        delete editors[id];
+        delete_editor(id);
+        if (id==act){
+            select_editor(Math.max(...Object.keys(editors).map(x => +x)));
+        }
+        else{
+            select_editor(act)
+        }
+    }
+}
+
+// Configuration
+
+
+function change_configuration(name, value, editors) {
+    localStorage.setItem(name, value);
+    switch (name) {
+        case 'betterocaml-theme':
+            let href = document.getElementById('css_theme').href;
+            document.getElementById('css_theme').href = href.replace(/[^\/]+$/g, '') + value + ".css"
+            for (let i in editors) {
+                editors[i].setOption("theme", value);
+            }
+            break;
+        case 'betterocaml-autocomplete':
+            for (let i in editors) {
+                editors[i].ext_autocomplete = Boolean(value);
+            }
+            break;
+        default:
+            console.log("no config");
+    }
+
+}
+
+function init_local_storage() {
+    let initial_parameter = {
+        'betterocaml-theme': "material",
+        'betterocaml-autocomplete' : "true",
+        'betterocaml-text-box_1' : "1.2em",
+        'betterocaml-text-box_2' : "1.2em",
+        'betterocaml-resize-bar' : "H",
+    }
+    for (const [key, value] of Object.entries(initial_parameter)) {
+        if (localStorage.getItem(key) == null){
+            localStorage.setItem(key,value);
+        }
+    }
+
+}

@@ -22,7 +22,9 @@ function reset_ocaml() {
 }
 
 function changefontsize(id, a) {
-    document.getElementById(id).style.fontSize = String(parseFloat(document.getElementById(id).style.fontSize.slice(0, -2)) * a) + "em";
+    let newsize = String(parseFloat(document.getElementById(id).style.fontSize.slice(0, -2)) * a) + "em";
+    document.getElementById(id).style.fontSize = newsize;
+    localStorage.setItem("betterocaml-text-"+id, newsize)
 }
 
 let clean_content = function (content) {
@@ -141,15 +143,6 @@ function readSingleFile(e, editor) {
 }
 
 
-function change_theme(name, editors) {
-    let href = document.getElementById('css_theme').href;
-    document.getElementById('css_theme').href = href.replace(/[^\/]+$/g, '') + name + ".css"
-    for (let i in editors) {
-        editors[i].setOption("theme", name);
-    }
-    localStorage.setItem('betterocaml-theme', name);
-}
-
 function cursor_activity(instance, changeObj) {
     let cursor = calculate_highlight(instance);
     if (!(cursor.from() === undefined)) {
@@ -207,7 +200,7 @@ var MODULE_HINT = {
         "land", "lazy", "let", "lor", "lsl", "lsr", "lxor", "match", "max_float", "max_int", "method",
         "min_float", "min_int", "mod", "module", "mutable", "new", "nonrec", "not", "object", "of", "open",
         "or", "Out_of_memory", "private", "raise", "rec", "ref", "sig", "snd", "struct", "then", "to", "true",
-        "try", "type", "val", "virtual", "when", "while", "with", "print_int", "print_float", "print_string",
+        "try", "type", "val", "virtual", "when", "while", "with", "prerr_endline", "print_int", "print_float", "print_string",
         "print_endline", "print_newline", "int_of_float", "float_of_int", "int_of_string", "float_of_string", "bool_of_string",
         "string_of_int", "string_of_float", "string_of_bool", "int_of_char", "char_of_int", "sqrt", "max", "min", "exp", "log",
         "log10", "cos", "acos", "sin", "asin", "tan", "atan", "atan2", "hypot", "cosh", "sinh", "tanh", "floor", "ceil",
@@ -278,7 +271,7 @@ function hint_prediction(cm, option) {
     })
 }
 
-function create_editor(id, name, theme = 'material') {
+function create_editor(id, name) {
     var $tabs = $('#editor-files');
     $tabs.children().removeAttr('style');
 
@@ -292,7 +285,7 @@ function create_editor(id, name, theme = 'material') {
         dragDrop: true,
         matchBrackets: true,
         readOnly: false,
-        theme: theme,
+        theme: localStorage.getItem("betterocaml-theme")||"material",
         mode: 'text/x-ocaml',
         extraKeys: {
             "Ctrl-Enter": exec_last,
@@ -307,12 +300,13 @@ function create_editor(id, name, theme = 'material') {
     editor.id = id
     editor.name = name
     editor.is_saved = true
+    editor.ext_autocomplete = localStorage.getItem("betterocaml-autocomplete") === "true"
     editor.hint_list = MODULE_HINT
     editor.current_marker = editor.markText({line: 0}, {line: 0}, {css: "color: #fe4"});
     editor.on("cursorActivity", cursor_activity);
     editor.on('drop', editor_drop);
     editor.on("keyup", function (cm, event) {
-        if (config_hard_autocomplete && // Only trigger if jetbrain style autocompletion is activated
+        if (cm.ext_autocomplete && // Only trigger if jetbrain style autocompletion is activated
             !cm.state.completionActive && /*Enables keyboard navigation in autocomplete list*/
             event.keyCode != 13) {        /*Enter - do not open autocomplete list just after item has been selected in it*/
             CodeMirror.commands.autocomplete(cm, null, {completeSingle: false});
@@ -351,17 +345,15 @@ function change_name(id, name) {
 function change_resize_bar(resize_obj, type) {
     resize_obj.resizer.type = type;
     resize_obj.resizer.node.setAttribute('data-resizer-type', type);
-}
-function switch_rc_style(resize_obj) {
-    if (document.getElementsByClassName("horizontal")[0].style.flexDirection == "column"){
-        change_resize_bar(resize_obj, "H");
+    if (type==="H"){
         document.getElementsByClassName("horizontal")[0].style.flexDirection = "row";
     }
     else{
-        change_resize_bar(resize_obj, "V");
         document.getElementsByClassName("horizontal")[0].style.flexDirection = "column";
     }
+    localStorage.setItem("betterocaml-resize-bar", type);
 }
+
 
 function remove_editor(id) {
     if (Object.keys(editors).length > 1) {
@@ -382,3 +374,42 @@ function remove_editor(id) {
     }
 }
 
+// Configuration
+
+
+function change_configuration(name, value, editors) {
+    localStorage.setItem(name, value);
+    switch (name) {
+        case 'betterocaml-theme':
+            let href = document.getElementById('css_theme').href;
+            document.getElementById('css_theme').href = href.replace(/[^\/]+$/g, '') + value + ".css"
+            for (let i in editors) {
+                editors[i].setOption("theme", value);
+            }
+            break;
+        case 'betterocaml-autocomplete':
+            for (let i in editors) {
+                editors[i].ext_autocomplete = Boolean(value);
+            }
+            break;
+        default:
+            console.log("no config");
+    }
+
+}
+
+function init_local_storage() {
+    let initial_parameter = {
+        'betterocaml-theme': "material",
+        'betterocaml-autocomplete' : "true",
+        'betterocaml-text-box_1' : "1.2em",
+        'betterocaml-text-box_2' : "1.2em",
+        'betterocaml-resize-bar' : "H",
+    }
+    for (const [key, value] of Object.entries(initial_parameter)) {
+        if (localStorage.getItem(key) == null){
+            localStorage.setItem(key,value);
+        }
+    }
+
+}

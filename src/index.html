@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <title>BetterOCaml</title>
+    <meta name="description" content="An efficient, intuitive and cross-platform web IDE for the OCaml language (recent: v4.11.1), with your code interpreted and running in your browser! (no server is needed!)">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="manifest" href="manifest.json">
@@ -44,7 +45,7 @@
 
 <div id="loader-wrapper">
     <div id="loader" class="container">
-        <img src="icon/banner.png">
+        <img alt="Betterocaml Splash" src="icon/banner.png">
         <h2 class="center white-text">Loading Ocaml Interpreter</h2>
         <p class="center white-text">BetterOcaml will be ready in few seconds ...</p>
         <div class="progress">
@@ -223,7 +224,7 @@
         document.getElementById('css_theme').href = href.replace(/[^\/]+$/g, '') + (localStorage.getItem("betterocaml-theme") || "material") + ".css"
 
         // Create the resize bar
-        resize_bar = new Resizer(document.querySelector('[name=resizerH1]'), 'H');
+        var resize_bar = new Resizer(document.querySelector('[name=resizerH1]'), 'H');
         change_resize_bar(resize_bar, (localStorage.getItem("betterocaml-resize-bar") || "H"));
 
         // Set text zoom
@@ -285,7 +286,7 @@
 
     // Autotarget the console
     document.getElementById("toplevel-container").addEventListener("click", (event) => {
-        if (event.target == event.currentTarget) document.getElementById('userinput').focus();
+        if (event.target === event.currentTarget) document.getElementById('userinput').focus();
     });
 
 </script>

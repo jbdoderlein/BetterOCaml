@@ -1,6 +1,6 @@
 function parse(str, editor) {
-    textarea = document.getElementById('userinput');
-    cmd = str.split(';;\n');
+    let textarea = document.getElementById('userinput');
+    let cmd = str.split(';;\n');
     const ke = new KeyboardEvent("keydown", {bubbles: true, cancelable: true, keyCode: 13});
     for (let i = 0; i < cmd.length; i++) {
         if (!cmd[i].endsWith(';;')) cmd[i] += ';;';
@@ -16,7 +16,7 @@ function parse(str, editor) {
 
 function reset_ocaml() {
     document.getElementById('output').innerHTML = ''
-    textarea = document.getElementById('userinput');
+    let textarea = document.getElementById('userinput');
     const ke = new KeyboardEvent("keydown", {bubbles: true, cancelable: true, ctrlKey: true, keyCode: 75});
     textarea.dispatchEvent(ke);
 }
@@ -56,11 +56,12 @@ let exec_all = function (instance) {
     }
 };
 let calculate_highlight = function (instance) {
+    let execselected;
     try {
-        var execselected = instance.getRange({line: 0, ch: 0}, {line: line_with_last(instance)})
+        execselected = instance.getRange({line: 0, ch: 0}, {line: line_with_last(instance)})
             .match(/[\S][\s\S]*?(;;)/g).slice(-1)[0] // Get last sentence
     } catch (e) {
-        var execselected = "";
+        execselected = "";
     }
     let cursor = instance.getSearchCursor(execselected)
     cursor.find();
@@ -68,7 +69,7 @@ let calculate_highlight = function (instance) {
 };
 
 function save(instance) {
-    if (instance.name == "untitled.ml") {
+    if (instance.name === "untitled.ml") {
         M.Modal.getInstance(document.getElementById('saveas')).open()
     } else {
         program_save(instance);
@@ -94,15 +95,15 @@ function name_and_save(instance) {
 }
 
 let program_save = function (instance) {
-    var textToWrite = instance.getValue()
+    let textToWrite = instance.getValue()
 
     //var textToWrite = textToWrite.replace(/\n/g, "\r\n");
-    var textFileAsBlob = new Blob([textToWrite], {type: 'text/x-ocaml'});
+    let textFileAsBlob = new Blob([textToWrite], {type: 'text/x-ocaml'});
 
     // filename to save as
-    var fileNameToSaveAs = instance.name;
+    let fileNameToSaveAs = instance.name;
 
-    var downloadLink = document.createElement("a");
+    let downloadLink = document.createElement("a");
     downloadLink.download = fileNameToSaveAs;
 
 // hidden link title name
@@ -125,16 +126,15 @@ function destroyClickedElement(event) {
 }
 
 function readSingleFile(e, editor) {
-    var file = e.target.files[0];
+    let file = e.target.files[0];
     if (!file) {
         return;
     }
-    var reader = new FileReader();
+    let reader = new FileReader();
     reader.onload = function (e) {
-        var contents = e.target.result;
+        let contents = e.target.result;
         let next = Math.max(...Object.keys(editors).map(x => +x)) + 1;
-        let theme = editors[Math.min(...Object.keys(editors).map(x => +x))].getOption('theme')
-        editors[next] = create_editor(id = next, name = file.name, theme = theme);
+        editors[next] = create_editor(id = next, name = file.name);
         editors[next].setValue(contents)
 
     };
@@ -155,20 +155,19 @@ function cursor_activity(instance, changeObj) {
 }
 
 function editor_drop(data, e) {
-    var file;
-    var files;
+    let file;
+    let files;
     // Check if files were dropped
     files = e.dataTransfer.files;
     if (files.length > 0) {
         e.preventDefault();
         e.stopPropagation();
         file = files[0];
-        var reader = new FileReader();
+        let reader = new FileReader();
         reader.onload = function (e) {
             var contents = e.target.result;
             let next = Math.max(...Object.keys(editors).map(x => +x)) + 1;
-            let theme = editors[Math.min(...Object.keys(editors).map(x => +x))].getOption('theme')
-            editors[next] = create_editor(id = next, name = file.name, theme = theme);
+            editors[next] = create_editor(next, file.name);
             editors[next].setValue(contents)
 
         };
@@ -187,10 +186,6 @@ let includer = function (l, w) {
     return r;
 }
 
-
-function isNumeric(n) {
-    return !isNaN(parseFloat(n)) && isFinite(n);
-}
 
 var MODULE_HINT = {
     'Base': [
@@ -235,7 +230,7 @@ function hint_prediction(cm, option) {
                 while (nstart && /\w/.test(line.charAt(nstart - 1))) --nstart
                 let module = line.slice(nstart, start - 1);
                 if (MODULE_HINT.hasOwnProperty(module)) {
-                    if (word.length == 0) {
+                    if (word.length === 0) {
                         return accept({
                             list: MODULE_HINT[module],
                             from: CodeMirror.Pos(cursor.line, start),
@@ -259,7 +254,7 @@ function hint_prediction(cm, option) {
                     .match(/((?<=let rec )|(?<=let )|(?<=and ))(\w+\b(?<!\brec))/g))]
             let possibilities = variables.concat(cm.hint_list["Base"]);
             let correspondance = includer(possibilities, word);
-            if (word.length != 0 && correspondance.length != 0 && !possibilities.includes(word)) {
+            if (word.length !== 0 && correspondance.length !== 0 && !possibilities.includes(word)) {
                 return accept({
                     list: correspondance.slice(0, 5),
                     from: CodeMirror.Pos(cursor.line, start),
@@ -308,7 +303,7 @@ function create_editor(id, name) {
     editor.on("keyup", function (cm, event) {
         if (cm.ext_autocomplete && // Only trigger if jetbrain style autocompletion is activated
             !cm.state.completionActive && /*Enables keyboard navigation in autocomplete list*/
-            event.keyCode != 13) {        /*Enter - do not open autocomplete list just after item has been selected in it*/
+            event.keyCode !== 13) {        /*Enter - do not open autocomplete list just after item has been selected in it*/
             CodeMirror.commands.autocomplete(cm, null, {completeSingle: false});
         }
     });
@@ -365,7 +360,7 @@ function remove_editor(id) {
         }
         delete editors[id];
         delete_editor(id);
-        if (id==act){
+        if (id===act){
             select_editor(Math.max(...Object.keys(editors).map(x => +x)));
         }
         else{

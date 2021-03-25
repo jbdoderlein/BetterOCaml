@@ -6,6 +6,7 @@
 
 An efficient, intuitive and cross-platform web IDE for the [OCaml](https://www.ocaml.org/) language (recent: v4.11.1), with your code interpreted and running in your browser! (no server is needed!)
 
+
 ## Installation / Usage
 
 The IDE is hosted [here](https://betterocaml/), <https://BetterOCaml.ml/>, but you can host your own version by simply copying the files from the `src/` directory on your host (on a folder of your laptop, or a folder of your web-server, see <http://ocaml.besson.link/> for an example).
@@ -40,11 +41,17 @@ If you have any suggestion for a new theme, [open an issue](https://github.com/j
 
 > If you can't install it as a PWA, [@Naereen](https://GitHub.com/Naereen) recommends trying [WebCatalog](https://webcatalog.app/), a multi-platform desktop app (for \*NIX, Windows and Mac OS), and you can then use it to "install" [the BetterOCaml editor](https://BetterOCaml.ml), along with its integrated OCaml interpreter (of course), as a "native" desktop app. It then appears in the menu of your system, and it works offline! See [this 1:30min tutorial in video](https://github.com/jbdo99/BetterOCaml/issues/6#issuecomment-780269129).
 
-### :phone: On a smartphone
+### :phone: On a smartphone (WIP)
 - It also works fine on smartphone running any recent OS and browser, :ok_hand: and the app should be "responsive" and switch to a vertical layout if your screen is too narrow.
 - Loading the OCaml toplevel can take a few seconds on a mobile 3G/4G or :snail: slow Wifi networks: it's over 30 Mb, as it includes all of [OCaml standard library](https://caml.inria.fr/pub/docs/manual-ocaml/libref/)!
 - The *Progressive Web App* can be installed on your smartphone: there should be a small + button near the address bar, or a "Install it" option in the menu. Once you install it, there should be an icon in the home screen (but not in the app menu) that launches the app in full size mode (like a browser, but no address bar). It [works fine](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Developer_guide/Installing#what_browsers_support_installation) on Chrom(e|ium) and Firefox mobile on Android, at least.
 - If you think that this is not enough, and that the website should be bundled as a native iOS/Android app, please vote :+1: on [this issue](https://github.com/jbdo99/BetterOCaml/issues/14).
+
+## :zap: PWA 
+
+Betterocaml is a fully installable Progressive Web App
+
+![pwa performance](https://pagespeed-insights.herokuapp.com/?url=https://betterocaml.ml)
 
 ##  About this project
 

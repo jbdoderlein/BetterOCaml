@@ -51,7 +51,7 @@ If you have any suggestion for a new theme, [open an issue](https://github.com/j
 
 Betterocaml is a fully installable Progressive Web App
 
-![pwa performance](https://pagespeed-insights.herokuapp.com/?url=https://betterocaml.ml)
+![pwa_performance_2503](https://user-images.githubusercontent.com/10222041/112509800-1a8aa400-8d91-11eb-8d62-04ff7dd4487a.png)
 
 ##  About this project
 

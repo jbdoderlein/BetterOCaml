@@ -212,7 +212,7 @@
 <script type="text/javascript">
     // Loading global var
     init_local_storage();
-    var editors;
+    var editors, resize_bar;
     // Editors load
     editors = {}
     editors[0] = create_editor(id = 0, name = 'untitled.ml');
@@ -224,7 +224,7 @@
         document.getElementById('css_theme').href = href.replace(/[^\/]+$/g, '') + (localStorage.getItem("betterocaml-theme") || "material") + ".css"
 
         // Create the resize bar
-        var resize_bar = new Resizer(document.querySelector('[name=resizerH1]'), 'H');
+        resize_bar = new Resizer(document.querySelector('[name=resizerH1]'), 'H');
         change_resize_bar(resize_bar, (localStorage.getItem("betterocaml-resize-bar") || "H"));
 
         // Set text zoom

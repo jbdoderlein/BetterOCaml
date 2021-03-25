@@ -27,7 +27,7 @@ nav i, nav i.material-icons {
 
 .commands{
     color: whitesmoke;
-    border-left-color: #999;
+    border-left-color: white;
 }
 
 .box {
@@ -144,26 +144,26 @@ div.cm-s-mdn-like span.CodeMirror-matchingbracket { outline:1px solid grey; colo
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: #202b30;
+    background: #006994;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #2a3439;
+    background: #017db3;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #2a3439;
+    background: #017db3;
 }
 
 
 #loader-wrapper {
-    background: #263238;
+    background: #07a;
 }
 
 .progress{
-    background-color: #263238!important;
+    background-color: #07a!important;
 }
 
 .progress .indeterminate {
@@ -183,20 +183,20 @@ div.cm-s-mdn-like span.CodeMirror-matchingbracket { outline:1px solid grey; colo
 }
 
 label{
-    color: whitesmoke!important;
+    color: white!important;
 }
 
 .dropdown-content{
-    background-color: #252d32fc!important;
+    background-color: white!important;
 
 }
 
 .dropdown-content li>a, .dropdown-content li>span {
-    color: white!important;
+    color: black!important;
 }
 
 .switch label input[type=checkbox]:checked+.lever{
-    background-color: #546e7a!important;
+    background-color: white!important;
 }
 
 .switch label input[type=checkbox]:checked+.lever:after{
@@ -209,5 +209,5 @@ label{
 }
 
 .btn.config-element {
-    background-color: #454646!important;
+    background-color: #00adf8!important;
 }

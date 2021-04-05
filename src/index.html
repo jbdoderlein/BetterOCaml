@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <title>BetterOCaml</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="description" content="An efficient, intuitive and cross-platform web IDE for the OCaml language (recent: v4.11.1), with your code interpreted and running in your browser! (no server is needed!)">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" sizes="57x57" href="icon/apple-icon-57x57.png">
@@ -14,7 +15,7 @@
     <link rel="apple-touch-icon" sizes="144x144" href="icon/apple-icon-144x144.png">
     <link rel="apple-touch-icon" sizes="152x152" href="icon/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="icon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="icon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon/android-icon-192x192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="icon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="icon/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="icon/favicon-16x16.png">
@@ -44,7 +45,7 @@
 
 <div id="loader-wrapper">
     <div id="loader" class="container">
-        <img src="icon/banner.png">
+        <img alt="Betterocaml Splash" src="icon/banner.png">
         <h2 class="center white-text">Loading Ocaml Interpreter</h2>
         <p class="center white-text">BetterOcaml will be ready in few seconds ...</p>
         <div class="progress">
@@ -75,7 +76,7 @@
             <li><a class="modal-trigger" href="#help"><i class="material-icons">settings</i></a></li>
         </ul>
     </div>
-    <div  class="nav-content">
+    <div class="nav-content">
         <ul id="editor-files" class="tabs">
         </ul>
     </div>
@@ -89,7 +90,8 @@
 </div>
 
 <div class="fixed-action-btn hide-on-small-and-down" style="bottom: 15px; right: 15px;">
-    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="document.getElementById('output').innerHTML=''"><i
+    <a class="btn-floating btn-small waves-effect waves-light zoom-button"
+       onclick="document.getElementById('output').innerHTML=''"><i
             class="material-icons">delete</i></a>
     <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_2', 1.1)"><i
             class="material-icons">add</i></a>
@@ -100,44 +102,67 @@
 <div class="fixed-action-btn mobile-button hide-on-med-and-up" style="bottom: 15px; right: 15px;">
     <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="exec_all(editors[actual_editor()])"><i
             class="material-icons">play_arrow</i></a>
-    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="document.getElementById('output').innerHTML=''"><i
+    <a class="btn-floating btn-small waves-effect waves-light zoom-button"
+       onclick="document.getElementById('output').innerHTML=''"><i
             class="material-icons">delete</i></a>
 </div>
 
 <div id="help" class="modal help">
     <div class="modal-content">
 
-        <h4>Themes</h4>
-        <select name="theme" id="theme-select">
-            <option value="material">Default</option>
-            <option value="monokai">Monokai</option>
-            <option value="mdn-like">MDN</option>
-        </select>
+        <h4>Configuration</h4>
+        <div class="config-section">
+            <select name="theme" id="theme-select" class="config-element theme-select">
+                <option value="material">Default</option>
+                <option value="monokai">Monokai</option>
+                <option value="mdn-like">MDN</option>
+                <option value="pycharm">Pycharm</option>
+            </select>
 
-        <div class="switch hide-on-small-and-down">
-            <label>
-                Row style
-                <input type="checkbox" onclick="switch_rc_style(resize_bar);">
-                <span class="lever"></span>
-                Column Style
-            </label>
+            <div class="switch config-element">
+                <label>
+                    Row style
+                    <input id="rbar-checkbox" type="checkbox" onclick="
+                        change_resize_bar(resize_bar, (localStorage.getItem('betterocaml-resize-bar')==='H')?'V':'H')
+                    ">
+                    <span class="lever"></span>
+                    Column Style
+                </label>
+            </div>
+
+            <p class="config-element">
+                <label>
+                    <input id="autocomplete-checkbox" type="checkbox" onclick="
+                    change_configuration('betterocaml-autocomplete', (localStorage.getItem('betterocaml-autocomplete') === 'false'), editors)
+                "/>
+                    <span>Autocomplete</span>
+                </label>
+            </p>
+
+            <a class="waves-effect waves-light btn config-element" onclick="reset_ocaml();"><i
+                    class="material-icons right">refresh</i>Reset
+                Ocaml Interpreter</a>
         </div>
-
-        <a class="waves-effect waves-light btn" onclick="reset_ocaml();"><i class="material-icons right">refresh</i>Reset Ocaml Interpreter</a>
-
-        <h4>Aides</h4>
-
-        <blockquote class="commands">
-            <b>Ctrl + Enter / Cmd + Enter</b> : Execute le bloc code surligné
-        </blockquote>
-        <blockquote class="commands">
-            <b>Ctrl + Shift + Enter / Cmd + Shift + Enter</b> : Execute tout le code
-        </blockquote>
-        <a class="github-button" href="https://github.com/jbdo99/betterocaml" data-size="large"
-           aria-label="Issue jbdo99/betterocaml on GitHub">Open in Github</a>
-        <a class="github-button" href="https://github.com/jbdo99/betterocaml/issues" data-icon="octicon-issue-opened"
-           data-size="large" aria-label="Issue jbdo99/betterocaml on GitHub">Issue</a>
-
+        <h4>Help</h4>
+        <div class="help-section">
+            <blockquote class="commands">
+                <b>Ctrl + Enter / Cmd + Enter</b> : Execute the highlighted code
+            </blockquote>
+            <blockquote class="commands">
+                <b>Ctrl + Shift + Enter / Cmd + Shift + Enter</b> : Execute the entire code
+            </blockquote>
+            <blockquote class="commands">
+                <b>Ctrl + Space / Cmd + Space</b> : Show the autocompletion box
+            </blockquote>
+            <blockquote class="commands">
+                <b>Ctrl + K / Cmd + K</b> : Reset Ocaml Toplevel
+            </blockquote>
+            <a class="github-button" href="https://github.com/jbdo99/betterocaml" data-size="large"
+               aria-label="Issue jbdo99/betterocaml on GitHub">Open in Github</a>
+            <a class="github-button" href="https://github.com/jbdo99/betterocaml/issues"
+               data-icon="octicon-issue-opened"
+               data-size="large" aria-label="Issue jbdo99/betterocaml on GitHub">Issue</a>
+        </div>
     </div>
     <div class="modal-footer help">
         <a href="#" class="modal-close waves-effect waves-green btn-flat white-text">Fermer</a>
@@ -186,58 +211,29 @@
 <script src="js/materialize.min.js"></script>
 <script src="js/editor_change.js"></script>
 <script type="text/javascript">
-    // Editors
-    let editors = {}
+    // Loading global var
+    init_local_storage();
+    var editors, resize_bar;
+    // Editors load
+    editors = {}
     editors[0] = create_editor(id = 0, name = 'untitled.ml');
 
-    function remove_editor(id) {
-        if (Object.keys(editors).length > 1) {
-            let act = actual_editor();
-            if (! editors[id].is_saved){
-                if (!confirm("Document non sauvegardé, voulez vous continuer ?")){
-                    return
-                }
-            }
-            delete editors[id];
-            delete_editor(id);
-            if (id==act){
-                select_editor(Math.max(...Object.keys(editors).map(x => +x)));
-            }
-            else{
-                select_editor(act)
-            }
-        }
-    }
-</script>
-<script>
-    // Chargement et events
-    function change_resize_bar(resize_obj, type) {
-        resize_obj.resizer.type = type;
-        resize_obj.resizer.node.setAttribute('data-resizer-type', type);
-    }
-    function switch_rc_style(resize_obj) {
-        if (document.getElementsByClassName("horizontal")[0].style.flexDirection == "column"){
-            change_resize_bar(resize_obj, "H");
-            document.getElementsByClassName("horizontal")[0].style.flexDirection = "row";
-        }
-        else{
-            change_resize_bar(resize_obj, "V");
-            document.getElementsByClassName("horizontal")[0].style.flexDirection = "column";
-        }
-    }
-
+    // Screen load
     window.addEventListener("load", function () {
-        resize_bar = new Resizer(document.querySelector('[name=resizerH1]'), 'H');
-        if (window.innerWidth <= 600){
-            change_resize_bar(resize_bar, "V")
-        }
-        else{
-            change_resize_bar(resize_bar, "H")
-        }
-        document.getElementById('box_1').style.fontSize = "1.2em";
-        document.getElementById('box_2').style.fontSize = "1.2em";
+        //Load the correct css theme
+        let href = document.getElementById('css_theme').href;
+        document.getElementById('css_theme').href = href.replace(/[^\/]+$/g, '') + (localStorage.getItem("betterocaml-theme") || "material") + ".css"
 
-        if('serviceWorker' in navigator){
+        // Create the resize bar
+        resize_bar = new Resizer(document.querySelector('[name=resizerH1]'), 'H');
+        change_resize_bar(resize_bar, (localStorage.getItem("betterocaml-resize-bar") || "H"));
+
+        // Set text zoom
+        document.getElementById('box_1').style.fontSize = (localStorage.getItem("betterocaml-text-box_1") || "1.2em");
+        document.getElementById('box_2').style.fontSize = (localStorage.getItem("betterocaml-text-box_2") || "1.2em");
+
+        // Service Worker
+        if ('serviceWorker' in navigator) {
             try {
                 navigator.serviceWorker.register('serviceWorker.js');
                 console.log("Service Worker Registered");
@@ -247,10 +243,10 @@
         }
     }, false);
 
+    // Loading Animation
     $('body').on('DOMNodeInserted', 'pre', function () {
         $('#loader-wrapper').addClass("tester")
     });
-
     document.getElementById("loader-wrapper").addEventListener("animationend", (ev) => {
         if (ev.type === "animationend") {
             document.getElementById("loader-wrapper").style.display = "none";
@@ -258,41 +254,40 @@
         }
     }, false);
 
+    // Prevent exiting without saving
     window.onbeforeunload = function () {
-        if (Object.keys(editors).length > 1) {
-            if (! editors[id].is_saved){
+        if (Object.keys(editors).length >= 1) {
+            if (!editors[id].is_saved) {
                 return "Your code is not saved, do you really want to leave ?"
             }
         }
     };
 
-    window.onresize = function () {
-        if (window.innerWidth <= 600){
-            change_resize_bar(resize_bar, "V")
-        }
-        else{
-            change_resize_bar(resize_bar, "H")
-        }
-    };
-
+    // Load Materialize Components
     $(document).ready(function () {
         $('.modal').modal();
         $('.tabs').tabs();
         $('.sidenav').sidenav();
-        autoload_theme();
+        $('#theme-select').find('option[value=' + (localStorage.getItem('betterocaml-theme') || 'material') + ']').prop('selected', true);
+        $("#theme-select").formSelect();
+        $("#autocomplete-checkbox").prop("checked", localStorage.getItem('betterocaml-autocomplete') === "true");
+        $("#rbar-checkbox").prop("checked", localStorage.getItem('betterocaml-resize-bar') === "H");
     });
 
+    // Open file
     document.getElementById('file-upload')
         .addEventListener('change', readSingleFile, false);
 
+    // Change theme
     document.getElementById('theme-select')
         .addEventListener('change',
             function (e) {
-                change_theme(e.target.value, editors);
+                change_configuration('betterocaml-theme', e.target.value, editors);
             }, false);
 
+    // Autotarget the console
     document.getElementById("toplevel-container").addEventListener("click", (event) => {
-        if (event.target == event.currentTarget) document.getElementById('userinput').focus();
+        if (event.target === event.currentTarget) document.getElementById('userinput').focus();
     });
 
 </script>

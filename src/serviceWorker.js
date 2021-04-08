@@ -42,7 +42,6 @@ const staticAssets = [
     './js/jquery.min.js',
     './js/materialize.min.js',
     './js/resizer.js',
-    './js/toplevel-4.11.1.js',
     './js/codemirror/closebrackets.js',
     './js/codemirror/codemirror.min.js',
     './js/codemirror/dialog.js',
@@ -53,6 +52,8 @@ const staticAssets = [
     './js/codemirror/searchcursor.js',
     './js/codemirror/show-hint.js',
     './js/codemirror/sublime.min.js',
+    // './toplevels/',
+    './toplevels/toplevel-4.12.0.js',
 ];
 
 self.addEventListener('install', async event=>{

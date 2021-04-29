@@ -34,8 +34,7 @@ if (typeof Resizer === 'undefined') {
 		this.beforeBox.node.style.flexBasis = 0;
 		this.afterBox.node.style.flexBasis = 0;
 		// ajout des events
-		this.resizer.node.addEventListener('mousedown', this.startProcess.bind(this), false);
-		this.resizer.node.addEventListener('touchdown', this.startProcess.bind(this), false);
+		this.resizer.node.addEventListener('pointerdown', this.startProcess.bind(this), false);
 	};
 
 	Resizer.prototype = {
@@ -60,11 +59,9 @@ if (typeof Resizer === 'undefined') {
 			this.container.playingRatio = this.beforeBox.ratio + this.afterBox.ratio;
 			// lancer le processus
 			this.stopProcessFunctionBinded = this.stopProcess.bind(this);
-			document.addEventListener('mouseup', this.stopProcessFunctionBinded, false);
-			document.addEventListener('touchend', this.stopProcessFunctionBinded, false);
+			document.addEventListener('pointerup', this.stopProcessFunctionBinded, false);
 			this.processFunctionBinded = this.process.bind(this);
-			document.addEventListener('mousemove', this.processFunctionBinded, false);
-			document.addEventListener('touchmove', this.processFunctionBinded, false);
+			document.addEventListener('pointermove', this.processFunctionBinded, false);
 		},
 		process: function(event) {
 			if (!this.processing) {
@@ -97,11 +94,9 @@ if (typeof Resizer === 'undefined') {
 		},
 		stopProcess: function(event) {
 			// stopper le processus
-     		document.removeEventListener('mousemove', this.processFunctionBinded, false);
-			document.removeEventListener('touchmove', this.processFunctionBinded, false);
+     		document.removeEventListener('pointermove', this.processFunctionBinded, false);
 			this.processFunctionBinded = null;
-			document.removeEventListener('mouseup', this.stopProcessFunctionBinded, false);
-			document.removeEventListener('touchend', this.stopProcessFunctionBinded, false);
+			document.removeEventListener('pointerup', this.stopProcessFunctionBinded, false);
 			this.stopProcessFunctionBinded = null;
 			// afficher la barre
 			if (this.hidebar) {

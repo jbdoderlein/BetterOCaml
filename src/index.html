@@ -40,30 +40,30 @@
     <script src="js/codemirror/show-hint.js"></script>
     <script async src="js/resizer.js"></script>
     <script async defer src="js/buttons.js"></script>
-    
+
     <script>
         let params = new URLSearchParams(window.location.search);
         let version = params.get("version");
-        
+
         let versions = ["4.12.0", "4.11.2", "4.11.1", "4.11.0", "4.10.2", "4.10.1", "4.10.0", "4.09.1", "4.09.0", "4.08.1", "4.08.0", "4.07.1", "4.07.0"];
-        
+
         if (!versions.includes(version)) {
             version = versions[0];
             params.set("version", version);
             var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + params.toString();
             window.history.pushState({path:newUrl},'',newUrl);
         }
-        
+
         let script = document.createElement('script');
         script.async = true;
         script.type = 'text/javascript';
         script.src = 'toplevels/toplevel-' + version + '.js';
-        
-        document.head.appendChild(script);
+
+        //document.head.appendChild(script);
     </script>
 </head>
 
-<div id="loader-wrapper">
+<div id="loader-wrapper" style="display: none;">
     <div id="loader" class="container">
         <img alt="Betterocaml Splash" src="icon/banner.png">
         <h2 class="center white-text">Loading Ocaml Interpreter</h2>
@@ -96,7 +96,7 @@
             <li><a class="modal-trigger" href="#help"><i class="material-icons">settings</i></a></li>
         </ul>
     </div>
-    <div class="nav-content">
+    <div class="nav-content" style="display: none">
         <ul id="editor-files" class="tabs">
         </ul>
     </div>

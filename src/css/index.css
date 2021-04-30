@@ -9,6 +9,8 @@ body, html {
     min-height: -webkit-fill-available;
 }
 
+/*  NAVBAR */
+
 nav{
     line-height: 0px!important;
 }
@@ -18,12 +20,12 @@ nav{
 }
 
 .nav-wrapper{
-    height: inherit;
-    min-height: 0;
+    height: inherit!important;
+    min-height: 0!important;
 }
 
 .nav-wrapper ul {
-    height: inherit;
+    height: inherit!important;
 }
 
 nav ul li {
@@ -42,6 +44,44 @@ nav i, nav i.material-icons {
         font-size: 5vh;
     }
 }
+
+.tabs{
+    height: inherit;
+    width: auto;
+    font-size: 0.9rem;
+}
+
+.tabs .tab {
+    height: inherit;
+    text-transform: none!important;
+    line-height: 10vh;
+}
+
+.tabs .tab a{
+    padding-left: 16px!important;
+    padding-right: 16px!important;
+}
+
+.tabs .tab a.active {
+    font-size: 1.1rem !important;
+}
+
+.indicator{
+    display: none;
+}
+
+.mini-icon{
+    display: inline!important;
+    font-size: 0.9rem!important;
+    margin-left: 8px;
+    padding: 6px;
+    border-radius: 4px;
+    background-color: #202b30;
+}
+
+/*  BODY */
+/*  EDITOR */
+/*  CONSOLE */
 
 .container-boc {
   display: flex;
@@ -200,52 +240,11 @@ code, kbd, pre, samp {
 }
 
 
-.indicator{
-    display: none;
-}
 
-.tabs{
-    font-size: 0.9rem;
-}
-
-
-.onglet {
-    border-top-right-radius: 0.8rem;
-    border-top-left-radius: 0.8rem;
-    text-transform: none!important;
-}
-
-.tabs{
-    height: auto!important;
-    overflow-x: scroll!important;
-}
-
-.tabs .tab a.active {
-    border-top-right-radius: 0.8rem;
-    border-top-left-radius: 0.8rem;
-    font-size: 1.1rem !important;
-}
-
-.mini-icon{
-    font-size: 0.8rem!important;
-    margin-left: 1rem;
-    line-height: 1!important;
-}
 
 .editorCollection{
     height: 100%;
 }
-
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-    @supports (not (-ms-accelerator:true))
-    and (not (-moz-appearance:none)) {
-        .mini-icon{
-            font-size: 0.8rem!important;
-            margin-right: -0.8rem;
-            margin-left: 1rem;
-            line-height: 1!important;
-        }
-    } }
 
 .config-element{
     margin-top: 4%;

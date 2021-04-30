@@ -17,26 +17,30 @@ nav{
     height: 10vh!important;
 }
 
-nav .brand-logo {
-	padding-left: 1rem !important;
-    font-size: 1.8rem!important;
-    line-height: 64px!important;
+.nav-wrapper{
+    height: inherit;
+    min-height: 0;
 }
 
-.tabs {
-    display: flex;
+.nav-wrapper ul {
+    height: inherit;
 }
 
-@media only screen and (max-width: 992px){
-    nav .brand-logo {
-        left: 6rem!important;
-        padding-left: 1rem !important;
-        font-size: 1.8rem!important;
-    }
+nav ul li {
+    height: inherit;
+    min-height: 0;
 }
 
 nav i, nav i.material-icons {
-	display: inline !important;
+    height: inherit;
+    line-height: 10vh;
+    font-size: 4vh;
+}
+
+@media (max-height:700px){
+    nav i, nav i.material-icons {
+        font-size: 5vh;
+    }
 }
 
 .container-boc {

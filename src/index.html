@@ -23,12 +23,12 @@
     <meta name="msapplication-TileImage" content="icon/ms-icon-144x144.png">
     <meta name="theme-color" content="#263238">
     <link href="css/icon.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" id="css_theme" href="css/theme/material.css">
     <link rel="stylesheet" href="css/materialize/materialize.min.css">
     <link rel="stylesheet" href="css/codemirror/codemirror.min.css">
     <link rel="stylesheet" href="css/codemirror/dialog.css"/>
     <link rel="stylesheet" href="css/codemirror/show-hint.css"/>
+    <link rel="stylesheet" href="css/index.css">
     <script src="js/codemirror/codemirror.min.js"></script>
     <script src="js/codemirror/matchbrackets.min.js"></script>
     <script src="js/codemirror/closebrackets.js"></script>
@@ -78,7 +78,6 @@
 
 <nav class="nav-extended">
     <div class="nav-wrapper">
-        <a class="brand-logo hide-on-small-and-down">BetterOCaml</a>
         <ul class="right">
             <li>
                 <a onclick="editors[Math.max(...Object.keys(editors).map(x => +x))+1] = create_editor(id = Math.max(...Object.keys(editors).map(x => +x))+1, name = 'untitled.ml', theme= editors[Math.min(...Object.keys(editors).map(x => +x))].getOption('theme'));"><i

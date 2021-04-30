@@ -78,6 +78,10 @@
 
 <nav class="nav-extended">
     <div class="nav-wrapper">
+        <ul id="editor-files" class="tabs left">
+            <li><a><i class="material-icons">navigate_before</i></a></li>
+            <li><a><i class="material-icons">navigate_next</i></a></li>
+        </ul>
         <ul class="right">
             <li>
                 <a onclick="editors[Math.max(...Object.keys(editors).map(x => +x))+1] = create_editor(id = Math.max(...Object.keys(editors).map(x => +x))+1, name = 'untitled.ml', theme= editors[Math.min(...Object.keys(editors).map(x => +x))].getOption('theme'));"><i
@@ -93,10 +97,6 @@
                 </a>
             </li>
             <li><a class="modal-trigger" href="#help"><i class="material-icons">settings</i></a></li>
-        </ul>
-    </div>
-    <div class="nav-content" style="display: none">
-        <ul id="editor-files" class="tabs">
         </ul>
     </div>
 </nav>

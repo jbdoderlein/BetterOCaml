@@ -79,10 +79,8 @@
 <nav class="nav-extended">
     <div class="nav-wrapper">
         <ul id="editor-files" class="tabs left">
-            <li><a><i class="material-icons">navigate_before</i></a></li>
-            <li><a><i class="material-icons">navigate_next</i></a></li>
         </ul>
-        <ul class="right">
+        <ul id="menu-button" class="right">
             <li>
                 <a onclick="editors[Math.max(...Object.keys(editors).map(x => +x))+1] = create_editor(id = Math.max(...Object.keys(editors).map(x => +x))+1, name = 'untitled.ml', theme= editors[Math.min(...Object.keys(editors).map(x => +x))].getOption('theme'));"><i
                         class="material-icons">add</i></a></li>
@@ -308,7 +306,24 @@
     document.getElementById("toplevel-container").addEventListener("click", (event) => {
         if (event.target === event.currentTarget) document.getElementById('userinput').focus();
     });
-
+    /*
+    document.getElementsByClassName('nav-wrapper')[0]
+        .addEventListener('change', function (){
+            let wrapper = document.getElementsByClassName("nav-wrapper")[0];
+            let files = document.getElementById("editor-files");
+            let buttons =document.getElementById("menu-button");
+            console.log(wrapper.offsetWidth - buttons.offsetWidth, files.offsetWidth)
+        }, false);
+    */
+    var wrapper = document.getElementsByClassName("nav-wrapper")[0];
+    var files = document.getElementById("editor-files");
+    var buttons =document.getElementById("menu-button");
+    function outputsize() {
+        files.style.width = ((wrapper.offsetWidth - buttons.offsetWidth - 30)) + "px";
+        console.log(wrapper.offsetWidth, buttons.offsetWidth, files.offsetWidth, wrapper.offsetWidth - buttons.offsetWidth - 10);
+    }
+    outputsize()
+    new ResizeObserver(outputsize).observe(files)
 </script>
 
 

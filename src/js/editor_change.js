@@ -1,3 +1,9 @@
+const COMMENT_REGEX = new RegExp(/[(][*][\s\S]*?[*][)][\s]*/g);
+const CODE_SEPARATOR_REGEX = new RegExp(/[\S][\s\S]*?(;;)/g);
+const VARIABLE_1_REGEX = new RegExp(/((let rec \w+)|(let \w+)|(and \w+))/g);
+const VARIABLE_2_REGEX = new RegExp(/(let )|(rec )|(and )/g);
+
+
 function parse(str, editor) {
     let textarea = document.getElementById('userinput');
     let cmd = str.split(';;\n');
@@ -28,7 +34,7 @@ function changefontsize(id, a) {
 }
 
 let clean_content = function (content) {
-    return content.replace(/[(][*][\s\S]*?[*][)][\s]*/g, '').match(/[\S][\s\S]*?(;;)/g)
+    return content.replace(COMMENT_REGEX, '').match(CODE_SEPARATOR_REGEX)
 }
 let line_with_last = function (instance) {
     let i = instance.getCursor().line
@@ -59,7 +65,7 @@ let calculate_highlight = function (instance) {
     let execselected;
     try {
         execselected = instance.getRange({line: 0, ch: 0}, {line: line_with_last(instance)})
-            .match(/[\S][\s\S]*?(;;)/g).slice(-1)[0] // Get last sentence
+            .match(CODE_SEPARATOR_REGEX).slice(-1)[0] // Get last sentence
     } catch (e) {
         execselected = "";
     }
@@ -249,9 +255,13 @@ function hint_prediction(cm, option) {
             }
             // Magic formula to remove comment and find all variables
             let variables = [...new Set(
-                cm.getValue()
-                    .replace(/[(][*][\s\S]*?[*][)][\s]*/g, '')
-                    .match(/((?<=let rec )|(?<=let )|(?<=and ))(\w+\b(?<!\brec))/g))]
+                (cm.getValue()
+                    .replace(COMMENT_REGEX, '')
+                    .match(VARIABLE_1_REGEX) || []
+                ).map(x=>x.replace(VARIABLE_2_REGEX, ""))
+            )];
+            console.log(variables)
+
             let possibilities = variables.concat(cm.hint_list["Base"]);
             let correspondance = includer(possibilities, word);
             if (word.length !== 0 && correspondance.length !== 0 && !possibilities.includes(word)) {

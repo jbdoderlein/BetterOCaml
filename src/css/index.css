@@ -45,27 +45,36 @@ nav i, nav i.material-icons {
     }
 }
 
-.tabs{
+.normal-tabs{
     display: flex;
     height: inherit;
     font-size: 0.9rem;
 }
 
-.tabs .tab {
+.normal-tabs .tab {
     height: inherit;
     text-transform: none!important;
     line-height: 10vh;
 }
 
-.tabs .tab a{
+.normal-tabs .tab a{
     padding-left: 16px!important;
     padding-right: 16px!important;
 }
 
-.tabs .tab a.active {
+.normal-tabs .tab a.active {
     font-size: 1.1rem !important;
 }
 
+/* Tweak against materialize */
+@media (max-width: 992px) {
+    .normal-tabs .tab {
+        -webkit-box-flex: 0;
+        -webkit-flex-grow: 0;
+        -ms-flex-positive: 0;
+        flex-grow: 0;
+    }
+}
 .indicator{
     display: none;
 }

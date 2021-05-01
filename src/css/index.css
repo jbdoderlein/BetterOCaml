@@ -46,8 +46,8 @@ nav i, nav i.material-icons {
 }
 
 .tabs{
+    display: flex;
     height: inherit;
-    width: auto;
     font-size: 0.9rem;
 }
 
@@ -78,6 +78,7 @@ nav i, nav i.material-icons {
     border-radius: 4px;
     background-color: #202b30;
 }
+
 
 /*  BODY */
 /*  EDITOR */

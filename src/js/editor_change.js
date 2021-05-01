@@ -284,7 +284,12 @@ function hint_prediction(cm, option) {
 }
 
 function create_editor(id, name) {
-    var $tabs = $('#editor-files');
+    if (MOBILE){
+        var $tabs = $('#mobile-sidenav');
+    }
+    else {
+        var $tabs = $('#editor-files');
+    }
     $tabs.children().removeAttr('style');
 
     $tabs.append("<li id='li_tab_" + String(id) + "' class='tab col s3 onglet'><a href='#editor_tab_" + String(id) + "'>" + name + "<i class='material-icons center mini-icon' onclick='remove_editor(" + String(id) + ")'>close</i></a></li>");
@@ -329,24 +334,46 @@ function create_editor(id, name) {
 }
 
 function actual_editor() {
-    let instance = M.Tabs.getInstance(document.getElementById('editor-files'));
-    return instance.$tabLinks[instance.index].href.match(/editor_tab_[0-9]+/g)[0].substr(11);
+    if (MOBILE){
+        let instance = M.Tabs.getInstance(document.getElementById('mobile-sidenav'));
+        return instance.$tabLinks[instance.index].href.match(/editor_tab_[0-9]+/g)[0].substr(11);
+    }
+    else {
+        let instance = M.Tabs.getInstance(document.getElementById('editor-files'));
+        return instance.$tabLinks[instance.index].href.match(/editor_tab_[0-9]+/g)[0].substr(11);
+    }
 }
 
 function delete_editor(id) {
-    var $tabs = $('#editor-files');
+    if (MOBILE){
+        var $tabs = $('#mobile-sidenav');
+    }
+    else {
+        var $tabs = $('#editor-files');
+    }
+
     $tabs.children().removeAttr('style');
     $tabs.children().remove('#li_tab_' + String(id));
-    $("#editorCollection").children().remove('#editor_tab_' + String(id));
+    $("#editorCollection").children().remove('#editor_tab_' + String(id)); // codebox
     $tabs.tabs();
 }
 
 function select_editor(id) {
-    let instance = M.Tabs.getInstance(document.getElementById('editor-files'));
-    instance.select('editor_tab_' + String(id));
-    setTimeout(function () {
-        document.querySelector('a[href="#editor_tab_' + String(id) + '"]').click();
-    }, 5);
+    if (MOBILE){
+        let instance = M.Tabs.getInstance(document.getElementById('mobile-sidenav'));
+        instance.select('editor_tab_' + String(id));
+        setTimeout(function () {
+            document.querySelector('a[href="#editor_tab_' + String(id) + '"]').click();
+        }, 5);
+    }
+    else {
+        let instance = M.Tabs.getInstance(document.getElementById('editor-files'));
+        instance.select('editor_tab_' + String(id));
+        setTimeout(function () {
+            document.querySelector('a[href="#editor_tab_' + String(id) + '"]').click();
+        }, 5);
+    }
+
 }
 
 function change_name(id, name) {

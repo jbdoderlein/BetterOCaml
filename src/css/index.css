@@ -75,6 +75,12 @@ nav i, nav i.material-icons {
         flex-grow: 0;
     }
 }
+
+.mobile-tabs{
+    display: flex;
+    flex-direction: column;
+}
+
 .indicator{
     display: none;
 }

@@ -294,7 +294,12 @@
     // Load Materialize Components
     $(document).ready(function () {
         $('.modal').modal();
-        $('.normal-tabs').tabs();
+        if (MOBILE){
+            $('.mobile-tabs').tabs();
+        }
+        else {
+            $('.normal-tabs').tabs();
+        }
         $('.sidenav').sidenav();
         $('#theme-select').find('option[value=' + (localStorage.getItem('betterocaml-theme') || 'material') + ']').prop('selected', true);
         $("#theme-select").formSelect();

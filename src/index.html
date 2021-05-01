@@ -78,10 +78,10 @@
 
 <nav class="nav-extended">
     <div class="nav-wrapper">
-        <ul id="editor-files" class="tabs left">
+        <ul id="editor-files" class="normal-tabs tabs left">
         </ul>
         <ul id="menu-button" class="right">
-            <li>
+            <li id="flexible-mobile-button">
                 <a onclick="editors[Math.max(...Object.keys(editors).map(x => +x))+1] = create_editor(id = Math.max(...Object.keys(editors).map(x => +x))+1, name = 'untitled.ml', theme= editors[Math.min(...Object.keys(editors).map(x => +x))].getOption('theme'));"><i
                         class="material-icons">add</i></a></li>
             <li><a onclick="exec_all(editors[actual_editor()])"><i class="material-icons">play_arrow</i></a></li>
@@ -98,6 +98,10 @@
         </ul>
     </div>
 </nav>
+
+<ul id="mobile-sidenav" class="sidenav mobile-tabs tabs">
+
+</ul>
 
 <div class="fixedab hide-on-small-and-down" style="bottom: 15px; left: 15px;">
     <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_1', 1.1)"><i
@@ -258,6 +262,9 @@
                 console.log("Service Worker Registration Failed");
             }
         }
+
+        // Init navbar size
+        navbar_resize()
     }, false);
 
     // Loading Animation
@@ -280,10 +287,14 @@
         }
     };
 
+    // Auto resize
+    new ResizeObserver(navbar_resize).observe(files);
+    window.addEventListener("resize", navbar_resize);
+
     // Load Materialize Components
     $(document).ready(function () {
         $('.modal').modal();
-        $('.tabs').tabs();
+        $('.normal-tabs').tabs();
         $('.sidenav').sidenav();
         $('#theme-select').find('option[value=' + (localStorage.getItem('betterocaml-theme') || 'material') + ']').prop('selected', true);
         $("#theme-select").formSelect();
@@ -306,24 +317,7 @@
     document.getElementById("toplevel-container").addEventListener("click", (event) => {
         if (event.target === event.currentTarget) document.getElementById('userinput').focus();
     });
-    /*
-    document.getElementsByClassName('nav-wrapper')[0]
-        .addEventListener('change', function (){
-            let wrapper = document.getElementsByClassName("nav-wrapper")[0];
-            let files = document.getElementById("editor-files");
-            let buttons =document.getElementById("menu-button");
-            console.log(wrapper.offsetWidth - buttons.offsetWidth, files.offsetWidth)
-        }, false);
-    */
-    var wrapper = document.getElementsByClassName("nav-wrapper")[0];
-    var files = document.getElementById("editor-files");
-    var buttons =document.getElementById("menu-button");
-    function outputsize() {
-        files.style.width = ((wrapper.offsetWidth - buttons.offsetWidth - 30)) + "px";
-        console.log(wrapper.offsetWidth, buttons.offsetWidth, files.offsetWidth, wrapper.offsetWidth - buttons.offsetWidth - 10);
-    }
-    outputsize()
-    new ResizeObserver(outputsize).observe(files)
+
 </script>
 
 

@@ -3,6 +3,14 @@ const CODE_SEPARATOR_REGEX = new RegExp(/[\S][\s\S]*?(;;)/g);
 const VARIABLE_1_REGEX = new RegExp(/((let rec \w+)|(let \w+)|(and \w+))/g);
 const VARIABLE_2_REGEX = new RegExp(/(let )|(rec )|(and )/g);
 
+const wrapper = document.getElementsByClassName("nav-wrapper")[0];
+const files = document.getElementById("editor-files");
+const mobile_sidenav = document.getElementById("mobile-sidenav");
+const buttons =document.getElementById("menu-button");
+
+
+var MOBILE = false;
+
 
 function parse(str, editor) {
     let textarea = document.getElementById('userinput');
@@ -260,7 +268,6 @@ function hint_prediction(cm, option) {
                     .match(VARIABLE_1_REGEX) || []
                 ).map(x=>x.replace(VARIABLE_2_REGEX, ""))
             )];
-            console.log(variables)
 
             let possibilities = variables.concat(cm.hint_list["Base"]);
             let correspondance = includer(possibilities, word);
@@ -417,4 +424,42 @@ function init_local_storage() {
         }
     }
 
+}
+
+function navbar_resize() {
+    files.style.width = ((wrapper.offsetWidth - buttons.offsetWidth - 5)) + "px";
+    if (!MOBILE && window.innerWidth<=600){
+        console.log(1)
+        MOBILE = true;
+        // Change add button to mobile sidenav
+        let mobile_button = document.getElementById("flexible-mobile-button");
+        mobile_button.children[0].children[0].innerText = "menu";
+        mobile_button.children[0].setAttribute("href", "#");
+        mobile_button.children[0].removeAttribute("onclick");
+        mobile_button.children[0].setAttribute("data-target", "mobile-sidenav");
+        mobile_button.children[0].setAttribute("class", "sidenav-trigger");
+        // hide tabs
+        [...files.children].map(function (li){
+            mobile_sidenav.appendChild(li)
+        });
+        $('.mobile-tabs').tabs();
+
+    }
+    if (MOBILE && window.innerWidth>600){
+        console.log(2)
+        MOBILE = false;
+        // Change mobile sidenav button to add
+        let mobile_button = document.getElementById("flexible-mobile-button");
+        mobile_button.children[0].children[0].innerText = "add";
+        mobile_button.children[0].removeAttribute("href");
+        mobile_button.children[0].setAttribute("onclick", "editors[Math.max(...Object.keys(editors).map(x => +x))+1] = create_editor(id = Math.max(...Object.keys(editors).map(x => +x))+1, name = 'untitled.ml', theme= editors[Math.min(...Object.keys(editors).map(x => +x))].getOption('theme'));");
+        mobile_button.children[0].removeAttribute("data-target");
+        mobile_button.children[0].removeAttribute("class");
+        // show tabs
+        [...mobile_sidenav.children].map(function (li){
+            files.appendChild(li)
+        });
+        $('.normal-tabs').tabs();
+
+    }
 }

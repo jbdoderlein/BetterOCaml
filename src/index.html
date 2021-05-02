@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <title>BetterOCaml</title>
-    <meta name="description" content="An efficient, intuitive and cross-platform web IDE for the OCaml language (recent: v4.12.0), with your code interpreted and running in your browser! (no server is needed!)">
+    <meta name="description"
+          content="An efficient, intuitive and cross-platform web IDE for the OCaml language (recent: v4.12.0), with your code interpreted and running in your browser! (no server is needed!)">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="manifest" href="manifest.json">
@@ -52,7 +53,7 @@
             version = versions[0];
             params.set("version", version);
             var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + params.toString();
-            window.history.pushState({path:newUrl},'',newUrl);
+            window.history.pushState({path: newUrl}, '', newUrl);
         }
 
         let script = document.createElement('script');
@@ -77,7 +78,6 @@
 </div>
 
 <body>
-
 <!-- Nav -->
 <nav class="nav-extended">
     <div class="nav-wrapper">
@@ -165,17 +165,21 @@
 
             <div class="zoom-option config-element">
                 Editor zoom :
-                <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_1', 1.1)"><i
+                <a class="btn-floating btn-small waves-effect waves-light zoom-button"
+                   onclick="changefontsize('box_1', 1.1)"><i
                         class="material-icons">add</i></a>
-                <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_1', 0.9)"><i
+                <a class="btn-floating btn-small waves-effect waves-light zoom-button"
+                   onclick="changefontsize('box_1', 0.9)"><i
                         class="material-icons">remove</i></a>
             </div>
 
             <div class="zoom-option config-element">
                 Console zoom :
-                <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_2', 1.1)"><i
+                <a class="btn-floating btn-small waves-effect waves-light zoom-button"
+                   onclick="changefontsize('box_2', 1.1)"><i
                         class="material-icons">add</i></a>
-                <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_2', 0.9)"><i
+                <a class="btn-floating btn-small waves-effect waves-light zoom-button"
+                   onclick="changefontsize('box_2', 0.9)"><i
                         class="material-icons">remove</i></a>
             </div>
 
@@ -226,17 +230,16 @@
     </div>
 </div>
 
-
 <div class="container-boc container horizontal">
+    <!-- Editor flexboxs -->
     <div id="box_1" class="box editor-box" style="display:flex;flex-direction:column">
-
-
         <div class="editorCollection" id="editorCollection">
         </div>
     </div>
 
     <div name="resizerH1"></div>
 
+    <!-- Toplevel flexbox -->
     <div id="box_2" class="box console-box">
         <div id="toplevel-container" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
             <pre id="output"></pre>
@@ -314,10 +317,9 @@
     // Load Materialize Components
     $(document).ready(function () {
         $('.modal').modal();
-        if (MOBILE){
+        if (MOBILE) {
             $('.mobile-tabs').tabs();
-        }
-        else {
+        } else {
             $('.normal-tabs').tabs();
         }
         $('.sidenav').sidenav();

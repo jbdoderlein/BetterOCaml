@@ -1,3 +1,5 @@
+/* BODY */
+
 body, html {
     margin: 0;
     width: 100%;
@@ -7,6 +9,48 @@ body, html {
     background-color: #101010;
     font-size: 1em;
     min-height: -webkit-fill-available;
+}
+
+.container-boc {
+    display: flex;
+    flex: 1 1 auto;
+    width: 100% !important;
+    max-width: 80000px !important;
+    height: 90vh;
+}
+
+.horizontal {
+    flex-direction: row;
+}
+
+@media (max-width:600px){
+    .horizontal {
+        flex-direction: column;
+    }
+}
+
+.vertical {
+    flex-direction: column;
+}
+
+.box {
+    flex: 1 1 0;
+    display: flex;
+    overflow-x: hidden;
+    overflow-y: auto;
+    white-space: nowrap;
+}
+
+.fixedab {
+    position:fixed;
+    bottom:23px;
+    padding-top:15px;
+    margin-bottom:0;
+    z-index:997;
+}
+
+.zoom-button{
+    margin: 2px;
 }
 
 /*  NAVBAR */
@@ -98,6 +142,10 @@ nav i, nav i.material-icons {
     color: white!important;
 }
 
+.sidenav-trigger{
+    margin: unset!important;
+    height: inherit!important;
+}
 
 .indicator{
     display: none;
@@ -124,95 +172,12 @@ nav i, nav i.material-icons {
     cursor: pointer;
 }
 
-
-/*  BODY */
-/*  EDITOR */
-/*  CONSOLE */
-
-.container-boc {
-  display: flex;
-  flex: 1 1 auto;
-    width: 100% !important;
-    max-width: 80000px !important;
-    height: 90vh;
-}
-
-.horizontal {
-    flex-direction: row;
-
-}
-
-@media (max-width:600px){
-    .horizontal {
-        flex-direction: column;
-    }
-}
-
-
-
-.vertical {
-  flex-direction: column;
-}
-
-.box {
-  flex: 1 1 0;
-  display: flex;
-  overflow-x: hidden;
-  overflow-y: auto;
-  white-space: nowrap;
-}
-
-.zoom-button{
-    margin: 2px;
-}
+/* TOPLEVEL */
 
 .errorloc{
     border-bottom-width: 3px;
     border-bottom-style: solid;
 }
-
-.resizer {
-  flex: 0 0 auto;
-}
-.resizer[data-resizer-type=H] {
-  width: 8px;
-  cursor: col-resize;
-}
-.resizer[data-resizer-type=V] {
-  height: 8px;
-  cursor: row-resize;
-}
-
-.CodeMirror {
-	height: 100% !important;
-	width: 100% !important;
-}
-
-.code-box{
-    height: 100% !important;
-}
-
-
-
-#vertical-line {
-    border-left: 4px solid lightgrey;
-    position: absolute;
-    left: 50%;
-    top: 0;
-    margin-left: -2px;
-    height: 100%;
-}
-
-
-
-.fixedab {
-    position:fixed;
-    bottom:23px;
-    padding-top:15px;
-    margin-bottom:0;
-    z-index:997;
-}
-
 
 code, kbd, pre, samp {
     font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
@@ -265,12 +230,51 @@ code, kbd, pre, samp {
     font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
 }
 
+/* RESIZER */
+.resizer {
+  flex: 0 0 auto;
+}
 
+.resizer[data-resizer-type=H] {
+  width: 8px;
+  cursor: col-resize;
+}
 
+.resizer[data-resizer-type=V] {
+  height: 8px;
+  cursor: row-resize;
+}
+
+/* EDITOR */
+
+.CodeMirror {
+	height: 100% !important;
+	width: 100% !important;
+}
+
+.CodeMirror-hints {
+    max-height: 10rem !important;
+    overflow-y: hidden !important;
+}
+
+.code-box{
+    height: 100% !important;
+}
+
+#vertical-line {
+    border-left: 4px solid lightgrey;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    margin-left: -2px;
+    height: 100%;
+}
 
 .editorCollection{
     height: 100%;
 }
+
+/* CONFIG MODAL */
 
 .config-element{
     margin-top: 4%;
@@ -284,18 +288,17 @@ code, kbd, pre, samp {
     background-color: whitesmoke;
 }
 
+.config-section{
+    margin: 2%;
+}
 
-/* width */
+/* SCROLLBAR */
 ::-webkit-scrollbar {
     height: 10px;
     width: 20px;
 }
 
-.CodeMirror-hints {
-    max-height: 10rem !important;
-    overflow-y: hidden !important;
-}
-
+/* LOADING SCREEN */
 #loader-wrapper {
     position: fixed;
     top: 0;
@@ -335,6 +338,3 @@ img {
     top: 30%!important;
 }
 
-.config-section{
-    margin: 2%;
-}

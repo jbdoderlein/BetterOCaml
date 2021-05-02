@@ -42,6 +42,7 @@
     <script async defer src="js/buttons.js"></script>
 
     <script>
+        // Ocaml Toplevel version loading
         let params = new URLSearchParams(window.location.search);
         let version = params.get("version");
 
@@ -59,11 +60,12 @@
         script.type = 'text/javascript';
         script.src = 'toplevels/toplevel-' + version + '.js';
 
-        //document.head.appendChild(script);
+        document.head.appendChild(script);
     </script>
 </head>
 
-<div id="loader-wrapper" style="display: none;">
+<!-- Loading screen -->
+<div id="loader-wrapper">
     <div id="loader" class="container">
         <img alt="Betterocaml Splash" src="icon/banner.png">
         <h2 class="center white-text">Loading Ocaml Interpreter</h2>
@@ -76,6 +78,7 @@
 
 <body>
 
+<!-- Nav -->
 <nav class="nav-extended">
     <div class="nav-wrapper">
         <ul id="editor-files" class="normal-tabs tabs left">
@@ -99,27 +102,24 @@
     </div>
 </nav>
 
+<!-- Mobile Sidenav -->
 <ul id="mobile-sidenav" class="sidenav mobile-tabs tabs">
-
+    <li id="add_tab" class="tab col s3 onglet">
+        <a onclick="editors[Math.max(...Object.keys(editors).map(x => +x))+1] = create_editor(id = Math.max(...Object.keys(editors).map(x => +x))+1, name = 'untitled.ml', theme= editors[Math.min(...Object.keys(editors).map(x => +x))].getOption('theme'));">
+            Add file
+            <i class="material-icons add-icon">add</i>
+        </a>
+    </li>
 </ul>
 
-<div class="fixedab hide-on-small-and-down" style="bottom: 15px; left: 15px;">
-    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_1', 1.1)"><i
-            class="material-icons">add</i></a>
-    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_1', 0.9)"><i
-            class="material-icons">remove</i></a>
-</div>
-
+<!-- Clean console button -->
 <div class="fixed-action-btn hide-on-small-and-down" style="bottom: 15px; right: 15px;">
     <a class="btn-floating btn-small waves-effect waves-light zoom-button"
        onclick="document.getElementById('output').innerHTML=''"><i
             class="material-icons">delete</i></a>
-    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_2', 1.1)"><i
-            class="material-icons">add</i></a>
-    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_2', 0.9)"><i
-            class="material-icons">remove</i></a>
 </div>
 
+<!-- Quick execute and clean console on mobile -->
 <div class="fixed-action-btn mobile-button hide-on-med-and-up" style="bottom: 15px; right: 15px;">
     <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="exec_all(editors[actual_editor()])"><i
             class="material-icons">play_arrow</i></a>
@@ -128,16 +128,19 @@
             class="material-icons">delete</i></a>
 </div>
 
+<!-- Configuration modal -->
 <div id="help" class="modal help">
     <div class="modal-content">
 
         <h4>Configuration</h4>
         <div class="config-section">
+            Theme :
             <select name="theme" id="theme-select" class="config-element theme-select">
                 <option value="material">Default</option>
                 <option value="monokai">Monokai</option>
                 <option value="mdn-like">MDN</option>
                 <option value="pycharm">Pycharm</option>
+
             </select>
 
             <div class="switch config-element">
@@ -159,6 +162,22 @@
                     <span>Autocomplete</span>
                 </label>
             </p>
+
+            <div class="zoom-option config-element">
+                Editor zoom :
+                <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_1', 1.1)"><i
+                        class="material-icons">add</i></a>
+                <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_1', 0.9)"><i
+                        class="material-icons">remove</i></a>
+            </div>
+
+            <div class="zoom-option config-element">
+                Console zoom :
+                <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_2', 1.1)"><i
+                        class="material-icons">add</i></a>
+                <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_2', 0.9)"><i
+                        class="material-icons">remove</i></a>
+            </div>
 
             <a class="waves-effect waves-light btn config-element" onclick="reset_ocaml();"><i
                     class="material-icons right">refresh</i>Reset
@@ -190,6 +209,7 @@
     </div>
 </div>
 
+<!-- Save modal-->
 <div id="saveas" class="modal help">
     <div class="modal-content">
         <h4>Enregistrer sous ...</h4>

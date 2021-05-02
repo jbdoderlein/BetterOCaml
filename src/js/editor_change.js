@@ -456,7 +456,6 @@ function init_local_storage() {
 function navbar_resize() {
     files.style.width = ((wrapper.offsetWidth - buttons.offsetWidth - 5)) + "px";
     if (!MOBILE && window.innerWidth<=600){
-        console.log(1)
         MOBILE = true;
         // Change add button to mobile sidenav
         let mobile_button = document.getElementById("flexible-mobile-button");
@@ -465,7 +464,7 @@ function navbar_resize() {
         mobile_button.children[0].removeAttribute("onclick");
         mobile_button.children[0].setAttribute("data-target", "mobile-sidenav");
         mobile_button.children[0].setAttribute("class", "sidenav-trigger");
-        // hide tabs
+        // transfer tabs to sidenav
         [...files.children].map(function (li){
             mobile_sidenav.appendChild(li)
         });
@@ -473,7 +472,6 @@ function navbar_resize() {
 
     }
     if (MOBILE && window.innerWidth>600){
-        console.log(2)
         MOBILE = false;
         // Change mobile sidenav button to add
         let mobile_button = document.getElementById("flexible-mobile-button");
@@ -482,7 +480,7 @@ function navbar_resize() {
         mobile_button.children[0].setAttribute("onclick", "editors[Math.max(...Object.keys(editors).map(x => +x))+1] = create_editor(id = Math.max(...Object.keys(editors).map(x => +x))+1, name = 'untitled.ml', theme= editors[Math.min(...Object.keys(editors).map(x => +x))].getOption('theme'));");
         mobile_button.children[0].removeAttribute("data-target");
         mobile_button.children[0].removeAttribute("class");
-        // show tabs
+        // transfer tabs to navbar
         [...mobile_sidenav.children].map(function (li){
             if (li.id !== "add_tab"){
                 files.appendChild(li)

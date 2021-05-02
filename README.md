@@ -1,8 +1,10 @@
 # BetterOCaml
-[![Website betterocaml.ml](https://img.shields.io/website-up-down-green-red/https/betterocaml.ml.svg)](https://betterocaml.ml/)
-[![GitHub license](https://img.shields.io/github/license/jbdo99/betterocaml)](https://github.com/jbdo99/betterocaml/blob/master/LICENSE)
-![Compatibility](https://img.shields.io/badge/browser-chrome--firefox--edge-green)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/jbdo99/BetterOCaml/graphs/commit-activity)
+[![Website betterocaml.ml](https://img.shields.io/website-up-down-green-red/https/betterocaml.ml.svg?style=flat-square)](https://betterocaml.ml/)
+[![GitHub license](https://img.shields.io/github/license/jbdo99/betterocaml?style=flat-square)](https://github.com/jbdo99/betterocaml/blob/master/LICENSE)
+![GitHub repo size](https://img.shields.io/github/repo-size/jbdo99/BetterOCaml?style=flat-square)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=flat-square)](https://GitHub.com/jbdo99/BetterOCaml/graphs/commit-activity)
+[![Open Source? Yes!](https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github)](https://github.com/Naereen/badges/)
+[![Awesome Badges](https://img.shields.io/badge/badges-awesome-green.svg?style=flat-square)](https://github.com/Naereen/badges)
 
 An efficient, intuitive and cross-platform web IDE for the [OCaml](https://www.ocaml.org/) language (recent: v4.12.0), with your code interpreted and running in your browser! (no server is needed!)
 
@@ -72,3 +74,4 @@ This project is released publicly under the terms of the [Apache 2.0](https://ww
 
 ### Authors
 This project was initiated and is maintained by [@jbdo99](https://github.com/jbdo99/), with help and contributions from a few [other people](https://github.com/jbdo99/BetterOCaml/graphs/contributors).
+

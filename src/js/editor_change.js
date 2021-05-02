@@ -484,7 +484,9 @@ function navbar_resize() {
         mobile_button.children[0].removeAttribute("class");
         // show tabs
         [...mobile_sidenav.children].map(function (li){
-            files.appendChild(li)
+            if (li.id !== "add_tab"){
+                files.appendChild(li)
+            }
         });
         $('.normal-tabs').tabs();
 

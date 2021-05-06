@@ -143,7 +143,7 @@ nav i.material-icons {
     margin-top: 12px !important;
     line-height: 12px !important;
     height: 24px !important;
-    color: white !important;
+    color: var(--text-color) !important;
 }
 
 .sidenav-trigger {
@@ -161,7 +161,7 @@ nav i.material-icons {
     margin-left: 8px;
     padding: 6px;
     border-radius: 4px;
-    background-color: #202b30;
+    background-color: var(--nav-close-btn-bg-color);
 }
 
 .add-icon {
@@ -353,7 +353,7 @@ nav {
 
 nav i,
 nav i.material-icons {
-    color: var(--text-color);
+    color: var(--ui-text-color);
 }
 
 .zoom-button {
@@ -373,7 +373,7 @@ nav i.material-icons {
 }
 
 .commands {
-    color: var(--text-color);
+    color: var(--ui-text-color);
     border-left-color: var(--help-margin-color);
 }
 
@@ -383,7 +383,7 @@ nav i.material-icons {
 
 .help {
     background-color: var(--help-bg-color) !important;
-    color: var(--text-color);
+    color: var(--ui-text-color);
 }
 
 code,
@@ -395,16 +395,16 @@ samp {
 
 #toplevel-container {
     background-color: var(--toplevel-bg-color) !important;
-    color: var(--text-color);
+    color: var(--code-text-color);
 }
 
 #toplevel-container textarea {
-    color: var(--text-color);
+    color: var(--code-text-color);
 }
 
 .tabs {
     background-color: var(--nav-bg-color) !important;
-    color: var(--text-color) !important;
+    color: var(--ui-text-color) !important;
 }
 
 .onglet {
@@ -422,7 +422,7 @@ samp {
 
 .CodeMirror {
     background-color: var(--editor-bg-color);
-    color: var(--text-color);
+    color: var(--code-text-color);
 }
 
 .CodeMirror .CodeMirror-gutters {
@@ -493,19 +493,19 @@ samp {
 
 .theme-select,
 .select-dropdown {
-    color: var(--text-color) !important;
+    color: var(--ui-text-color) !important;
 }
 
 .caret {
-    fill: var(--text-color) !important;
+    fill: var(--ui-text-color) !important;
 }
 
 .select-wrapper input.select-dropdown:focus {
-    border-bottom: 1px solid var(--text-color) !important;
+    border-bottom: 1px solid var(--ui-text-color) !important;
 }
 
 label {
-    color: var(--text-color) !important;
+    color: var(--ui-text-color) !important;
 }
 
 .dropdown-content {
@@ -514,7 +514,7 @@ label {
 
 .dropdown-content li > a,
 .dropdown-content li > span {
-    color: var(--text-color) !important;
+    color: var(--form-dropdown-text-color) !important;
 }
 
 .switch label input[type=checkbox]:checked + .lever {
@@ -522,12 +522,12 @@ label {
 }
 
 .switch label input[type=checkbox]:checked + .lever:after {
-    background-color: var(--text-color) !important;
+    background-color: var(--ui-text-color) !important;
 }
 
 [type="checkbox"]:checked + span:not(.lever):before {
-    border-right: 2px solid var(--text-color) !important;
-    border-bottom: 2px solid var(--text-color) !important;
+    border-right: 2px solid var(--ui-text-color) !important;
+    border-bottom: 2px solid var(--ui-text-color) !important;
 }
 
 .btn.config-element {
@@ -545,7 +545,7 @@ label {
 }
 
 .stdout {
-    color: var(--text-color);
+    color: var(--code-text-color);
 }
 
 .errorloc {
@@ -593,7 +593,7 @@ label {
 }
 
 .sharp .text {
-    color: var(--text-color);
+    color: var(--code-text-color);
 }
 
 .sharp .numeric {
@@ -698,7 +698,7 @@ label {
 }
 
 .CodeMirror .cm-error {
-    color: var(--text-color);
+    color: var(--code-text-color);
     background-color: var(--code-error)
 }
 

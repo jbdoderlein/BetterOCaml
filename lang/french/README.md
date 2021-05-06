@@ -1,14 +1,16 @@
-# BetterOCaml (TODO)
+# BetterOCaml
 [![Website betterocaml.ml](https://img.shields.io/website-up-down-green-red/https/betterocaml.ml.svg?style=flat-square)](https://betterocaml.ml/)
 [![GitHub license](https://img.shields.io/github/license/jbdo99/betterocaml?style=flat-square)](https://github.com/jbdo99/betterocaml/blob/master/LICENSE)
 ![GitHub repo size](https://img.shields.io/github/repo-size/jbdo99/BetterOCaml?style=flat-square)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=flat-square)](https://GitHub.com/jbdo99/BetterOCaml/graphs/commit-activity)
 [![Open Source? Yes!](https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github)](https://github.com/Naereen/badges/)
 [![Awesome Badges](https://img.shields.io/badge/badges-awesome-green.svg?style=flat-square)](https://github.com/Naereen/badges)
-<p> Language : 
-  <span>English</span> |
-  <a href="https://github.com/jbdo99/BetterOCaml/tree/v2/lang/french#betterocaml">Français</a>
+
+<p> Langage : 
+  <a href="https://github.com/jbdo99/BetterOCaml">English</a> |
+  <span>Français</span>
   </p>
+
 An efficient, intuitive and cross-platform web IDE for the [OCaml](https://www.ocaml.org/) language (recent: v4.12.0), with your code interpreted and running in your browser! (no server is needed!)
 
 
@@ -26,10 +28,10 @@ Without installing any software on your laptop or smartphone, use [this web-base
 [![editor](https://user-images.githubusercontent.com/10222041/108104039-1204c680-708b-11eb-8054-58f7f9e5fe28.png)](https://BetterOCaml.ml/)
 
 The editor is made of 4 parts, as seen in this screenshot:
- - **1 Controls** : with these buttons you can add, execute, save and load code in the editor and access to settings;
- - **2 Tabs** : this is where you can switch between multiple files;
- - **3 Editor** : you can type code here and execute with `Ctrl+Enter`. Each OCaml statement must be finished with `;;`, and [toplevel directives](https://caml.inria.fr/pub/docs/manual-ocaml/toplevel.html#s%3Atoplevel-directives) are *not* supported;
- - **4 Output & Console** : this the output of OCaml, showing values and messages printed to `sdtout`, you can also type command here (after the `# ` sign), which much ends with `;;` and type `Enter`.
+- **1 Controls** : with these buttons you can add, execute, save and load code in the editor and access to settings;
+- **2 Tabs** : this is where you can switch between multiple files;
+- **3 Editor** : you can type code here and execute with `Ctrl+Enter`. Each OCaml statement must be finished with `;;`, and [toplevel directives](https://caml.inria.fr/pub/docs/manual-ocaml/toplevel.html#s%3Atoplevel-directives) are *not* supported;
+- **4 Output & Console** : this the output of OCaml, showing values and messages printed to `sdtout`, you can also type command here (after the `# ` sign), which much ends with `;;` and type `Enter`.
 
 ### :art: Theme
 You can choose the theme in the settings, in the top right corner. Your preference should be used the next time you come back on the editor.
@@ -52,7 +54,7 @@ If you have any suggestion for a new theme, [open an issue](https://github.com/j
 - The *Progressive Web App* can be installed on your smartphone: there should be a small + button near the address bar, or a "Install it" option in the menu. Once you install it, there should be an icon in the home screen (but not in the app menu) that launches the app in full size mode (like a browser, but no address bar). It [works fine](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Developer_guide/Installing#what_browsers_support_installation) on Chrom(e|ium) and Firefox mobile on Android, at least.
 - If you think that this is not enough, and that the website should be bundled as a native iOS/Android app, please vote :+1: on [this issue](https://github.com/jbdo99/BetterOCaml/issues/14).
 
-## :zap: PWA 
+## :zap: PWA
 
 Betterocaml is a fully installable Progressive Web App
 

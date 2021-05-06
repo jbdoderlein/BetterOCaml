@@ -7,7 +7,7 @@
 [![Awesome Badges](https://img.shields.io/badge/badges-awesome-green.svg?style=flat-square)](https://github.com/Naereen/badges)
 <p style="font-style: italic"> Language : 
   <span>English</span> |
-  <a href="https://github.com/jbdo99/BetterOCaml/tree/v2/lang/french#betterocaml">Français</a>
+  <a href="https://github.com/jbdo99/BetterOCaml/tree/master/lang/french#betterocaml">Français</a>
   </p>
 
 An efficient, intuitive and cross-platform web IDE for the [OCaml](https://www.ocaml.org/) language (recent: v4.12.0), with your code interpreted and running in your browser! (no server is needed!)

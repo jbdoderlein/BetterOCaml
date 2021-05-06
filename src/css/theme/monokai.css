@@ -1,7 +1,7 @@
-/* Material theme */
+/* Monokai theme */
 :root {
     /* Editor color */
-    --text-color: white;
+    --ui-text-color:white;
     --resizer-bg-color:#505050;
     --toplevel-bg-color: #272822;
     /* Help*/
@@ -13,6 +13,7 @@
     --nav-unselected-tab-text-color: #9f9f9f;
     --nav-selected-tab-bg-color: #272822;
     --nav-selected-tab-text-color: white;
+    --nav-close-btn-bg-color:#3a3b35;
     /* Editor */
     --editor-bg-color: #272822;
     --editor-gutter-bg-color:#272822;
@@ -28,11 +29,13 @@
     --preloader-progress-bar-color: white;
     /* Form */
     --form-dropdown-bg-color: #21221d;
+    --form-dropdown-text-color: white;
     --form-switch-border-color: #515348;
     --form-button-bg-color:#454646;
     --action-button: #21221d;
 
     /* Code color */
+    --code-text-color: white;
     --code-caml:rgb(110, 110, 201);
     --code-error:#d9534f;
     --code-string:#e6db74;
@@ -52,5 +55,4 @@
     --code-meta:#ffcb6b;
     --code-attribute:#a6e22e;
     --code-qualifier: #decb6b;
-
 }

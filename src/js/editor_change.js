@@ -83,7 +83,7 @@ let calculate_highlight = function (instance) {
 };
 
 function save(instance) {
-    if (instance.name === "untitled.ml") {
+    if (instance.name == "untitled.ml") {
         M.Modal.getInstance(document.getElementById('saveas')).open()
     } else {
         program_save(instance);
@@ -95,7 +95,7 @@ function name_and_save(instance) {
     let potential_filename = document.getElementById('saveas_text').value;
     let fileNameToSaveAs = "untitled.ml";
     if (potential_filename !== "") {
-        if (potential_filename.substr(-3, 3) === ".ml") {
+        if (potential_filename.substr(-3, 3) == ".ml") {
             fileNameToSaveAs = potential_filename
         } else {
             fileNameToSaveAs = potential_filename + ".ml"
@@ -159,7 +159,7 @@ function readSingleFile(e, editor) {
 
 function cursor_activity(instance, changeObj) {
     let cursor = calculate_highlight(instance);
-    if (!(cursor.from() === undefined)) {
+    if (!(cursor.from() == undefined)) {
         instance.current_marker.clear();
         instance.current_marker = instance.markText(from = cursor.from(), to = cursor.to(), options = {
             className: "code-highlight"
@@ -244,7 +244,7 @@ function hint_prediction(cm, option) {
                 while (nstart && /\w/.test(line.charAt(nstart - 1))) --nstart
                 let module = line.slice(nstart, start - 1);
                 if (MODULE_HINT.hasOwnProperty(module)) {
-                    if (word.length === 0) {
+                    if (word.length == 0) {
                         return accept({
                             list: MODULE_HINT[module],
                             from: CodeMirror.Pos(cursor.line, start),
@@ -317,7 +317,7 @@ function create_editor(id, name) {
     editor.id = id
     editor.name = name
     editor.is_saved = true
-    editor.ext_autocomplete = localStorage.getItem("betterocaml-autocomplete") === "true"
+    editor.ext_autocomplete = localStorage.getItem("betterocaml-autocomplete") == "true"
     editor.hint_list = MODULE_HINT
     editor.current_marker = editor.markText({line: 0}, {line: 0}, {css: "color: #fe4"});
     editor.on("cursorActivity", cursor_activity);
@@ -334,14 +334,20 @@ function create_editor(id, name) {
 }
 
 function actual_editor() {
+    var actual_instance, actual_id
     if (MOBILE){
-        let instance = M.Tabs.getInstance(document.getElementById('mobile-sidenav'));
-        return instance.$tabLinks[instance.index].href.match(/editor_tab_[0-9]+/g)[0].substr(11);
+        actual_instance = M.Tabs.getInstance(document.getElementById('mobile-sidenav'));
     }
     else {
-        let instance = M.Tabs.getInstance(document.getElementById('editor-files'));
-        return instance.$tabLinks[instance.index].href.match(/editor_tab_[0-9]+/g)[0].substr(11);
+        actual_instance = M.Tabs.getInstance(document.getElementById('editor-files'));
     }
+    try {
+        actual_id = actual_instance.$tabLinks[actual_instance.index].href.match(/editor_tab_[0-9]+/g)[0].substr(11)
+    }
+    catch (e){
+        actual_id = Math.max(...Object.keys(editors).map(x => +x))
+    }
+    return actual_id;
 }
 
 function delete_editor(id) {
@@ -367,6 +373,7 @@ function select_editor(id) {
         }, 5);
     }
     else {
+        console.log('select : ', id)
         let instance = M.Tabs.getInstance(document.getElementById('editor-files'));
         instance.select('editor_tab_' + String(id));
         setTimeout(function () {
@@ -384,7 +391,7 @@ function change_name(id, name) {
 function change_resize_bar(resize_obj, type) {
     resize_obj.resizer.type = type;
     resize_obj.resizer.node.setAttribute('data-resizer-type', type);
-    if (type==="H"){
+    if (type=="H"){
         document.getElementsByClassName("horizontal")[0].style.flexDirection = "row";
     }
     else{
@@ -404,7 +411,7 @@ function remove_editor(id) {
         }
         delete editors[id];
         delete_editor(id);
-        if (id===act){
+        if (id==act){
             select_editor(Math.max(...Object.keys(editors).map(x => +x)));
         }
         else{

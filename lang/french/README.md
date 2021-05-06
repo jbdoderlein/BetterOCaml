@@ -6,77 +6,78 @@
 [![Open Source? Yes!](https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github)](https://github.com/Naereen/badges/)
 [![Awesome Badges](https://img.shields.io/badge/badges-awesome-green.svg?style=flat-square)](https://github.com/Naereen/badges)
 
-<p> Langage : 
-  <a href="https://github.com/jbdo99/BetterOCaml">English</a> |
+<p style="font-style: italic"> Langage : 
+  <a href="https://github.com/jbdo99/BetterOCaml#betterocaml">English</a> |
   <span>Français</span>
   </p>
 
-An efficient, intuitive and cross-platform web IDE for the [OCaml](https://www.ocaml.org/) language (recent: v4.12.0), with your code interpreted and running in your browser! (no server is needed!)
+Un IDE web efficace, intuitif et multiplateforme pour le langage [OCaml](https://www.ocaml.org/) (récent : v4.12.0), avec votre code interprété et exécuté dans votre navigateur ! (aucun serveur n'est nécessaire !)
 
+## Installation / Utilisation
 
-## Installation / Usage
+L'IDE est hébergé [ici](https://betterocaml/), <https://BetterOCaml.ml/>, mais vous pouvez héberger votre propre version en copiant simplement les fichiers du répertoire `src/` sur votre hôte (sur un dossier de votre ordinateur portable, ou un dossier de votre serveur web, voir <http://ocaml.besson.link/> pour un exemple).
 
-The IDE is hosted [here](https://betterocaml/), <https://BetterOCaml.ml/>, but you can host your own version by simply copying the files from the `src/` directory on your host (on a folder of your laptop, or a folder of your web-server, see <http://ocaml.besson.link/> for an example).
+C'est un site *purement statique* : une fois que votre navigateur aura téléchargé les fichiers du serveur (environ 35 Mo), il exécutera le code OCaml dans son moteur javascript, sans rien envoyer à un serveur distant !
+Vos données sont sécurisées, et ce site n'utilise aucun cookie de service tiers :no_good_man : :cookie :.
 
-It is a *purely static website*: once your browser downloads the files from the server (about 35 Mb), it will run the OCaml code in its javascript engine, without sending anything to a distant server!
-Your data is secure, and this website does not use any third party service cookie :no_good_man: :cookie:.
+Sans installer aucun logiciel sur votre ordinateur portable ou votre smartphone, utilisez [cet éditeur web](https://BetterOCaml.ml/) pour accéder à un REPL OCaml complet et à un éditeur de texte, avec coloration syntaxique, autocomplétion, un support complet de la syntaxe OCaml récente et de [toute la bibliothèque standard](https://caml.inria.fr/pub/docs/manual-ocaml/libref/) (sauf les modules `Graphics`, `Unix` et la fonction `Sys.command`), et des fichiers multiples que vous pouvez sauvegarder ou charger depuis votre ordinateur.
 
-Without installing any software on your laptop or smartphone, use [this web-based editor](https://BetterOCaml.ml/) to access to a complete OCaml REPL and text editor, with syntax highlighting, a full support of recent OCaml syntax and [the entire standard library](https://caml.inria.fr/pub/docs/manual-ocaml/libref/) (except for `Graphics`, `Unix` modules and `Sys.command` function), and multiple-files that you can save to or load from your computer.
+## Comment utiliser ?
 
-## How to use ?
+![BetterOCaml usage gif](https://user-images.githubusercontent.com/10222041/117338097-75d6a880-ae9e-11eb-9a69-63c39bd8fd4a.gif)
 
-[![editor](https://user-images.githubusercontent.com/10222041/108104039-1204c680-708b-11eb-8054-58f7f9e5fe28.png)](https://BetterOCaml.ml/)
+L'éditeur est composé de 3 parties, comme le montre cette capture d'écran :
+- ** Navbar ** : c'est ici que vous pouvez basculer entre plusieurs fichiers. Vous pouvez ajouter, exécuter, sauvegarder, charger du code dans l'éditeur et accéder aux paramètres; ;
+- ** Editor** : vous pouvez taper du code ici et l'exécuter avec `Ctrl+Enter`. Chaque instruction OCaml doit être terminée par `;;`, et les [toplevel directives](https://caml.inria.fr/pub/docs/manual-ocaml/toplevel.html#s%3Atoplevel-directives) ne sont *pas* supportées ;
+- ** Output & Console** : c'est la sortie d'OCaml, montrant les valeurs et les messages imprimés dans `sdtout`, vous pouvez aussi taper une commande ici (après le signe `# `), et taper `Enter`.
 
-The editor is made of 4 parts, as seen in this screenshot:
-- **1 Controls** : with these buttons you can add, execute, save and load code in the editor and access to settings;
-- **2 Tabs** : this is where you can switch between multiple files;
-- **3 Editor** : you can type code here and execute with `Ctrl+Enter`. Each OCaml statement must be finished with `;;`, and [toplevel directives](https://caml.inria.fr/pub/docs/manual-ocaml/toplevel.html#s%3Atoplevel-directives) are *not* supported;
-- **4 Output & Console** : this the output of OCaml, showing values and messages printed to `sdtout`, you can also type command here (after the `# ` sign), which much ends with `;;` and type `Enter`.
+### :art : Thème
 
-### :art: Theme
-You can choose the theme in the settings, in the top right corner. Your preference should be used the next time you come back on the editor.
-There are currently three themes (two dark themes, "default" and "Monokai", and a light one, "MDN").
+Vous pouvez choisir le thème dans les paramètres, dans le coin supérieur droit. Votre préférence devrait être utilisée la prochaine fois que vous revenez sur l'éditeur.
+Il existe actuellement trois thèmes (deux thèmes sombres, "default" et "Monokai", et un thème clair, "MDN").
 
-If you have any suggestion for a new theme, [open an issue](https://github.com/jbdo99/BetterOCaml/issues/new) :+1: !
+Si vous avez des suggestions pour un nouveau thème, [ouvrir un problème](https://github.com/jbdo99/BetterOCaml/issues/new) :+1 : !
 
-## :sparkles: Use offline?
-### :computer: On a laptop or desktop
-- If you visit [the editor](https://BetterOCaml.ml/) webpage using your favorite browser, and if it works fine, you can add the link to your :star: "favorites", and then later on, if you open the direct link, it should work and load back BetterOCaml... even if your browser is offline!
-- This can only work if you don't clean-up or delete the cache of your browser, but it should work even if you turn-off and turn-on again your laptop!
+## :sparkles : Utiliser hors ligne ?
+### :computer : Sur un ordinateur portable ou de bureau
+- Si vous visitez la page Web de [l'éditeur](https://BetterOCaml.ml/) à l'aide de votre navigateur préféré, et si tout fonctionne bien, vous pouvez ajouter le lien à vos :star : "favoris", et plus tard, si vous ouvrez le lien direct, il devrait fonctionner et charger BetterOCaml... même si votre navigateur est hors ligne !
+- Cela ne peut fonctionner que si vous ne nettoyez pas ou ne supprimez pas le cache de votre navigateur, mais cela devrait fonctionner même si vous éteignez et rallumez votre ordinateur portable !
 
-- We [recently](https://github.com/jbdo99/BetterOCaml/issues/12) [added](https://github.com/jbdo99/BetterOCaml/issues/13) support for an [app manifest](https://github.com/jbdo99/BetterOCaml/blob/master/src/manifest.json) and [service workers](https://github.com/jbdo99/BetterOCaml/blob/master/src/serviceWorker.js), so this web app is now a *Progressive Web App* (PWA), which can be installed on your laptop and used later on, even if you're offline! After being intalled, the app should appear in your global application menu (it works on Chromium on both Windows and Ubuntu).
+- Nous avons [récemment](https://github.com/jbdo99/BetterOCaml/issues/12) [ajouté](https://github.com/jbdo99/BetterOCaml/issues/13) le support pour un [manifeste d'application](https://github.com/jbdo99/BetterOCaml/blob/master/src/manifest.json) et des [travailleurs de service](https://github.com/jbdo99/BetterOCaml/blob/master/src/serviceWorker.js), donc cette application web est maintenant une *application web progressive* (PWA), qui peut être installée sur votre ordinateur portable et utilisée plus tard, même si vous êtes hors ligne ! Après avoir été installée, l'application devrait apparaître dans votre menu d'application global (elle fonctionne sous Chromium à la fois sur Windows et Ubuntu).
 
-> If you can't install it as a PWA, [@Naereen](https://GitHub.com/Naereen) recommends trying [WebCatalog](https://webcatalog.app/), a multi-platform desktop app (for \*NIX, Windows and Mac OS), and you can then use it to "install" [the BetterOCaml editor](https://BetterOCaml.ml), along with its integrated OCaml interpreter (of course), as a "native" desktop app. It then appears in the menu of your system, and it works offline! See [this 1:30min tutorial in video](https://github.com/jbdo99/BetterOCaml/issues/6#issuecomment-780269129).
+> Si vous ne pouvez pas l'installer en tant que PWA, [@Naereen](https://GitHub.com/Naereen) recommande d'essayer [WebCatalog](https://webcatalog.app/), une application de bureau multiplateforme (pour UNIX, Windows et Mac OS), et vous pouvez ensuite l'utiliser pour "installer" [l'éditeur BetterOCaml](https://BetterOCaml.ml), avec son interpréteur OCaml intégré (bien sûr), en tant qu'application de bureau "native". Il apparaît alors dans le menu de votre système, et il fonctionne hors ligne ! Voir [ce tutoriel de 1:30min en vidéo](https://github.com/jbdo99/BetterOCaml/issues/6#issuecomment-780269129).
 
-### :phone: On a smartphone (WIP)
-- It also works fine on smartphone running any recent OS and browser, :ok_hand: and the app should be "responsive" and switch to a vertical layout if your screen is too narrow.
-- Loading the OCaml toplevel can take a few seconds on a mobile 3G/4G or :snail: slow Wifi networks: it's over 30 Mb, as it includes all of [OCaml standard library](https://caml.inria.fr/pub/docs/manual-ocaml/libref/)!
-- The *Progressive Web App* can be installed on your smartphone: there should be a small + button near the address bar, or a "Install it" option in the menu. Once you install it, there should be an icon in the home screen (but not in the app menu) that launches the app in full size mode (like a browser, but no address bar). It [works fine](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Developer_guide/Installing#what_browsers_support_installation) on Chrom(e|ium) and Firefox mobile on Android, at least.
-- If you think that this is not enough, and that the website should be bundled as a native iOS/Android app, please vote :+1: on [this issue](https://github.com/jbdo99/BetterOCaml/issues/14).
+### :phone : Sur un smartphone
+- Il fonctionne également très bien sur un smartphone équipé d'un système d'exploitation et d'un navigateur récents, :ok_hand : l'application devrait être "responsive" et vous pouvez passer à une disposition verticale dans les paramètres si votre écran est trop étroit.
+- Le chargement du toplevel OCaml peut prendre quelques secondes sur un réseau mobile 3G/4G ou :snail : un réseau Wifi lent : il fait plus de 30 Mo, car il inclut toute la [bibliothèque standard OCaml](https://caml.inria.fr/pub/docs/manual-ocaml/libref/) !
+- La *Progressive Web App* peut être installée sur votre smartphone : il devrait y avoir un petit bouton + près de la barre d'adresse, ou une option "Install it" dans le menu. Une fois que vous l'avez installée, il devrait y avoir une icône sur l'écran d'accueil (mais pas dans le menu des applications) qui lance l'application en mode pleine taille (comme un navigateur, mais sans barre d'adresse). Cela [fonctionne bien](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Developer_guide/Installing#what_browsers_support_installation) sur Chrom(e|ium) et Firefox mobile sur Android, au moins.
+- Si vous pensez que ce n'est pas suffisant et que le site Web devrait être intégré à une application native iOS/Android, veuillez voter :+1 : sur [cette question](https://github.com/jbdo99/BetterOCaml/issues/14).
 
-## :zap: PWA
+## :zap : PWA
 
-Betterocaml is a fully installable Progressive Web App
+Betterocaml est une Progressive Web App entièrement installable.
 
-[![pwa performance](https://betterocaml.ml/pwa_performance_2503.svg)](https://pagespeed-insights.herokuapp.com/?url=https://betterocaml.ml)
+[!performance des pwa](https://betterocaml.ml/pwa_performance_2503.svg)](https://pagespeed-insights.herokuapp.com/?url=https://betterocaml.ml)
+## Version d'Ocaml
+Vous pouvez changer la version d'ocaml avec l'url : `https://betterocaml.ml/?version=4.11.0`
 
-##  About this project
+Available version : `4.07.0`,`4.07.1`,`4.08.0`,`4.08.0`,`4.08.1`,`4.09.0`,`4.09.1`,`4.10.0`,`4.10.1`,`4.10.2`,`4.11.0`,`4.11.1`,`4.11.2`,`4.12.0`
+## A propos de ce projet
 
-### :hammer_and_wrench: Dependencies
-BetterOCaml is made with these open-source tools:
-- [js_of_ocaml](https://ocsigen.org/js_of_ocaml/3.7.0/manual/overview) v3.7.0 : compile the OCaml toplevel to javascript;
-- [Materialize](https://materializecss.com/) : CSS and javascript framework;
-- [Codemirror](https://codemirror.net/) : javascript code editor.
+### :hammer_and_wrench : Dépendances
+BetterOCaml est réalisé avec ces outils open-source :
+- [js_of_ocaml](https://ocsigen.org/js_of_ocaml/3.7.0/manual/overview) v3.7.0 : compile le toplevel OCaml en javascript ;
+- [Materialize](https://materializecss.com/) : framework CSS et javascript ;
+- [Codemirror](https://codemirror.net/) : éditeur de code javascript.
 
-### Contributing?
-Pull requests are welcome. For major changes, please [open an issue first](https://github.com/jbdo99/BetterOCaml/issues/new) to discuss what you would like to change.
+### Contribuer ?
+Les Pull requests sont les bienvenues. Pour les changements majeurs, veuillez [ouvrir d'abord un problème](https://github.com/jbdo99/BetterOCaml/issues/new) pour discuter de ce que vous souhaitez changer.
 
-### :sos: Need help?
-If something is wrong or if you encounter any issue when using BetterOCaml, please [open an issue first](https://github.com/jbdo99/BetterOCaml/issues/new) (you have [to create a GitHub account](https://github.com/join) first).
+### :sos : Besoin d'aide ?
+Si quelque chose ne va pas ou si vous rencontrez un problème lors de l'utilisation de BetterOCaml, veuillez [ouvrir un problème en premier] (https://github.com/jbdo99/BetterOCaml/issues/new) (vous devez d'abord [créer un compte GitHub] (https://github.com/join)).
 
-### :scroll: License
-This project is released publicly under the terms of the [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0) license.
+### :scroll : Licence
+Ce projet est diffusé publiquement selon les termes de la licence [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 
-### Authors
-This project was initiated and is maintained by [@jbdo99](https://github.com/jbdo99/), with help and contributions from a few [other people](https://github.com/jbdo99/BetterOCaml/graphs/contributors).
-
+### Auteurs
+Ce projet a été initié et est maintenu par [@jbdo99](https://github.com/jbdo99/), avec l'aide et les contributions de quelques [autres personnes](https://github.com/jbdo99/BetterOCaml/graphs/contributors).

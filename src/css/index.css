@@ -1,156 +1,193 @@
-body, html {
+/* BODY */
+
+body,
+html {
     margin: 0;
     width: 100%;
     height: 100vh;
+    min-height: 100vh;
     overflow: hidden;
     background-color: #101010;
     font-size: 1em;
-}
-
-body {
-    min-height: 100vh;
-    /* mobile viewport bug fix */
     min-height: -webkit-fill-available;
 }
 
-html {
-    height: -webkit-fill-available;
-}
-
-nav{
-    line-height: 0px!important;
-}
-
-nav .brand-logo {
-	padding-left: 1rem !important;
-    font-size: 1.8rem!important;
-    line-height: 64px!important;
-}
-
-.tabs {
-    display: flex;
-}
-
-@media only screen and (max-width: 992px){
-    nav .brand-logo {
-        left: 6rem!important;
-        padding-left: 1rem !important;
-        font-size: 1.8rem!important;
-    }
-}
-
-nav i, nav i.material-icons {
-	display: inline !important;
-}
-
 .container-boc {
-  display: flex;
-  flex: 1 1 auto;
+    display: flex;
+    flex: 1 1 auto;
     width: 100% !important;
     max-width: 80000px !important;
-    height: inherit;
-    max-height: calc(85vh - 10px);
+    height: 90vh;
 }
 
 .horizontal {
     flex-direction: row;
-
 }
 
-@media (max-width:600px){
+@media (max-width: 600px) {
     .horizontal {
         flex-direction: column;
     }
 }
 
-
-
 .vertical {
-  flex-direction: column;
+    flex-direction: column;
 }
 
 .box {
-  flex: 1 1 0;
-  display: flex;
-  overflow-x: hidden;
-  overflow-y: auto;
-  white-space: nowrap;
+    flex: 1 1 0;
+    display: flex;
+    overflow-x: hidden;
+    overflow-y: auto;
+    white-space: nowrap;
 }
 
-.zoom-button{
+.fixedab {
+    position: fixed;
+    bottom: 23px;
+    padding-top: 15px;
+    margin-bottom: 0;
+    z-index: 997;
+}
+
+.zoom-button {
     margin: 2px;
 }
 
-.errorloc{
+/*  NAVBAR */
+
+nav {
+    line-height: 0 !important;
+}
+
+.nav-extended {
+    height: 10vh !important;
+}
+
+.nav-wrapper {
+    height: inherit !important;
+    min-height: 0 !important;
+}
+
+.nav-wrapper ul {
+    height: inherit !important;
+}
+
+nav ul li {
+    height: inherit;
+    min-height: 0;
+}
+
+nav i,
+nav i.material-icons {
+    height: inherit;
+    line-height: 10vh;
+    font-size: 4vh;
+}
+
+@media (max-height: 700px) {
+    nav i,
+    nav i.material-icons {
+        font-size: 5vh;
+    }
+}
+
+.normal-tabs {
+    display: flex;
+    height: inherit;
+    font-size: 0.9rem;
+}
+
+.normal-tabs .tab {
+    height: inherit;
+    text-transform: none !important;
+    line-height: 10vh;
+}
+
+.normal-tabs .tab a {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+}
+
+.normal-tabs .tab a.active {
+    font-size: 1.1rem !important;
+}
+
+/* Tweak against materialize */
+
+@media (max-width: 992px) {
+    .normal-tabs .tab {
+        -webkit-box-flex: 0;
+        -webkit-flex-grow: 0;
+        -ms-flex-positive: 0;
+        flex-grow: 0;
+    }
+}
+
+.mobile-tabs {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.mobile-tabs .tab {
+    -webkit-box-flex: unset;
+    -webkit-flex-grow: unset;
+    -ms-flex-positive: unset;
+    flex-grow: unset;
+    text-transform: unset;
+}
+
+.mobile-tabs .tab i {
+    margin-bottom: 12px !important;
+    margin-top: 12px !important;
+    line-height: 12px !important;
+    height: 24px !important;
+    color: var(--text-color) !important;
+}
+
+.sidenav-trigger {
+    margin: unset !important;
+    height: inherit !important;
+}
+
+.indicator {
+    display: none;
+}
+
+.mini-icon {
+    display: inline !important;
+    font-size: 0.9rem !important;
+    margin-left: 8px;
+    padding: 6px;
+    border-radius: 4px;
+    background-color: var(--nav-close-btn-bg-color);
+}
+
+.add-icon {
+    display: inline !important;
+    font-size: 1.2rem !important;
+    margin-left: 8px;
+    padding: 6px;
+    cursor: pointer;
+}
+
+#add_tab {
+    cursor: pointer;
+}
+
+/* TOPLEVEL */
+
+.errorloc {
     border-bottom-width: 3px;
     border-bottom-style: solid;
 }
 
-.resizer {
-  flex: 0 0 auto;
-}
-.resizer[data-resizer-type=H] {
-  width: 3px;
-  cursor: col-resize;
-}
-.resizer[data-resizer-type=V] {
-  height: 3px;
-  cursor: row-resize;
-}
-
-.CodeMirror {
-	height: 100% !important;
-	width: 100% !important;
-}
-
-.code-box{
-    height: 100% !important;
-}
-
-
-
-#vertical-line {
-    border-left: 4px solid lightgrey;
-    position: absolute;
-    left: 50%;
-    top: 0;
-    margin-left: -2px;
-    height: 100%;
-}
-
-
-
-.fixedab {
-    position:fixed;
-    bottom:23px;
-    padding-top:15px;
-    margin-bottom:0;
-    z-index:997;
-}
-
-.mobile-button{
-    left: 92%;
-}
-
-@media (max-width:450px){
-    .mobile-button{
-        left: 90%;
-    }
-}
-
-@media (max-width:350px){
-    .mobile-button{
-        left: 87%;
-    }
-}
-/*
-select {
-    display: block !important;
-}
-*/
-
-code, kbd, pre, samp {
-    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+code,
+kbd,
+pre,
+samp {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
 
 #toplevel-container {
@@ -159,8 +196,7 @@ code, kbd, pre, samp {
     overflow-x: hidden;
     height: 100%;
     float: right;
-    padding: 10px;
-    padding-top: 20px;
+    padding: 20px 10px 10px;
 }
 
 #toplevel-container pre#output {
@@ -171,16 +207,15 @@ code, kbd, pre, samp {
     background-color: transparent;
     border: none;
     margin-bottom: 0;
-    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
 
 #toplevel-container textarea {
     width: 95%;
-    background-color: transparent;
     border: 0;
     resize: none;
     outline: none;
-    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
     font-weight: bold;
     float: left;
     margin: 0;
@@ -190,65 +225,64 @@ code, kbd, pre, samp {
 #toplevel-container #sharp {
     float: left;
     line-height: 18px;
-    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
     white-space: pre;
 }
 
-.sharp:before{
+.sharp:before {
     content: "# ";
     line-height: 18px;
-    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
 
+/* RESIZER */
 
-.indicator{
-    display: none;
+.resizer {
+    flex: 0 0 auto;
 }
 
-.tabs{
-    font-size: 0.9rem;
+.resizer[data-resizer-type=H] {
+    width: 8px;
+    cursor: col-resize;
 }
 
-
-.onglet {
-    border-top-right-radius: 0.8rem;
-    border-top-left-radius: 0.8rem;
-    text-transform: none!important;
+.resizer[data-resizer-type=V] {
+    height: 8px;
+    cursor: row-resize;
 }
 
-.tabs{
-    height: auto!important;
-    overflow-x: scroll!important;
+/* EDITOR */
+
+.CodeMirror {
+    height: 100% !important;
+    width: 100% !important;
 }
 
-.tabs .tab a.active {
-    border-top-right-radius: 0.8rem;
-    border-top-left-radius: 0.8rem;
-    font-size: 1.1rem !important;
+.CodeMirror-hints {
+    max-height: 10rem !important;
+    overflow-y: hidden !important;
 }
 
-.mini-icon{
-    font-size: 0.8rem!important;
-    margin-left: 1rem;
-    line-height: 1!important;
+.code-box {
+    height: 100% !important;
 }
 
-.editorCollection{
+#vertical-line {
+    border-left: 4px solid lightgrey;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    margin-left: -2px;
     height: 100%;
 }
 
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-    @supports (not (-ms-accelerator:true))
-    and (not (-moz-appearance:none)) {
-        .mini-icon{
-            font-size: 0.8rem!important;
-            margin-right: -0.8rem;
-            margin-left: 1rem;
-            line-height: 1!important;
-        }
-    } }
+.editorCollection {
+    height: 100%;
+}
 
-.config-element{
+/* CONFIG MODAL */
+
+.config-element {
     margin-top: 4%;
 }
 
@@ -260,17 +294,18 @@ code, kbd, pre, samp {
     background-color: whitesmoke;
 }
 
+.config-section {
+    margin: 2%;
+}
 
-/* width */
+/* SCROLLBAR */
+
 ::-webkit-scrollbar {
     height: 10px;
     width: 20px;
 }
 
-.CodeMirror-hints {
-    max-height: 10rem !important;
-    overflow-y: hidden !important;
-}
+/* LOADING SCREEN */
 
 #loader-wrapper {
     position: fixed;
@@ -281,7 +316,8 @@ code, kbd, pre, samp {
 }
 
 #loader {
-    z-index: 1001; /* anything higher than z-index: 1000 of .loader-section */
+    z-index: 1001;
+    /* anything higher than z-index: 1000 of .loader-section */
     height: 100%;
 }
 
@@ -307,10 +343,366 @@ img {
     max-height: 100%;
 }
 
-.progress{
-    top: 30%!important;
+.progress {
+    top: 30% !important;
 }
 
-.config-section{
-    margin: 2%;
+nav {
+    background-color: var(--nav-bg-color) !important;
+}
+
+nav i,
+nav i.material-icons {
+    color: var(--ui-text-color);
+}
+
+.zoom-button {
+    background-color: var(--action-button) !important;
+}
+
+.resizer[data-resizer-type=H] {
+    background: var(--resizer-bg-color);
+}
+
+.resizer[data-resizer-type=V] {
+    background: var(--resizer-bg-color);
+}
+
+.code-highlight {
+    background-color: var(--editor-code-highlight-color);
+}
+
+.commands {
+    color: var(--ui-text-color);
+    border-left-color: var(--help-margin-color);
+}
+
+.box {
+    background: var(--editor-bg-color) !important;
+}
+
+.help {
+    background-color: var(--help-bg-color) !important;
+    color: var(--ui-text-color);
+}
+
+code,
+kbd,
+pre,
+samp {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+#toplevel-container {
+    background-color: var(--toplevel-bg-color) !important;
+    color: var(--code-text-color);
+}
+
+#toplevel-container textarea {
+    color: var(--code-text-color);
+}
+
+.tabs {
+    background-color: var(--nav-bg-color) !important;
+    color: var(--ui-text-color) !important;
+}
+
+.onglet {
+    background-color: var(--nav-unselected-tab-bg-color) !important;
+}
+
+.tabs .tab a {
+    color: var(--nav-unselected-tab-text-color) !important;
+}
+
+.tabs .tab a.active {
+    background-color: var(--nav-selected-tab-bg-color) !important;
+    color: var(--nav-selected-tab-text-color) !important;
+}
+
+.CodeMirror {
+    background-color: var(--editor-bg-color);
+    color: var(--code-text-color);
+}
+
+.CodeMirror .CodeMirror-gutters {
+    background: var(--editor-gutter-bg-color);
+    color: var(--editor-gutter-text-color);
+    border: none
+}
+
+.CodeMirror .CodeMirror-guttermarker,
+.CodeMirror .CodeMirror-guttermarker-subtle,
+.CodeMirror .CodeMirror-linenumber {
+    color: var(--editor-gutter-text-color);
+}
+
+.CodeMirror .CodeMirror-cursor {
+    border-left: 1px solid var(--editor-cursor-color);
+}
+
+.CodeMirror div.CodeMirror-selected {
+    background: var(--editor-selection-bg-color);
+}
+
+.CodeMirror.CodeMirror-focused div.CodeMirror-selected {
+    background: var(--editor-selection-bg-color);
+}
+
+.CodeMirror .CodeMirror-line::selection,
+.CodeMirror .CodeMirror-line > span::selection,
+.CodeMirror .CodeMirror-line > span > span::selection {
+    background: var(--editor-selection-bg-color);
+}
+
+.CodeMirror .CodeMirror-line::-moz-selection,
+.CodeMirror .CodeMirror-line > span::-moz-selection,
+.CodeMirror .CodeMirror-line > span > span::-moz-selection {
+    background: var(--editor-selection-bg-color);
+}
+
+/* Track */
+
+::-webkit-scrollbar-track {
+    background: var(--scrollbar-bg-color);
+}
+
+/* Handle */
+
+::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-track-color);
+}
+
+/* Handle on hover */
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-track-color);
+}
+
+#loader-wrapper {
+    background: var(--preloader-bg-color);
+}
+
+.progress {
+    background-color: var(--preloader-bg-color) !important;
+}
+
+.progress .indeterminate {
+    background-color: var(--preloader-progress-bar-color) !important;
+}
+
+.theme-select,
+.select-dropdown {
+    color: var(--ui-text-color) !important;
+}
+
+.caret {
+    fill: var(--ui-text-color) !important;
+}
+
+.select-wrapper input.select-dropdown:focus {
+    border-bottom: 1px solid var(--ui-text-color) !important;
+}
+
+label {
+    color: var(--ui-text-color) !important;
+}
+
+.dropdown-content {
+    background-color: var(--form-dropdown-bg-color) !important;
+}
+
+.dropdown-content li > a,
+.dropdown-content li > span {
+    color: var(--form-dropdown-text-color) !important;
+}
+
+.switch label input[type=checkbox]:checked + .lever {
+    background-color: var(--form-switch-border-color) !important;
+}
+
+.switch label input[type=checkbox]:checked + .lever:after {
+    background-color: var(--ui-text-color) !important;
+}
+
+[type="checkbox"]:checked + span:not(.lever):before {
+    border-right: 2px solid var(--ui-text-color) !important;
+    border-bottom: 2px solid var(--ui-text-color) !important;
+}
+
+.btn.config-element {
+    background-color: var(--form-button-bg-color) !important;
+}
+
+/* Code color */
+
+.caml {
+    color: var(--code-caml);
+}
+
+.stderr {
+    color: var(--code-error);
+}
+
+.stdout {
+    color: var(--code-text-color);
+}
+
+.errorloc {
+    border-bottom-color: var(--code-error);
+}
+
+.sharp .id {
+    color: var(--code-variable);
+    font-style: italic
+}
+
+.sharp .kw0 {
+    color: var(--code-keyword);
+    font-weight: bold;
+}
+
+.sharp .kw1 {
+    color: var(--code-keyword);
+    font-weight: bold;
+}
+
+.sharp .kw2 {
+    color: var(--code-builtin);
+    font-weight: bold;
+}
+
+.sharp .kw3 {
+    color: var(--code-builtin);
+    font-weight: bold;
+}
+
+.sharp .kw4 {
+    color: var(--code-builtin);
+    font-weight: bold;
+}
+
+.sharp .comment {
+    color: var(--code-comment);
+    font-style: italic;
+}
+
+.sharp .string {
+    color: var(--code-string);;
+    font-weight: bold;
+}
+
+.sharp .text {
+    color: var(--code-text-color);
+}
+
+.sharp .numeric {
+    color: var(--code-number);
+}
+
+.sharp .directive {
+    font-style: italic;
+    color: var(--code-def);
+}
+
+.sharp .escape {
+    color: var(--code-escape);
+}
+
+.sharp .symbol0 {
+    color: var(--code-symbol);
+    font-weight: bold;
+}
+
+.sharp .symbol1 {
+    color: var(--code-symbol);
+    font-weight: bold;
+}
+
+.sharp .constant {
+    color: var(--code-constant);
+}
+
+.CodeMirror .cm-keyword {
+    color: var(--code-keyword)
+}
+
+.CodeMirror .cm-operator {
+    color: var(--code-operator)
+}
+
+.CodeMirror .cm-variable-2 {
+    color: var(--code-variable)
+}
+
+.CodeMirror .cm-type,
+.CodeMirror .cm-variable-3 {
+    color: var(--code-variable)
+}
+
+.CodeMirror .cm-builtin {
+    color: var(--code-builtin)
+}
+
+.CodeMirror .cm-atom {
+    color: var(--code-atom)
+}
+
+.CodeMirror .cm-number {
+    color: var(--code-number)
+}
+
+.CodeMirror .cm-def {
+    color: var(--code-def)
+}
+
+.CodeMirror .cm-string {
+    color: var(--code-string);
+}
+
+.CodeMirror .cm-string-2 {
+    color: var(--code-string)
+}
+
+.CodeMirror .cm-comment {
+    color: var(--code-comment)
+}
+
+.CodeMirror .cm-variable {
+    color: var(--code-variable)
+}
+
+.CodeMirror .cm-tag {
+    color: var(--code-tag)
+}
+
+.CodeMirror .cm-meta {
+    color: var(--code-meta)
+}
+
+.CodeMirror .cm-attribute {
+    color: var(--code-attribute)
+}
+
+.CodeMirror .cm-property {
+    color: var(--code-attribute)
+}
+
+.CodeMirror .cm-qualifier {
+    color: var(--code-qualifier)
+}
+
+.CodeMirror .cm-type,
+.CodeMirror .cm-variable-3 {
+    color: var(--code-variable)
+}
+
+.CodeMirror .cm-error {
+    color: var(--code-text-color);
+    background-color: var(--code-error)
+}
+
+.CodeMirror .CodeMirror-matchingbracket {
+    text-decoration: underline;
+    color: var(--code-brackets) !important
 }

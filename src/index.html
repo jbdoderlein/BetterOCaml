@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <title>BetterOCaml</title>
-    <meta name="description" content="An efficient, intuitive and cross-platform web IDE for the OCaml language (recent: v4.12.0), with your code interpreted and running in your browser! (no server is needed!)">
+    <meta name="description"
+          content="An efficient, intuitive and cross-platform web IDE for the OCaml language (recent: v4.12.0), with your code interpreted and running in your browser! (no server is needed!)">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="manifest" href="manifest.json">
@@ -23,12 +24,12 @@
     <meta name="msapplication-TileImage" content="icon/ms-icon-144x144.png">
     <meta name="theme-color" content="#263238">
     <link href="css/icon.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" id="css_theme" href="css/theme/material.css">
     <link rel="stylesheet" href="css/materialize/materialize.min.css">
     <link rel="stylesheet" href="css/codemirror/codemirror.min.css">
     <link rel="stylesheet" href="css/codemirror/dialog.css"/>
     <link rel="stylesheet" href="css/codemirror/show-hint.css"/>
+    <link rel="stylesheet" href="css/index.css">
     <script src="js/codemirror/codemirror.min.js"></script>
     <script src="js/codemirror/matchbrackets.min.js"></script>
     <script src="js/codemirror/closebrackets.js"></script>
@@ -40,29 +41,31 @@
     <script src="js/codemirror/show-hint.js"></script>
     <script async src="js/resizer.js"></script>
     <script async defer src="js/buttons.js"></script>
-    
+
     <script>
+        // Ocaml Toplevel version loading
         let params = new URLSearchParams(window.location.search);
         let version = params.get("version");
-        
+
         let versions = ["4.12.0", "4.11.2", "4.11.1", "4.11.0", "4.10.2", "4.10.1", "4.10.0", "4.09.1", "4.09.0", "4.08.1", "4.08.0", "4.07.1", "4.07.0"];
-        
+
         if (!versions.includes(version)) {
             version = versions[0];
             params.set("version", version);
             var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + params.toString();
-            window.history.pushState({path:newUrl},'',newUrl);
+            window.history.pushState({path: newUrl}, '', newUrl);
         }
-        
+
         let script = document.createElement('script');
         script.async = true;
         script.type = 'text/javascript';
         script.src = 'toplevels/toplevel-' + version + '.js';
-        
+
         document.head.appendChild(script);
     </script>
 </head>
 
+<!-- Loading screen -->
 <div id="loader-wrapper">
     <div id="loader" class="container">
         <img alt="Betterocaml Splash" src="icon/banner.png">
@@ -75,12 +78,13 @@
 </div>
 
 <body>
-
+<!-- Nav -->
 <nav class="nav-extended">
     <div class="nav-wrapper">
-        <a class="brand-logo hide-on-small-and-down">BetterOCaml</a>
-        <ul class="right">
-            <li>
+        <ul id="editor-files" class="normal-tabs tabs left">
+        </ul>
+        <ul id="menu-button" class="right">
+            <li id="flexible-mobile-button">
                 <a onclick="editors[Math.max(...Object.keys(editors).map(x => +x))+1] = create_editor(id = Math.max(...Object.keys(editors).map(x => +x))+1, name = 'untitled.ml', theme= editors[Math.min(...Object.keys(editors).map(x => +x))].getOption('theme'));"><i
                         class="material-icons">add</i></a></li>
             <li><a onclick="exec_all(editors[actual_editor()])"><i class="material-icons">play_arrow</i></a></li>
@@ -96,29 +100,26 @@
             <li><a class="modal-trigger" href="#help"><i class="material-icons">settings</i></a></li>
         </ul>
     </div>
-    <div class="nav-content">
-        <ul id="editor-files" class="tabs">
-        </ul>
-    </div>
 </nav>
 
-<div class="fixedab hide-on-small-and-down" style="bottom: 15px; left: 15px;">
-    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_1', 1.1)"><i
-            class="material-icons">add</i></a>
-    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_1', 0.9)"><i
-            class="material-icons">remove</i></a>
-</div>
+<!-- Mobile Sidenav -->
+<ul id="mobile-sidenav" class="sidenav mobile-tabs tabs">
+    <li id="add_tab" class="tab col s3 onglet">
+        <a onclick="editors[Math.max(...Object.keys(editors).map(x => +x))+1] = create_editor(id = Math.max(...Object.keys(editors).map(x => +x))+1, name = 'untitled.ml', theme= editors[Math.min(...Object.keys(editors).map(x => +x))].getOption('theme'));">
+            Add file
+            <i class="material-icons add-icon">add</i>
+        </a>
+    </li>
+</ul>
 
+<!-- Clean console button -->
 <div class="fixed-action-btn hide-on-small-and-down" style="bottom: 15px; right: 15px;">
     <a class="btn-floating btn-small waves-effect waves-light zoom-button"
        onclick="document.getElementById('output').innerHTML=''"><i
             class="material-icons">delete</i></a>
-    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_2', 1.1)"><i
-            class="material-icons">add</i></a>
-    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="changefontsize('box_2', 0.9)"><i
-            class="material-icons">remove</i></a>
 </div>
 
+<!-- Quick execute and clean console on mobile -->
 <div class="fixed-action-btn mobile-button hide-on-med-and-up" style="bottom: 15px; right: 15px;">
     <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="exec_all(editors[actual_editor()])"><i
             class="material-icons">play_arrow</i></a>
@@ -127,16 +128,19 @@
             class="material-icons">delete</i></a>
 </div>
 
+<!-- Configuration modal -->
 <div id="help" class="modal help">
     <div class="modal-content">
 
         <h4>Configuration</h4>
         <div class="config-section">
+            Theme :
             <select name="theme" id="theme-select" class="config-element theme-select">
                 <option value="material">Default</option>
                 <option value="monokai">Monokai</option>
                 <option value="mdn-like">MDN</option>
                 <option value="pycharm">Pycharm</option>
+
             </select>
 
             <div class="switch config-element">
@@ -158,6 +162,26 @@
                     <span>Autocomplete</span>
                 </label>
             </p>
+
+            <div class="zoom-option config-element">
+                Editor zoom :
+                <a class="btn-floating btn-small waves-effect waves-light zoom-button"
+                   onclick="changefontsize('box_1', 1.1)"><i
+                        class="material-icons">add</i></a>
+                <a class="btn-floating btn-small waves-effect waves-light zoom-button"
+                   onclick="changefontsize('box_1', 0.9)"><i
+                        class="material-icons">remove</i></a>
+            </div>
+
+            <div class="zoom-option config-element">
+                Console zoom :
+                <a class="btn-floating btn-small waves-effect waves-light zoom-button"
+                   onclick="changefontsize('box_2', 1.1)"><i
+                        class="material-icons">add</i></a>
+                <a class="btn-floating btn-small waves-effect waves-light zoom-button"
+                   onclick="changefontsize('box_2', 0.9)"><i
+                        class="material-icons">remove</i></a>
+            </div>
 
             <a class="waves-effect waves-light btn config-element" onclick="reset_ocaml();"><i
                     class="material-icons right">refresh</i>Reset
@@ -189,6 +213,7 @@
     </div>
 </div>
 
+<!-- Save modal-->
 <div id="saveas" class="modal help">
     <div class="modal-content">
         <h4>Enregistrer sous ...</h4>
@@ -205,17 +230,16 @@
     </div>
 </div>
 
-
 <div class="container-boc container horizontal">
+    <!-- Editor flexboxs -->
     <div id="box_1" class="box editor-box" style="display:flex;flex-direction:column">
-
-
         <div class="editorCollection" id="editorCollection">
         </div>
     </div>
 
     <div name="resizerH1"></div>
 
+    <!-- Toplevel flexbox -->
     <div id="box_2" class="box console-box">
         <div id="toplevel-container" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
             <pre id="output"></pre>
@@ -261,6 +285,9 @@
                 console.log("Service Worker Registration Failed");
             }
         }
+
+        // Init navbar size
+        navbar_resize()
     }, false);
 
     // Loading Animation
@@ -283,10 +310,18 @@
         }
     };
 
+    // Auto resize
+    new ResizeObserver(navbar_resize).observe(files);
+    window.addEventListener("resize", navbar_resize);
+
     // Load Materialize Components
     $(document).ready(function () {
         $('.modal').modal();
-        $('.tabs').tabs();
+        if (MOBILE) {
+            $('.mobile-tabs').tabs();
+        } else {
+            $('.normal-tabs').tabs();
+        }
         $('.sidenav').sidenav();
         $('#theme-select').find('option[value=' + (localStorage.getItem('betterocaml-theme') || 'material') + ']').prop('selected', true);
         $("#theme-select").formSelect();

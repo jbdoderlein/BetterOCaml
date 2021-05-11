@@ -74,22 +74,17 @@ Build_Toplevel () {
     
     # Build
     echo "Building toplevel-$BUILD_VERSION.js ..."
-#    dune clean
+    dune clean
     dune build
     
     # Remove OCaml version $BUILD_VERSION if it wasn't previously installed
     [[ $VERSION_ALREADY_INSTALLED = false && $KEEP = false ]] && opam switch remove --yes $BUILD_VERSION
     
+    # Save build
     cd ../../../..
     [[ ! -d builds/ ]] && mkdir builds
-    if [[ ! -f builds/toplevel-$BUILD_VERSION.js || -w builds/toplevel-$BUILD_VERSION.js ]]; then
-        cp js_of_ocaml/_build/default/toplevel/examples/lwt_toplevel/toplevel.js builds/toplevel-$BUILD_VERSION.js
-    else
-        echo "Error: permision denied"
-        echo "Run manually with sufficient permissions:"
-        echo " cp js_of_ocaml/_build/default/toplevel/examples/lwt_toplevel/toplevel.js builds/toplevel-$BUILD_VERSION.js"
-        exit 1
-    fi
+    [[ -f builds/toplevel-$BUILD_VERSION.js ]] && rm -f builds/toplevel-$BUILD_VERSION.js
+    cp js_of_ocaml/_build/default/toplevel/examples/lwt_toplevel/toplevel.js builds/toplevel-$BUILD_VERSION.js
 }
 
 Usage () {

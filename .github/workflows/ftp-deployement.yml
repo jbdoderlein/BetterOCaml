@@ -38,3 +38,4 @@ jobs:
           local-dir: ./src/
           server-dir: /httpdocs/
           dry-run: true
+          protocol: ftps

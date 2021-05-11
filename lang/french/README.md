@@ -1,13 +1,13 @@
 # BetterOCaml
 [![Website betterocaml.ml](https://img.shields.io/website-up-down-green-red/https/betterocaml.ml.svg?style=flat-square)](https://betterocaml.ml/)
-[![GitHub license](https://img.shields.io/github/license/jbdo99/betterocaml?style=flat-square)](https://github.com/jbdo99/betterocaml/blob/master/LICENSE)
-![GitHub repo size](https://img.shields.io/github/repo-size/jbdo99/BetterOCaml?style=flat-square)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=flat-square)](https://GitHub.com/jbdo99/BetterOCaml/graphs/commit-activity)
+[![GitHub license](https://img.shields.io/github/license/jbdoderlein/betterocaml?style=flat-square)](https://github.com/jbdoderlein/betterocaml/blob/master/LICENSE)
+![GitHub repo size](https://img.shields.io/github/repo-size/jbdoderlein/BetterOCaml?style=flat-square)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=flat-square)](https://GitHub.com/jbdoderlein/BetterOCaml/graphs/commit-activity)
 [![Open Source? Yes!](https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github)](https://github.com/Naereen/badges/)
 [![Awesome Badges](https://img.shields.io/badge/badges-awesome-green.svg?style=flat-square)](https://github.com/Naereen/badges)
 
 <p style="font-style: italic"> Langage : 
-  <a href="https://github.com/jbdo99/BetterOCaml#betterocaml">English</a> |
+  <a href="https://github.com/jbdoderlein/BetterOCaml#betterocaml">English</a> |
   <span>Français</span>
   </p>
 
@@ -36,22 +36,22 @@ L'éditeur est composé de 3 parties, comme le montre cette capture d'écran :
 Vous pouvez choisir le thème dans les paramètres, dans le coin supérieur droit. Votre préférence devrait être utilisée la prochaine fois que vous revenez sur l'éditeur.
 Il existe actuellement trois thèmes (deux thèmes sombres, "default" et "Monokai", et un thème clair, "MDN").
 
-Si vous avez des suggestions pour un nouveau thème, [ouvrir une issue](https://github.com/jbdo99/BetterOCaml/issues/new) :+1: !
+Si vous avez des suggestions pour un nouveau thème, [ouvrir une issue](https://github.com/jbdoderlein/BetterOCaml/issues/new) :+1: !
 
 ## :sparkles: Utiliser hors ligne ?
 ### :computer: Sur un ordinateur portable ou de bureau
 - Si vous visitez la page Web de [l'éditeur](https://BetterOCaml.ml/) à l'aide de votre navigateur préféré, et si tout fonctionne bien, vous pouvez ajouter le lien à vos :star: "favoris", et plus tard, si vous ouvrez le lien direct, il devrait fonctionner et charger BetterOCaml... même si votre navigateur est hors ligne !
 - Cela ne peut fonctionner que si vous ne nettoyez pas ou ne supprimez pas le cache de votre navigateur, mais cela devrait fonctionner même si vous éteignez et rallumez votre ordinateur portable !
 
-- Nous avons [récemment](https://github.com/jbdo99/BetterOCaml/issues/12) [ajouté](https://github.com/jbdo99/BetterOCaml/issues/13) le support pour un [manifeste d'application](https://github.com/jbdo99/BetterOCaml/blob/master/src/manifest.json) et des [travailleurs de service](https://github.com/jbdo99/BetterOCaml/blob/master/src/serviceWorker.js), donc cette application web est maintenant une *application web progressive* (PWA), qui peut être installée sur votre ordinateur portable et utilisée plus tard, même si vous êtes hors ligne ! Après avoir été installée, l'application devrait apparaître dans votre menu d'application global (elle fonctionne sous Chromium à la fois sur Windows et Ubuntu).
+- Nous avons [récemment](https://github.com/jbdoderlein/BetterOCaml/issues/12) [ajouté](https://github.com/jbdoderlein/BetterOCaml/issues/13) le support pour un [manifeste d'application](https://github.com/jbdoderlein/BetterOCaml/blob/master/src/manifest.json) et des [travailleurs de service](https://github.com/jbdoderlein/BetterOCaml/blob/master/src/serviceWorker.js), donc cette application web est maintenant une *application web progressive* (PWA), qui peut être installée sur votre ordinateur portable et utilisée plus tard, même si vous êtes hors ligne ! Après avoir été installée, l'application devrait apparaître dans votre menu d'application global (elle fonctionne sous Chromium à la fois sur Windows et Ubuntu).
 
-> Si vous ne pouvez pas l'installer en tant que PWA, [@Naereen](https://GitHub.com/Naereen) recommande d'essayer [WebCatalog](https://webcatalog.app/), une application de bureau multiplateforme (pour UNIX, Windows et Mac OS), et vous pouvez ensuite l'utiliser pour "installer" [l'éditeur BetterOCaml](https://BetterOCaml.ml), avec son interpréteur OCaml intégré (bien sûr), en tant qu'application de bureau "native". Il apparaît alors dans le menu de votre système, et il fonctionne hors ligne ! Voir [ce tutoriel de 1:30min en vidéo](https://github.com/jbdo99/BetterOCaml/issues/6#issuecomment-780269129).
+> Si vous ne pouvez pas l'installer en tant que PWA, [@Naereen](https://GitHub.com/Naereen) recommande d'essayer [WebCatalog](https://webcatalog.app/), une application de bureau multiplateforme (pour UNIX, Windows et Mac OS), et vous pouvez ensuite l'utiliser pour "installer" [l'éditeur BetterOCaml](https://BetterOCaml.ml), avec son interpréteur OCaml intégré (bien sûr), en tant qu'application de bureau "native". Il apparaît alors dans le menu de votre système, et il fonctionne hors ligne ! Voir [ce tutoriel de 1:30min en vidéo](https://github.com/jbdoderlein/BetterOCaml/issues/6#issuecomment-780269129).
 
 ### :phone: Sur un smartphone
 - Il fonctionne également très bien sur un smartphone équipé d'un système d'exploitation et d'un navigateur récents, :ok_hand: l'application devrait être "responsive" et vous pouvez passer à une disposition verticale dans les paramètres si votre écran est trop étroit.
 - Le chargement du toplevel OCaml peut prendre quelques secondes sur un réseau mobile 3G/4G ou :snail: un réseau Wifi lent : il fait plus de 30 Mo, car il inclut toute la [bibliothèque standard OCaml](https://caml.inria.fr/pub/docs/manual-ocaml/libref/) !
 - La *Progressive Web App* peut être installée sur votre smartphone : il devrait y avoir un petit bouton + près de la barre d'adresse, ou une option "Install it" dans le menu. Une fois que vous l'avez installée, il devrait y avoir une icône sur l'écran d'accueil (mais pas dans le menu des applications) qui lance l'application en mode pleine taille (comme un navigateur, mais sans barre d'adresse). Cela [fonctionne bien](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Developer_guide/Installing#what_browsers_support_installation) sur Chrom(e|ium) et Firefox mobile sur Android, au moins.
-- Si vous pensez que ce n'est pas suffisant et que le site Web devrait être intégré à une application native iOS/Android, veuillez voter :+1: sur [cette question](https://github.com/jbdo99/BetterOCaml/issues/14).
+- Si vous pensez que ce n'est pas suffisant et que le site Web devrait être intégré à une application native iOS/Android, veuillez voter :+1: sur [cette question](https://github.com/jbdoderlein/BetterOCaml/issues/14).
 
 ## :zap: PWA
 
@@ -62,6 +62,8 @@ BetterOCaml est une Progressive Web App entièrement installable.
 Vous pouvez changer la version de OCaml avec l'url : `https://betterocaml.ml/?version=4.11.0`
 
 Available version : `4.06.0`,`4.06.1`,`4.07.0`,`4.07.1`,`4.08.0`,`4.08.0`,`4.08.1`,`4.09.0`,`4.09.1`,`4.10.0`,`4.10.1`,`4.10.2`,`4.11.0`,`4.11.1`,`4.11.2`,`4.12.0`
+
+Vous pouvez également compiler le toplevel avec la version de votre choix en utilisant [le script de compilation](https://github.com/jbdoderlein/BetterOCaml/blob/master/toplevel_build/BUILD.md#how-to-build-the-betterocaml-toplevel).
 ## A propos de ce projet
 
 ### :hammer_and_wrench: Dépendances
@@ -71,13 +73,13 @@ BetterOCaml est réalisé avec ces outils open-source :
 - [Codemirror](https://codemirror.net/) : éditeur de code javascript.
 
 ### Contribuer ?
-Les pull requests sont les bienvenues. Pour les changements majeurs, veuillez [ouvrir d'abord une issue](https://github.com/jbdo99/BetterOCaml/issues/new) pour discuter de ce que vous souhaitez changer.
+Les pull requests sont les bienvenues. Pour les changements majeurs, veuillez [ouvrir d'abord une issue](https://github.com/jbdoderlein/BetterOCaml/issues/new) pour discuter de ce que vous souhaitez changer.
 
 ### :sos: Besoin d'aide ?
-Si quelque chose ne va pas ou si vous rencontrez une issue lors de l'utilisation de BetterOCaml, veuillez [ouvrir une issue en premier] (https://github.com/jbdo99/BetterOCaml/issues/new) (vous devez d'abord [créer un compte GitHub] (https://github.com/join)).
+Si quelque chose ne va pas ou si vous rencontrez une issue lors de l'utilisation de BetterOCaml, veuillez [ouvrir une issue en premier] (https://github.com/jbdoderlein/BetterOCaml/issues/new) (vous devez d'abord [créer un compte GitHub] (https://github.com/join)).
 
 ### :scroll: Licence
 Ce projet est diffusé publiquement selon les termes de la licence [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 
 ### Auteurs
-Ce projet a été initié et est maintenu par [@jbdo99](https://github.com/jbdo99/), avec l'aide et les contributions de quelques [autres personnes](https://github.com/jbdo99/BetterOCaml/graphs/contributors).
+Ce projet a été initié et est maintenu par [@jbdoderlein](https://github.com/jbdoderlein/), avec l'aide et les contributions de quelques [autres personnes](https://github.com/jbdoderlein/BetterOCaml/graphs/contributors).

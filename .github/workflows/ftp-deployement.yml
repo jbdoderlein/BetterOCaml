@@ -39,3 +39,6 @@ jobs:
           server-dir: /httpdocs/
           dry-run: true
           protocol: ftps
+          security: strict
+          log-level: verbose
+          port: 21

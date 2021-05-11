@@ -32,10 +32,8 @@ jobs:
           server: 185.171.202.140
           username: testlcsd
           password: ${{ secrets.FTP_PASSWORD }}
-          dry-run: true
           protocol: ftps
           security: strict
-          log-level: verbose
           port: 21
           local-dir: ./src/
           server-dir: /httpdocs/

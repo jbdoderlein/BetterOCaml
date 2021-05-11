@@ -1,13 +1,13 @@
 # BetterOCaml
 [![Website betterocaml.ml](https://img.shields.io/website-up-down-green-red/https/betterocaml.ml.svg?style=flat-square)](https://betterocaml.ml/)
-[![GitHub license](https://img.shields.io/github/license/jbdo99/betterocaml?style=flat-square)](https://github.com/jbdo99/betterocaml/blob/master/LICENSE)
-![GitHub repo size](https://img.shields.io/github/repo-size/jbdo99/BetterOCaml?style=flat-square)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=flat-square)](https://GitHub.com/jbdo99/BetterOCaml/graphs/commit-activity)
+[![GitHub license](https://img.shields.io/github/license/jbdoderlein/betterocaml?style=flat-square)](https://github.com/jbdoderlein/betterocaml/blob/master/LICENSE)
+![GitHub repo size](https://img.shields.io/github/repo-size/jbdoderlein/BetterOCaml?style=flat-square)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=flat-square)](https://GitHub.com/jbdoderlein/BetterOCaml/graphs/commit-activity)
 [![Open Source? Yes!](https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github)](https://github.com/Naereen/badges/)
 [![Awesome Badges](https://img.shields.io/badge/badges-awesome-green.svg?style=flat-square)](https://github.com/Naereen/badges)
 <p style="font-style: italic"> Language : 
   <span>English</span> |
-  <a href="https://github.com/jbdo99/BetterOCaml/tree/master/lang/french#betterocaml">Français</a>
+  <a href="https://github.com/jbdoderlein/BetterOCaml/tree/master/lang/french#betterocaml">Français</a>
   </p>
 
 An efficient, intuitive and cross-platform web IDE for the [OCaml](https://www.ocaml.org/) language (recent: v4.12.0), with your code interpreted and running in your browser! (no server is needed!)
@@ -35,22 +35,22 @@ The editor is made of 3 parts, as seen in this screenshot:
 You can choose the theme in the settings, in the top right corner. Your preference should be used the next time you come back on the editor.
 There are currently three themes (two dark themes, "default" and "Monokai", and a light one, "MDN").
 
-If you have any suggestion for a new theme, [open an issue](https://github.com/jbdo99/BetterOCaml/issues/new) :+1: !
+If you have any suggestion for a new theme, [open an issue](https://github.com/jbdoderlein/BetterOCaml/issues/new) :+1: !
 
 ## :sparkles: Use offline?
 ### :computer: On a laptop or desktop
 - If you visit [the editor](https://BetterOCaml.ml/) webpage using your favorite browser, and if it works fine, you can add the link to your :star: "favorites", and then later on, if you open the direct link, it should work and load back BetterOCaml... even if your browser is offline!
 - This can only work if you don't clean-up or delete the cache of your browser, but it should work even if you turn-off and turn-on again your laptop!
 
-- We [recently](https://github.com/jbdo99/BetterOCaml/issues/12) [added](https://github.com/jbdo99/BetterOCaml/issues/13) support for an [app manifest](https://github.com/jbdo99/BetterOCaml/blob/master/src/manifest.json) and [service workers](https://github.com/jbdo99/BetterOCaml/blob/master/src/serviceWorker.js), so this web app is now a *Progressive Web App* (PWA), which can be installed on your laptop and used later on, even if you're offline! After being intalled, the app should appear in your global application menu (it works on Chromium on both Windows and Ubuntu).
+- We [recently](https://github.com/jbdoderlein/BetterOCaml/issues/12) [added](https://github.com/jbdoderlein/BetterOCaml/issues/13) support for an [app manifest](https://github.com/jbdoderlein/BetterOCaml/blob/master/src/manifest.json) and [service workers](https://github.com/jbdoderlein/BetterOCaml/blob/master/src/serviceWorker.js), so this web app is now a *Progressive Web App* (PWA), which can be installed on your laptop and used later on, even if you're offline! After being intalled, the app should appear in your global application menu (it works on Chromium on both Windows and Ubuntu).
 
-> If you can't install it as a PWA, [@Naereen](https://GitHub.com/Naereen) recommends trying [WebCatalog](https://webcatalog.app/), a multi-platform desktop app (for \*NIX, Windows and Mac OS), and you can then use it to "install" [the BetterOCaml editor](https://BetterOCaml.ml), along with its integrated OCaml interpreter (of course), as a "native" desktop app. It then appears in the menu of your system, and it works offline! See [this 1:30min tutorial in video](https://github.com/jbdo99/BetterOCaml/issues/6#issuecomment-780269129).
+> If you can't install it as a PWA, [@Naereen](https://GitHub.com/Naereen) recommends trying [WebCatalog](https://webcatalog.app/), a multi-platform desktop app (for \*NIX, Windows and Mac OS), and you can then use it to "install" [the BetterOCaml editor](https://BetterOCaml.ml), along with its integrated OCaml interpreter (of course), as a "native" desktop app. It then appears in the menu of your system, and it works offline! See [this 1:30min tutorial in video](https://github.com/jbdoderlein/BetterOCaml/issues/6#issuecomment-780269129).
 
 ### :phone: On a smartphone
 - It also works fine on smartphone running any recent OS and browser, :ok_hand: and the app should be "responsive" and you can switch to a vertical layout in the settings if your screen is too narrow.
 - Loading the OCaml toplevel can take a few seconds on a mobile 3G/4G or :snail: slow Wifi networks: it's over 30 Mb, as it includes all of [OCaml standard library](https://caml.inria.fr/pub/docs/manual-ocaml/libref/)!
 - The *Progressive Web App* can be installed on your smartphone: there should be a small + button near the address bar, or a "Install it" option in the menu. Once you install it, there should be an icon in the home screen (but not in the app menu) that launches the app in full size mode (like a browser, but no address bar). It [works fine](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Developer_guide/Installing#what_browsers_support_installation) on Chrom(e|ium) and Firefox mobile on Android, at least.
-- If you think that this is not enough, and that the website should be bundled as a native iOS/Android app, please vote :+1: on [this issue](https://github.com/jbdo99/BetterOCaml/issues/14).
+- If you think that this is not enough, and that the website should be bundled as a native iOS/Android app, please vote :+1: on [this issue](https://github.com/jbdoderlein/BetterOCaml/issues/14).
 
 ## :zap: PWA
 
@@ -61,6 +61,8 @@ BetterOCaml is a fully installable Progressive Web App
 You can change the OCaml version with the url : `https://betterocaml.ml/?version=4.11.0`
 
 Available version : `4.06.0`,`4.06.1`,`4.07.0`,`4.07.1`,`4.08.0`,`4.08.0`,`4.08.1`,`4.09.0`,`4.09.1`,`4.10.0`,`4.10.1`,`4.10.2`,`4.11.0`,`4.11.1`,`4.11.2`,`4.12.0`
+
+You can also compile the toplevel with any version you want using [the compilation script](https://github.com/jbdoderlein/BetterOCaml/blob/master/toplevel_build/BUILD.md#how-to-build-the-betterocaml-toplevel).
 ##  About this project
 
 ### :hammer_and_wrench: Dependencies
@@ -70,14 +72,14 @@ BetterOCaml is made with these open-source tools:
 - [Codemirror](https://codemirror.net/) : javascript code editor.
 
 ### Contributing?
-Pull requests are welcome. For major changes, please [open an issue first](https://github.com/jbdo99/BetterOCaml/issues/new) to discuss what you would like to change.
+Pull requests are welcome. For major changes, please [open an issue first](https://github.com/jbdoderlein/BetterOCaml/issues/new) to discuss what you would like to change.
 
 ### :sos: Need help?
-If something is wrong or if you encounter any issue when using BetterOCaml, please [open an issue first](https://github.com/jbdo99/BetterOCaml/issues/new) (you have [to create a GitHub account](https://github.com/join) first).
+If something is wrong or if you encounter any issue when using BetterOCaml, please [open an issue first](https://github.com/jbdoderlein/BetterOCaml/issues/new) (you have [to create a GitHub account](https://github.com/join) first).
 
 ### :scroll: License
 This project is released publicly under the terms of the [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0) license.
 
 ### Authors
-This project was initiated and is maintained by [@jbdo99](https://github.com/jbdo99/), with help and contributions from a few [other people](https://github.com/jbdo99/BetterOCaml/graphs/contributors).
+This project was initiated and is maintained by [@jbdoderlein](https://github.com/jbdoderlein/), with help and contributions from a few [other people](https://github.com/jbdoderlein/BetterOCaml/graphs/contributors).
 

@@ -4,6 +4,7 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/jbdoderlein/BetterOCaml?style=flat-square)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=flat-square)](https://GitHub.com/jbdoderlein/BetterOCaml/graphs/commit-activity)
 [![Open Source? Yes!](https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github)](https://github.com/Naereen/badges/)
+[![CI](https://github.com/jbdoderlein/BetterOCaml/actions/workflows/toplevel_ci.yml/badge.svg?branch=master)](https://github.com/jbdoderlein/BetterOCaml/actions/workflows/toplevel_ci.yml)
 [![Awesome Badges](https://img.shields.io/badge/badges-awesome-green.svg?style=flat-square)](https://github.com/Naereen/badges)
 <p style="font-style: italic"> Language : 
   <span>English</span> |

@@ -1,0 +1,57 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    paths:
+      - 'toplevel_build/**'
+      - '!toplevel_build/BUILD.md'
+    branches: [ master ]
+  pull_request:
+    paths:
+      - 'toplevel_build/**'
+      - '!toplevel_build/BUILD.md'
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      
+      - name: Set up OCaml
+        # You may pin to the exact commit or the version.
+        # uses: avsm/setup-ocaml@639e538131cf81d63917ca42a11d4e525805a9af
+        uses: avsm/setup-ocaml@v1.1.10
+        with:
+          # Version of the OCaml compiler to initialise
+          ocaml-version: 4.12.0
+      
+      - name: Move in directory
+        run: cd toplevel_build
+
+      - name: Compile
+        run: ./compile.sh 4.12.0
+        
+      - name: File or Directory Exists
+        # You may pin to the exact commit or the version.
+        # uses: dothq/file-or-directory-exists@394c4e36ce4a46a7975bad3d6a5a497020c6a4f1
+        uses: dothq/file-or-directory-exists@1.0.2
+        with:
+          # List of files or directories to check
+          input: ./builds/toplevel-4.12.0.js
+      
+      
+      

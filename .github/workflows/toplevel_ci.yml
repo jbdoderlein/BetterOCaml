@@ -45,7 +45,7 @@ jobs:
           bash compile.sh 4.12.0
         
       - name: Check if file exist
-        run: test -f "./toplevel_build/builds/topevel-4.12.0.js" || exit 1
+        run: test -f "./toplevel_build/builds/toplevel-4.12.0.js" || exit 1
       
       
       

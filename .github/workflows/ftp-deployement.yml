@@ -33,8 +33,8 @@ jobs:
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
           server: 185.171.202.140
-          username: ${{ secrets.ftp_username }}
-          password: ${{ secrets.ftp_password }}
+          username: ${{FTP_USERNAME}}
+          password: ${{FTP_PASSWORD}}
           dry-run: true
           protocol: ftps
           security: strict

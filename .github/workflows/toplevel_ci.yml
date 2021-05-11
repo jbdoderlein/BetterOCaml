@@ -44,13 +44,8 @@ jobs:
           chmod +x compile.sh
           bash compile.sh 4.12.0
         
-      - name: File or Directory Exists
-        # You may pin to the exact commit or the version.
-        # uses: dothq/file-or-directory-exists@394c4e36ce4a46a7975bad3d6a5a497020c6a4f1
-        uses: dothq/file-or-directory-exists@1.0.2
-        with:
-          # List of files or directories to check
-          input: ./toplevel_build/builds/toplevel-4.12.0.js
+      - name: Check if file exist
+        run: test -f "./toplevel_build/builds/topevel-4.12.0.js" || exit 1
       
       
       

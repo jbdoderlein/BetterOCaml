@@ -31,16 +31,18 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       
-      - name: Set up OCaml
-        # You may pin to the exact commit or the version.
-        # uses: avsm/setup-ocaml@639e538131cf81d63917ca42a11d4e525805a9af
-        uses: avsm/setup-ocaml@v1.1.10
-        with:
-          # Version of the OCaml compiler to initialise
-          ocaml-version: 4.12.0
+      - name: Install opam
+        run : |
+          add-apt-repository ppa:avsm/ppa
+          apt update
+          apt install opam
+          opam init
       
       - name: Move in directory
-        run: cd toplevel_build
+        run: |
+          pwd
+          ls
+          cd toplevel_build
 
       - name: Compile
         run: ./compile.sh 4.12.0

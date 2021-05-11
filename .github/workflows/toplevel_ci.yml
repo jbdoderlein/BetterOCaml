@@ -38,11 +38,9 @@ jobs:
           sudo apt install opam
           opam init
       
-      - name: Move in directory
-        run:  cd toplevel_build
-
       - name: Compile
         run: |
+          cd toplevel_build
           pwd
           ls
           compile.sh 4.12.0
@@ -53,7 +51,7 @@ jobs:
         uses: dothq/file-or-directory-exists@1.0.2
         with:
           # List of files or directories to check
-          input: ./builds/toplevel-4.12.0.js
+          input: ./toplevel_build/builds/toplevel-4.12.0.js
       
       
       

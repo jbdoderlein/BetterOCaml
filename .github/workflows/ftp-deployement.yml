@@ -33,12 +33,13 @@ jobs:
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
           server: 185.171.202.140
-          username: ${#FTP_USERNAME}
-          password: ${#FTP_PASSWORD}
-          local-dir: ./src/
-          server-dir: /httpdocs/
+          username: ${{ secrets.ftp_username }}
+          password: ${{ secrets.ftp_password }}
           dry-run: true
           protocol: ftps
           security: strict
           log-level: verbose
           port: 21
+          local-dir: ./src/
+          server-dir: /httpdocs/
+          

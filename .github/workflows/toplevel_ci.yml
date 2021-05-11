@@ -33,9 +33,9 @@ jobs:
       
       - name: Install opam
         run : |
-          add-apt-repository ppa:avsm/ppa
-          apt update
-          apt install opam
+          sudo add-apt-repository ppa:avsm/ppa
+          sudo apt update
+          sudo apt install opam
           opam init
       
       - name: Move in directory

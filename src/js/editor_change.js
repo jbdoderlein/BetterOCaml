@@ -310,7 +310,8 @@ function create_editor(id, name) {
             "Shift-Ctrl-Enter": exec_all,
             "Shift-Cmd-Enter": exec_all,
             "Ctrl-Space": "autocomplete",
-            "Cmd-Space": "autocomplete"
+            "Cmd-Space": "autocomplete",
+            "Alt-F": "findPersistent"
         },
         hintOptions: {hint: hint_prediction}
     });

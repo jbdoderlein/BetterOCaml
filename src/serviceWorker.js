@@ -43,7 +43,7 @@ const staticAssets = [
     './js/materialize.min.js',
     './js/resizer.js',
     './js/codemirror/closebrackets.js',
-    './js/codemirror/codemirror.min.js',
+    './js/codemirror/codemirror.js',
     './js/codemirror/dialog.js',
     './js/codemirror/jump-to-line.js',
     './js/codemirror/matchbrackets.min.js',

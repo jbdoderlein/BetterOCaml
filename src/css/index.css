@@ -491,6 +491,20 @@ samp {
     background-color: var(--preloader-progress-bar-color) !important;
 }
 
+.CodeMirror-dialog.CodeMirror-dialog-top{
+    background-color: var(--nav-bg-color);
+    font-family: inherit;
+    top:unset;
+    bottom: 0;
+    border-bottom: unset;
+}
+.CodeMirror-search-field{
+    width: 75%!important;
+}
+.CodeMirror-search-hint{
+    display: none;
+}
+
 .theme-select,
 .select-dropdown {
     color: var(--ui-text-color) !important;

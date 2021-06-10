@@ -350,7 +350,7 @@ let _ =
       val setup_toplevel = Js.wrap_meth_callback
           (fun () -> setup_toplevel ())
       val execute = Js.wrap_meth_callback
-          (fun content -> exec' (Js.to_string content))
+          (fun _ content -> exec' (Js.to_string content))
       val test = Js.wrap_meth_callback
-          (fun obj -> obj)
+          (fun _ b -> b)
     end)

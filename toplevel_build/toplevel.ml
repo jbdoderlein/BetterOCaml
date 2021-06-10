@@ -346,4 +346,10 @@ let _ =
   Dom_html.window##.onload :=
     Dom_html.handler (fun _ ->
         run ();
-        Js._false)
+        Js._false);
+  Js.Unsafe.global##.jscode := (object%js
+      val simple = Js.wrap_meth_callback
+          (fun a -> a + 1234)
+      val speak = Js.wrap_meth_callback
+          (fun () -> print_endline "hello")
+    end)

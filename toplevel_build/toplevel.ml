@@ -242,6 +242,25 @@ let run _ =
     container##.scrollTop := container##.scrollHeight;
     Lwt.return_unit
   in
+  let execute_callback content =
+      let content' =
+        let len = String.length content in
+        if try content <> "" && content.[len - 1] <> ';' && content.[len - 2] <> ';'
+           with _ -> true
+        then content ^ ";;"
+        else if try content <> "" && content.[len - 1] = ';' && content.[len - 2] <> ';'
+           with _ -> true
+        then content ^ ";"
+        else content
+      in
+      current_position := output##.childNodes##.length;
+      History.push content;
+      JsooTop.execute true ~pp_code:sharp_ppf ~highlight_location caml_ppf content';
+      resize ~container ~textbox ()
+      >>= fun () ->
+      container##.scrollTop := container##.scrollHeight;
+      Lwt.return_unit
+  in
   let history_down _e =
     let txt = Js.to_string textbox##.value in
     let pos = textbox##.selectionStart in
@@ -328,6 +347,11 @@ let run _ =
   setup_printers ();
   History.setup ();
   textbox##.value := Js.string "";
+  (* Add callback*)
+  Js.Unsafe.global##.execute_callback := (object%js
+        val execute = Js.wrap_meth_callback
+            (fun _ content -> execute_callback (Js.to_string content))
+      end);
   (* Run initial code if any *)
   try
     let code = List.assoc "code" (parse_hash ()) in
@@ -341,16 +365,14 @@ let run _ =
         (Js.string (Printexc.to_string exc))
         exc
 
+
+
 let _ =
   Dom_html.window##.onload :=
     Dom_html.handler (fun _ ->
         run ();
         Js._false);
-  Js.Unsafe.global##.jscode := (object%js
+  Js.Unsafe.global##.toplevel_callback := (object%js
       val setup_toplevel = Js.wrap_meth_callback
           (fun () -> setup_toplevel ())
-      val execute = Js.wrap_meth_callback
-          (fun _ content -> exec' (Js.to_string content))
-      val test = Js.wrap_meth_callback
-          (fun _ b -> b)
     end)

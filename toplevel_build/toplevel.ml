@@ -352,5 +352,9 @@ let _ =
       val run = Js.wrap_meth_callback
           (fun () -> run ())
       val execute = Js.wrap_meth_callback
-          (fun content -> JsooTop.execute true ~pp_code:sharp_ppf ~highlight_location caml_ppf content)
+          (fun content -> let sharp_chan = open_out "/dev/null0" in
+                            let sharp_ppf = Format.formatter_of_out_channel sharp_chan in
+                            let caml_chan = open_out "/dev/null1" in
+                            let caml_ppf = Format.formatter_of_out_channel caml_chan in
+                            JsooTop.execute true ~pp_code:sharp_ppf ~highlight_location caml_ppf content)
     end)

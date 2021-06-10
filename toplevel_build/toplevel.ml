@@ -354,7 +354,7 @@ let run _ =
         val bexecute = Js.wrap_meth_callback
             (fun _ content -> exec' (Js.to_string content))
         val test = Js.wrap_meth_callback
-            (fun _ content -> Format.printf "@[%s@ %d@]@." "x =" (Js.to_string content))
+            (fun _ content -> Format.printf "@[%s@ %s@]@." "x =" (Js.to_string content))
       end);
   (* Run initial code if any *)
   try

@@ -240,7 +240,6 @@ let run _ =
     resize ~container ~textbox ()
     >>= fun () ->
     container##.scrollTop := container##.scrollHeight;
-    textbox##focus;
     Lwt.return_unit
   in
   let history_down _e =
@@ -348,8 +347,10 @@ let _ =
         run ();
         Js._false);
   Js.Unsafe.global##.jscode := (object%js
-      val simple = Js.wrap_meth_callback
-          (fun a -> a + 1234)
-      val speak = Js.wrap_meth_callback
-          (fun () -> print_endline "hello")
+      val setup_toplevel = Js.wrap_meth_callback
+          (fun () -> setup_toplevel ())
+      val run = Js.wrap_meth_callback
+          (fun () -> run ())
+      val execute = Js.wrap_meth_callback
+          (fun content -> JsooTop.execute true ~pp_code:sharp_ppf ~highlight_location caml_ppf content)
     end)

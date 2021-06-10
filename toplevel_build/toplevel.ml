@@ -349,10 +349,6 @@ let _ =
   Js.Unsafe.global##.jscode := (object%js
       val setup_toplevel = Js.wrap_meth_callback
           (fun () -> setup_toplevel ())
-      val run = Js.wrap_meth_callback
-          (fun () -> run ())
       val execute = Js.wrap_meth_callback
-          (fun () -> exec' "let a = 5;;")
-      val execute2 = Js.wrap_meth_callback
-          (fun content -> exec' content)
+          (fun content -> exec' (Js.to_string content))
     end)

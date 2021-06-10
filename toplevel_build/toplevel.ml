@@ -351,6 +351,10 @@ let run _ =
   Js.Unsafe.global##.executecallback := (object%js
         val execute = Js.wrap_meth_callback
             (fun _ content -> execute_callback (Js.to_string content))
+        val execute_backend = Js.wrap_meth_callback
+            (fun _ content -> exec' (Js.to_string content))
+        val test = Js.wrap_meth_callback
+            (fun _ content -> Format.eprintf (Js.to_string content))
       end);
   (* Run initial code if any *)
   try

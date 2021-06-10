@@ -348,7 +348,7 @@ let run _ =
   History.setup ();
   textbox##.value := Js.string "";
   (* Add callback*)
-  Js.Unsafe.global##.execute_callback := (object%js
+  Js.Unsafe.global##.executecallback := (object%js
         val execute = Js.wrap_meth_callback
             (fun _ content -> execute_callback (Js.to_string content))
       end);
@@ -372,7 +372,7 @@ let _ =
     Dom_html.handler (fun _ ->
         run ();
         Js._false);
-  Js.Unsafe.global##.toplevel_callback := (object%js
+  Js.Unsafe.global##.toplevelcallback := (object%js
       val setup_toplevel = Js.wrap_meth_callback
           (fun () -> setup_toplevel ())
     end)

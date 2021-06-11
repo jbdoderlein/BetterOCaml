@@ -221,6 +221,10 @@ let run _ =
   let sharp_ppf = Format.formatter_of_out_channel sharp_chan in
   let caml_chan = open_out "/dev/null1" in
   let caml_ppf = Format.formatter_of_out_channel caml_chan in
+  let bsharp_chan = open_out "/dev/null2" in
+  let bsharp_ppf = Format.formatter_of_out_channel sharp_chan in
+  let bcaml_chan = open_out "/dev/null3" in
+  let bcaml_ppf = Format.formatter_of_out_channel caml_chan in
   let execute () =
     let content = Js.to_string textbox##.value##trim in
     let content' =
@@ -260,6 +264,20 @@ let run _ =
       >>= fun () ->
       container##.scrollTop := container##.scrollHeight;
       Lwt.return_unit
+  in
+  let bexecute_callback content =
+        let content' =
+          let len = String.length content in
+          if try content <> "" && content.[len - 1] <> ';' && content.[len - 2] <> ';'
+             with _ -> true
+          then content ^ ";;"
+          else if try content <> "" && content.[len - 1] = ';' && content.[len - 2] <> ';'
+             with _ -> true
+          then content ^ ";"
+          else content
+        in
+        JsooTop.execute true ~pp_code:bsharp_ppf ~highlight_location bcaml_ppf content';
+        Lwt.return_unit
   in
   let history_down _e =
     let txt = Js.to_string textbox##.value in
@@ -335,6 +353,7 @@ let run _ =
   Sys_js.set_channel_flusher sharp_chan (append Colorize.ocaml output "sharp");
   Sys_js.set_channel_flusher stdout (append Colorize.text output "stdout");
   Sys_js.set_channel_flusher stderr (append Colorize.text output "stderr");
+  Sys_js.set_channel_flusher caml_chan (Firebug.console##log);
   let readline () =
     Js.Opt.case
       (Dom_html.window##prompt (Js.string "The toplevel expects inputs:") (Js.string ""))
@@ -352,7 +371,7 @@ let run _ =
         val execute = Js.wrap_meth_callback
             (fun _ content -> execute_callback (Js.to_string content))
         val bexecute = Js.wrap_meth_callback
-            (fun _ content -> exec' (Js.to_string content))
+            (fun _ content -> bexecute_callback (Js.to_string content))
         val test = Js.wrap_meth_callback
             (fun _ content -> Format.printf "@[%s@ %s@]@." "x =" (Js.to_string content))
       end);

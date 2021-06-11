@@ -163,6 +163,9 @@ let highlight_location loc =
 let append colorize output cl s =
   Dom.appendChild output (Tyxml_js.To_dom.of_element (colorize ~a_class:cl s))
 
+let append_to_console prefix s =
+  Firebug.console.log_2 prefix s
+
 module History = struct
   let data = ref [| "" |]
 
@@ -353,8 +356,8 @@ let run _ =
   Sys_js.set_channel_flusher sharp_chan (append Colorize.ocaml output "sharp");
   Sys_js.set_channel_flusher stdout (append Colorize.text output "stdout");
   Sys_js.set_channel_flusher stderr (append Colorize.text output "stderr");
-  Sys_js.set_channel_flusher bcaml_chan (Firebug.console##log_2 "c");
-  Sys_js.set_channel_flusher bsharp_chan (Firebug.console##log_3 "a" "b");
+  Sys_js.set_channel_flusher bcaml_chan (append_to_console "caml");
+  Sys_js.set_channel_flusher bsharp_chan (append_to_console "sharp");
   let readline () =
     Js.Opt.case
       (Dom_html.window##prompt (Js.string "The toplevel expects inputs:") (Js.string ""))

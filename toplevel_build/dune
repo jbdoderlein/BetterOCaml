@@ -6,6 +6,7 @@
     js_of_ocaml-toplevel
     lwt
     js_of_ocaml-lwt
+    (num :with-test)
     ;; not used directly
     graphics
     js_of_ocaml.deriving
@@ -55,6 +56,7 @@
     jsoo_listunits -o %{targets}
       stdlib
       graphics
+      num
       str
       js_of_ocaml-lwt.graphics
       js_of_ocaml-ppx.as-lib
@@ -80,9 +82,12 @@
          --file %{dep:test_dynlink.js}
          --export %{dep:export.txt}
          --toplevel
+         --pretty
+         --debug-info
          --disable shortvar
          --disable genprim
          +base/runtime.js
+         +nat.js
          +toplevel.js +dynlink.js
          %{dep:toplevel.bc}
          -o %{targets}

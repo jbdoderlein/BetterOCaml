@@ -164,7 +164,7 @@ let append colorize output cl s =
   Dom.appendChild output (Tyxml_js.To_dom.of_element (colorize ~a_class:cl s))
 
 let append_to_console prefix s =
-  Firebug.console.log_2 prefix s
+  Firebug.console##log_2 (Js.string prefix) (Js.string s)
 
 module History = struct
   let data = ref [| "" |]

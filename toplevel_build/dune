@@ -56,7 +56,6 @@
     jsoo_listunits -o %{targets}
       stdlib
       graphics
-      num
       str
       js_of_ocaml-lwt.graphics
       js_of_ocaml-ppx.as-lib

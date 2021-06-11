@@ -48,16 +48,16 @@
 
 Build_Toplevel () {
     BUILD_VERSION=$1
-    
+
     cd js_of_ocaml/toplevel/examples/lwt_toplevel
-    
+
     # Check if OCaml version $BUILD_VERSION is installed
     if [[ -d ~/.opam/$BUILD_VERSION ]]; then
         VERSION_ALREADY_INSTALLED=true
     else
         VERSION_ALREADY_INSTALLED=false
     fi
-    
+
     # Switch to OCaml version $BUILD_VERSION
     if [[ $VERSION_ALREADY_INSTALLED = true ]]; then
         opam switch $BUILD_VERSION
@@ -65,21 +65,21 @@ Build_Toplevel () {
         echo "Installing OCaml version $BUILD_VERSION ..."
         opam switch create $BUILD_VERSION
     fi
-    
+
     # Install dependencies
     echo "Installing dependencies ..."
     eval $(opam env)
-    opam install --yes tyxml ocp-indent higlo cohttp lwt tyxml reactiveData yojson graphics menhirLib cmdliner ppxlib react menhir dune
+    opam install --yes tyxml ocp-indent higlo cohttp lwt tyxml reactiveData yojson graphics menhirLib cmdliner ppxlib react menhir dune num
     eval $(opam env)
-    
+
     # Build
     echo "Building toplevel-$BUILD_VERSION.js ..."
     dune clean
     dune build
-    
+
     # Remove OCaml version $BUILD_VERSION if it wasn't previously installed
     [[ $VERSION_ALREADY_INSTALLED = false && $KEEP = false ]] && opam switch remove --yes $BUILD_VERSION
-    
+
     # Save build
     cd ../../../..
     [[ ! -d builds/ ]] && mkdir builds
@@ -161,7 +161,7 @@ fi
 [[ ! -d js_of_ocaml ]] && git clone https://github.com/ocsigen/js_of_ocaml
 cp toplevel.ml js_of_ocaml/toplevel/examples/lwt_toplevel/toplevel.ml
 cp dune js_of_ocaml/toplevel/examples/lwt_toplevel/dune
-        
+
 if [[ " ${VERSIONS[@]} " =~ " all " ]]; then # Build all versions if "all" is set
     for BUILD_VERSION in "${SUPPORTED_OCAML_VERSIONS[@]}"; do
         if [[ -f builds/toplevel-$BUILD_VERSION.js && $OVERWRITE = false ]]; then

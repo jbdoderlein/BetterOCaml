@@ -222,9 +222,9 @@ let run _ =
   let caml_chan = open_out "/dev/null1" in
   let caml_ppf = Format.formatter_of_out_channel caml_chan in
   let bsharp_chan = open_out "/dev/null2" in
-  let bsharp_ppf = Format.formatter_of_out_channel sharp_chan in
+  let bsharp_ppf = Format.formatter_of_out_channel bsharp_chan in
   let bcaml_chan = open_out "/dev/null3" in
-  let bcaml_ppf = Format.formatter_of_out_channel caml_chan in
+  let bcaml_ppf = Format.formatter_of_out_channel bcaml_chan in
   let execute () =
     let content = Js.to_string textbox##.value##trim in
     let content' =
@@ -353,7 +353,8 @@ let run _ =
   Sys_js.set_channel_flusher sharp_chan (append Colorize.ocaml output "sharp");
   Sys_js.set_channel_flusher stdout (append Colorize.text output "stdout");
   Sys_js.set_channel_flusher stderr (append Colorize.text output "stderr");
-  Sys_js.set_channel_flusher caml_chan (Format.eprintf "test %s@.");
+  Sys_js.set_channel_flusher bcaml_chan (Format.eprintf "testocaml %s@.");
+  Sys_js.set_channel_flusher bsharp_chan (Format.eprintf "testsharp %s@.");
   let readline () =
     Js.Opt.case
       (Dom_html.window##prompt (Js.string "The toplevel expects inputs:") (Js.string ""))

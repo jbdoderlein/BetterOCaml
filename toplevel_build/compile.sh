@@ -21,9 +21,10 @@
 # ./compile.sh [options] [versions]
 # [options] can be :
 #  -h | --help      Shows this message
-#  -f | --keep      Keeps OCaml versions installed by this script for compilation
-#  -k | --force     Bypasses supported OCaml versions check
-#  -o | --overwrite Allows overwrite previous builds
+#  -k | --keep      Keeps OCaml versions installed by this script for compilation
+#  -f | --force     Bypasses supported OCaml versions check
+#  -y | --overwrite Allows overwrite previous builds
+#  -o | --output    Change output directory
 # [versions] can be :
 #  all    Used to compile all version available
 #  4.12.0
@@ -82,9 +83,9 @@ Build_Toplevel () {
     
     # Save build
     cd ../../../..
-    [[ ! -d builds/ ]] && mkdir builds
-    [[ -f builds/toplevel-$BUILD_VERSION.js ]] && rm -f builds/toplevel-$BUILD_VERSION.js
-    cp js_of_ocaml/_build/default/toplevel/examples/lwt_toplevel/toplevel.js builds/toplevel-$BUILD_VERSION.js
+    [[ ! -d $OUTPUT_DIR ]] && mkdir -p "$OUTPUT_DIR"
+    [[ -f builds/toplevel-$BUILD_VERSION.js ]] && rm -f "$OUTPUT_DIR/toplevel-$BUILD_VERSION.js"
+    cp js_of_ocaml/_build/default/toplevel/examples/lwt_toplevel/toplevel.js "$OUTPUT_DIR/toplevel-$BUILD_VERSION.js"
 }
 
 Usage () {
@@ -93,7 +94,8 @@ Usage () {
     echo "  -h | --help      Shows this message"
     echo "  -k | --keep      Keeps OCaml version installed by this script for compilation"
     echo "  -f | --force     Bypasses supported OCaml versions check"
-    echo "  -o | --overwrite Allows overwrite previous builds"
+    echo "  -y | --overwrite Allows overwrite previous builds"
+    echo "  -o | --output    Change output directory"
     echo " [versions] can be :"
     echo " all    Used to compile all version available"
     for AVAILABLE_VERSION in "${SUPPORTED_OCAML_VERSIONS[@]}"; do
@@ -110,6 +112,7 @@ SUPPORTED_OCAML_VERSIONS=(4.12.0 4.11.2 4.11.1 4.11.0 4.10.2 4.10.1 4.10.0 4.09.
 KEEP=false
 FORCE=false
 OVERWRITE=false
+OUTPUT_DIR="builds"
 VERSIONS=()
 
 # Check if arguments were supplied
@@ -120,8 +123,8 @@ if [ -z "$1" ]; then
 fi
 
 # Parse arguments
-for arg in "$@"; do
-    case $arg in
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
         -h|--help|--usage)
             Usage
             exit 0
@@ -132,8 +135,17 @@ for arg in "$@"; do
         -f|--force)
             FORCE=true
         ;;
-        -o|--overwrite)
+        -y|--overwrite)
             OVERWRITE=true
+        ;;
+        -o|--output)
+            if [ -z "$2" ]; then
+                echo "No output directory was supplied"
+                Usage
+                exit 1
+            fi
+            OUTPUT_DIR="$2"
+            shift
         ;;
         -*)
             echo "Unknown option $arg"
@@ -141,9 +153,10 @@ for arg in "$@"; do
             exit 1
         ;;
         *)
-            VERSIONS+=($arg)
+            VERSIONS+=($1)
         ;;
     esac
+    shift
 done
 
 # Check if versions are valid only if -f isn't set
@@ -161,7 +174,7 @@ fi
 [[ ! -d js_of_ocaml ]] && git clone https://github.com/ocsigen/js_of_ocaml
 cp toplevel.ml js_of_ocaml/toplevel/examples/lwt_toplevel/toplevel.ml
 cp dune js_of_ocaml/toplevel/examples/lwt_toplevel/dune
-        
+
 if [[ " ${VERSIONS[@]} " =~ " all " ]]; then # Build all versions if "all" is set
     for BUILD_VERSION in "${SUPPORTED_OCAML_VERSIONS[@]}"; do
         if [[ -f builds/toplevel-$BUILD_VERSION.js && $OVERWRITE = false ]]; then

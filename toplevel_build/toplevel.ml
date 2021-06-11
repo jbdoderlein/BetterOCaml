@@ -353,7 +353,7 @@ let run _ =
   Sys_js.set_channel_flusher sharp_chan (append Colorize.ocaml output "sharp");
   Sys_js.set_channel_flusher stdout (append Colorize.text output "stdout");
   Sys_js.set_channel_flusher stderr (append Colorize.text output "stderr");
-  Sys_js.set_channel_flusher caml_chan (Firebug.console##log);
+  Sys_js.set_channel_flusher caml_chan (Format.eprintf "test %s@.");
   let readline () =
     Js.Opt.case
       (Dom_html.window##prompt (Js.string "The toplevel expects inputs:") (Js.string ""))

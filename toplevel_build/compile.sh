@@ -83,7 +83,7 @@ Build_Toplevel () {
     
     # Save build
     cd ../../../..
-    [[ ! -d $OUTPUT_DIR ]] && mkdir -p "$OUTPUT_DIR"
+    [[ ! -d "$OUTPUT_DIR" ]] && mkdir -p "$OUTPUT_DIR"
     [[ -f builds/toplevel-$BUILD_VERSION.js ]] && rm -f "$OUTPUT_DIR/toplevel-$BUILD_VERSION.js"
     cp js_of_ocaml/_build/default/toplevel/examples/lwt_toplevel/toplevel.js "$OUTPUT_DIR/toplevel-$BUILD_VERSION.js"
 }
@@ -177,7 +177,7 @@ cp dune js_of_ocaml/toplevel/examples/lwt_toplevel/dune
 
 if [[ " ${VERSIONS[@]} " =~ " all " ]]; then # Build all versions if "all" is set
     for BUILD_VERSION in "${SUPPORTED_OCAML_VERSIONS[@]}"; do
-        if [[ -f builds/toplevel-$BUILD_VERSION.js && $OVERWRITE = false ]]; then
+        if [[ -f "$OUTPUT_DIR/toplevel-$BUILD_VERSION.js" && $OVERWRITE = false ]]; then
             echo "Build $BUILD_VERSION already exists"
         else
             echo "Building version $BUILD_VERSION ..."
@@ -187,7 +187,7 @@ if [[ " ${VERSIONS[@]} " =~ " all " ]]; then # Build all versions if "all" is se
     done
 else # Build all versions in parameters
     for BUILD_VERSION in "${VERSIONS[@]}"; do
-        if [[ -f builds/toplevel-$BUILD_VERSION.js && $OVERWRITE = false ]]; then
+        if [[ -f "$OUTPUT_DIR/toplevel-$BUILD_VERSION.js" && $OVERWRITE = false ]]; then
             echo "Build $BUILD_VERSION already exists"
         else
             echo "Building version $BUILD_VERSION ..."

@@ -269,7 +269,7 @@ let run _ =
           History.push content;
           JsooTop.execute true ~pp_code:sharp_ppf ~highlight_location caml_ppf content';
       )
-      |"" -> ()
+      |_ -> ()
   in
   let history_down _e =
     let txt = Js.to_string textbox##.value in

@@ -386,4 +386,6 @@ let _ =
   Js.Unsafe.global##.toplevelcallback := (object%js
       val setup_toplevel = Js.wrap_meth_callback
           (fun () -> setup_toplevel ())
+      val reset_toplevel = Js.wrap_meth_callback
+          (fun () -> run ())
     end)

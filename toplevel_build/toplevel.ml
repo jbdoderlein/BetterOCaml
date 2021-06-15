@@ -270,9 +270,6 @@ let run _ =
           JsooTop.execute true ~pp_code:sharp_ppf ~highlight_location caml_ppf content';
       )
       |"" -> ();
-      resize ~container ~textbox ()
-      >>= fun () ->
-      container##.scrollTop := container##.scrollHeight;
       Lwt.return_unit
   in
 

@@ -16,7 +16,7 @@ function parse(str) {
     let cmd = str.split(';;\n');
     for (let i = 0; i < cmd.length; i++) {
         if (!cmd[i].endsWith(';;')) cmd[i] += ';;';
-        executecallback.execute(cmd[i]);
+        executecallback.execute("toplevel", cmd[i]);
     }
 }
 

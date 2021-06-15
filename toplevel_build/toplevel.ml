@@ -163,8 +163,8 @@ let highlight_location loc =
 let append colorize output cl s =
   Dom.appendChild output (Tyxml_js.To_dom.of_element (colorize ~a_class:cl s))
 
-let append_to_console prefix s =
-  Firebug.console##log_2 (Js.string prefix) (Js.string s)
+let append_to_console s =
+  Firebug.console##log (Js.string s)
 
 module History = struct
   let data = ref [| "" |]
@@ -224,10 +224,12 @@ let run _ =
   let sharp_ppf = Format.formatter_of_out_channel sharp_chan in
   let caml_chan = open_out "/dev/null1" in
   let caml_ppf = Format.formatter_of_out_channel caml_chan in
-  let bsharp_chan = open_out "/dev/null2" in
-  let bsharp_ppf = Format.formatter_of_out_channel bsharp_chan in
-  let bcaml_chan = open_out "/dev/null3" in
-  let bcaml_ppf = Format.formatter_of_out_channel bcaml_chan in
+  let binsharp_chan = open_out "/dev/null2" in
+  let binsharp_ppf = Format.formatter_of_out_channel binsharp_chan in
+  let bincaml_chan = open_out "/dev/null3" in
+  let bincaml_ppf = Format.formatter_of_out_channel bincaml_chan in
+  let consolecaml_chan = open_out "/dev/null3" in
+  let consolecaml_ppf = Format.formatter_of_out_channel consolecaml_chan in
   let execute () =
     let content = Js.to_string textbox##.value##trim in
     let content' =
@@ -249,7 +251,7 @@ let run _ =
     container##.scrollTop := container##.scrollHeight;
     Lwt.return_unit
   in
-  let execute_callback content =
+  let execute_callback mode content =
       let content' =
         let len = String.length content in
         if try content <> "" && content.[len - 1] <> ';' && content.[len - 2] <> ';'
@@ -259,29 +261,22 @@ let run _ =
            with _ -> true
         then content ^ ";"
         else content
+      in match mode with
+      |"internal" -> JsooTop.execute true ~pp_code:binsharp_ppf ~highlight_location bincaml_ppf content'
+      |"console" -> JsooTop.execute true ~pp_code:binsharp_ppf ~highlight_location consolecaml_ppf content'
+      |"toplevel" -> (
+          current_position := output##.childNodes##.length;
+          History.push content;
+          JsooTop.execute true ~pp_code:sharp_ppf ~highlight_location caml_ppf content';
+          resize ~container ~textbox ()
+          >>= fun () ->
+          container##.scrollTop := container##.scrollHeight;
+      )
+      |"" -> ()
       in
-      current_position := output##.childNodes##.length;
-      History.push content;
-      JsooTop.execute true ~pp_code:sharp_ppf ~highlight_location caml_ppf content';
-      resize ~container ~textbox ()
-      >>= fun () ->
-      container##.scrollTop := container##.scrollHeight;
       Lwt.return_unit
   in
-  let bexecute_callback content =
-        let content' =
-          let len = String.length content in
-          if try content <> "" && content.[len - 1] <> ';' && content.[len - 2] <> ';'
-             with _ -> true
-          then content ^ ";;"
-          else if try content <> "" && content.[len - 1] = ';' && content.[len - 2] <> ';'
-             with _ -> true
-          then content ^ ";"
-          else content
-        in
-        JsooTop.execute true ~pp_code:bsharp_ppf ~highlight_location bcaml_ppf content';
-        Lwt.return_unit
-  in
+
   let history_down _e =
     let txt = Js.to_string textbox##.value in
     let pos = textbox##.selectionStart in
@@ -356,8 +351,7 @@ let run _ =
   Sys_js.set_channel_flusher sharp_chan (append Colorize.ocaml output "sharp");
   Sys_js.set_channel_flusher stdout (append Colorize.text output "stdout");
   Sys_js.set_channel_flusher stderr (append Colorize.text output "stderr");
-  Sys_js.set_channel_flusher bcaml_chan (append_to_console "caml");
-  Sys_js.set_channel_flusher bsharp_chan (append_to_console "sharp");
+  Sys_js.set_channel_flusher consolecaml_chan append_to_console;
   let readline () =
     Js.Opt.case
       (Dom_html.window##prompt (Js.string "The toplevel expects inputs:") (Js.string ""))
@@ -373,11 +367,7 @@ let run _ =
   (* Add callback*)
   Js.Unsafe.global##.executecallback := (object%js
         val execute = Js.wrap_meth_callback
-            (fun _ content -> execute_callback (Js.to_string content))
-        val bexecute = Js.wrap_meth_callback
-            (fun _ content -> bexecute_callback (Js.to_string content))
-        val test = Js.wrap_meth_callback
-            (fun _ content -> Format.printf "@[%s@ %s@]@." "x =" (Js.to_string content))
+            (fun _ mode content -> execute_callback (Js.to_string mode) (Js.to_string content))
       end);
   (* Run initial code if any *)
   try

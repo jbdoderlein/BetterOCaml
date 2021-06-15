@@ -272,8 +272,7 @@ let run _ =
           >>= fun () ->
           container##.scrollTop := container##.scrollHeight;
       )
-      |"" -> ()
-      in
+      |"" -> ();
       Lwt.return_unit
   in
 

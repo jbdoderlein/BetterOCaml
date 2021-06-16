@@ -163,6 +163,9 @@ let highlight_location loc =
 let append colorize output cl s =
   Dom.appendChild output (Tyxml_js.To_dom.of_element (colorize ~a_class:cl s))
 
+let append_to_console s =
+  Firebug.console##log (Js.string s)
+
 module History = struct
   let data = ref [| "" |]
 
@@ -221,6 +224,12 @@ let run _ =
   let sharp_ppf = Format.formatter_of_out_channel sharp_chan in
   let caml_chan = open_out "/dev/null1" in
   let caml_ppf = Format.formatter_of_out_channel caml_chan in
+  let binsharp_chan = open_out "/dev/null2" in
+  let binsharp_ppf = Format.formatter_of_out_channel binsharp_chan in
+  let bincaml_chan = open_out "/dev/null3" in
+  let bincaml_ppf = Format.formatter_of_out_channel bincaml_chan in
+  let consolecaml_chan = open_out "/dev/null3" in
+  let consolecaml_ppf = Format.formatter_of_out_channel consolecaml_chan in
   let execute () =
     let content = Js.to_string textbox##.value##trim in
     let content' =
@@ -240,8 +249,27 @@ let run _ =
     resize ~container ~textbox ()
     >>= fun () ->
     container##.scrollTop := container##.scrollHeight;
-    textbox##focus;
     Lwt.return_unit
+  in
+  let execute_callback mode content =
+      let content' =
+        let len = String.length content in
+        if try content <> "" && content.[len - 1] <> ';' && content.[len - 2] <> ';'
+           with _ -> true
+        then content ^ ";;"
+        else if try content <> "" && content.[len - 1] = ';' && content.[len - 2] <> ';'
+           with _ -> true
+        then content ^ ";"
+        else content
+      in match mode with
+      |"internal" -> JsooTop.execute true ~pp_code:binsharp_ppf ~highlight_location bincaml_ppf content'
+      |"console" -> JsooTop.execute true ~pp_code:binsharp_ppf ~highlight_location consolecaml_ppf content'
+      |"toplevel" -> (
+          current_position := output##.childNodes##.length;
+          History.push content;
+          JsooTop.execute true ~pp_code:sharp_ppf ~highlight_location caml_ppf content';
+      )
+      |_ -> ()
   in
   let history_down _e =
     let txt = Js.to_string textbox##.value in
@@ -317,6 +345,7 @@ let run _ =
   Sys_js.set_channel_flusher sharp_chan (append Colorize.ocaml output "sharp");
   Sys_js.set_channel_flusher stdout (append Colorize.text output "stdout");
   Sys_js.set_channel_flusher stderr (append Colorize.text output "stderr");
+  Sys_js.set_channel_flusher consolecaml_chan append_to_console;
   let readline () =
     Js.Opt.case
       (Dom_html.window##prompt (Js.string "The toplevel expects inputs:") (Js.string ""))
@@ -329,6 +358,11 @@ let run _ =
   setup_printers ();
   History.setup ();
   textbox##.value := Js.string "";
+  (* Add callback*)
+  Js.Unsafe.global##.executecallback := (object%js
+        val execute = Js.wrap_meth_callback
+            (fun _ mode content -> execute_callback (Js.to_string mode) (Js.to_string content))
+      end);
   (* Run initial code if any *)
   try
     let code = List.assoc "code" (parse_hash ()) in
@@ -342,8 +376,16 @@ let run _ =
         (Js.string (Printexc.to_string exc))
         exc
 
+
+
 let _ =
   Dom_html.window##.onload :=
     Dom_html.handler (fun _ ->
         run ();
-        Js._false)
+        Js._false);
+  Js.Unsafe.global##.toplevelcallback := (object%js
+      val setup_toplevel = Js.wrap_meth_callback
+          (fun () -> setup_toplevel ())
+      val reset_toplevel = Js.wrap_meth_callback
+          (fun () -> run ())
+    end)

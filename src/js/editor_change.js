@@ -12,27 +12,17 @@ const buttons =document.getElementById("menu-button");
 var MOBILE = false;
 
 
-function parse(str, editor) {
-    let textarea = document.getElementById('userinput');
+function parse(str) {
     let cmd = str.split(';;\n');
-    const ke = new KeyboardEvent("keydown", {bubbles: true, cancelable: true, keyCode: 13});
     for (let i = 0; i < cmd.length; i++) {
         if (!cmd[i].endsWith(';;')) cmd[i] += ';;';
-        textarea.value = cmd[i];
-        textarea.dispatchEvent(ke);
-    }
-    if (editor != null) {
-        setTimeout(function () {
-            editor.focus();
-        }, 5);
+        executecallback.execute("toplevel", cmd[i]);
     }
 }
 
 function reset_ocaml() {
-    document.getElementById('output').innerHTML = ''
-    let textarea = document.getElementById('userinput');
-    const ke = new KeyboardEvent("keydown", {bubbles: true, cancelable: true, ctrlKey: true, keyCode: 75});
-    textarea.dispatchEvent(ke);
+    document.getElementById('output').innerHTML = '';
+    toplevelcallback.setup();
 }
 
 function changefontsize(id, a) {

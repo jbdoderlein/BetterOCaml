@@ -9,11 +9,13 @@ on:
     paths:
       - 'toplevel_build/**'
       - '!toplevel_build/BUILD.md'
+      - '!toplevel_build/compile.sh'
     branches: [ master ]
   pull_request:
     paths:
       - 'toplevel_build/**'
       - '!toplevel_build/BUILD.md'
+      - '!toplevel_build/compile.sh'
     branches: [ master ]
 
   # Allows you to run this workflow manually from the Actions tab
@@ -43,9 +45,21 @@ jobs:
           cd toplevel_build
           chmod +x compile.sh
           bash compile.sh 4.12.0
-        
+          cd ..
+          cp toplevel_build/builds/toplevel-4.12.0.js src/toplevels/toplevel-4.12.0.js
+      
       - name: Check if file exist
         run: test -f "./toplevel_build/builds/toplevel-4.12.0.js" || exit 1
+      
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v7
+        with:
+          author_name: jbdoderlein
+          author_email: jean.baptiste.doderlein@gmail.com
+          message: 'Update compiled toplevel'
+          add: 'src/toplevels/toplevel-4.12.0.js'
+        
+      
       
       
       

@@ -43,6 +43,7 @@
     <script src="js/codemirror/matchesonscrollbar.js"></script>
     <script async src="js/resizer.js"></script>
     <script async defer src="js/buttons.js"></script>
+    <script id="MathJax-script" async src="js/mathjax/tex-mml-chtml.js"></script>
 
     <script>
         // OCaml Toplevel version loading
@@ -241,26 +242,52 @@
     </div>
 
     <div name="resizerH1"></div>
-
-    <!-- Toplevel flexbox -->
-    <div id="box_2" class="box console-box">
-        <div id="toplevel-container" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
-            <pre id="output"></pre>
-            <div>
-                <div id="sharp" class="sharp"></div>
-                <textarea id="userinput" autocorrect="off" autocapitalize="none">Loading ...</textarea>
+    <div class="container-boc container right-container vertical" name="right-box">
+        <!-- Toplevel flexbox -->
+        <div id="box_education" class="box education-box">
+            <div class="education content">
+                <h3 class="center-align">Cours n-4 : Listes</h3>
+                <div class="education-exercice">
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="card">
+                                <div class="card">
+                                    <span class="card-title">1 - Nombre de 1 à n</span>
+                                    <a class="btn-floating halfway-fab test-button"><i
+                                            class="material-icons">play_arrow</i></a>
+                                </div>
+                                <div class="card-content">
+                                    <p>Ecrire une fonction \(f\) qui renvoie une liste des nombres de \(1\) à \(n\)
+                                        et une equation \[x = {-b \pm \sqrt{b^2-4ac} \over 2a}.\]
+                                        <pre class="pre-example">f : int -> int list</pre>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div name="resizerV1"></div>
+        <div id="box_2" class="box console-box">
+            <div id="toplevel-container" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+                <pre id="output"></pre>
+                <div>
+                    <div id="sharp" class="sharp"></div>
+                    <textarea id="userinput" autocorrect="off" autocapitalize="none">Loading ...</textarea>
+                </div>
             </div>
         </div>
     </div>
-
 </div>
+
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script src="js/materialize.min.js"></script>
 <script src="js/editor_change.js"></script>
 <script type="text/javascript">
     // Loading global var
     init_local_storage();
-    var editors, resize_bar;
+    var editors, resize_bar, education_resize_bar;
     // Editors load
     editors = {}
     editors[0] = create_editor(id = 0, name = 'untitled.ml');
@@ -273,6 +300,7 @@
 
         // Create the resize bar
         resize_bar = new Resizer(document.querySelector('[name=resizerH1]'), 'H');
+        education_resize_bar = new Resizer(document.querySelector('[name=resizerV1]'), 'V');
         change_resize_bar(resize_bar, (localStorage.getItem("betterocaml-resize-bar") || "H"));
 
         // Set text zoom

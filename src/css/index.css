@@ -18,6 +18,11 @@ html {
     width: 100% !important;
     max-width: 80000px !important;
     height: 90vh;
+
+}
+
+.right-container {
+    overflow-y: auto;
 }
 
 .horizontal {
@@ -347,6 +352,34 @@ img {
     top: 30% !important;
 }
 
+.education {
+    color: var(--ui-text-color);
+    width: 100%;
+}
+
+.card {
+    background-color: var(--nav-bg-color);
+    white-space: normal;
+}
+
+.test-button {
+    background-color: hsl(200, 20%, 10%);
+}
+
+.pre-example {
+    background: rgba(240, 246, 252, 0.15);
+    page-break-inside: avoid;
+    font-family: monospace;
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 1.6em;
+    max-width: 100%;
+    overflow: auto;
+    padding: 0.1em 0.5em;
+    display: inline;
+    word-wrap: break-word;
+}
+
 nav {
     background-color: var(--nav-bg-color) !important;
 }
@@ -491,17 +524,19 @@ samp {
     background-color: var(--preloader-progress-bar-color) !important;
 }
 
-.CodeMirror-dialog.CodeMirror-dialog-top{
+.CodeMirror-dialog.CodeMirror-dialog-top {
     background-color: var(--nav-bg-color);
     font-family: inherit;
-    top:unset;
+    top: unset;
     bottom: 0;
     border-bottom: unset;
 }
-.CodeMirror-search-field{
-    width: 75%!important;
+
+.CodeMirror-search-field {
+    width: 75% !important;
 }
-.CodeMirror-search-hint{
+
+.CodeMirror-search-hint {
     display: none;
 }
 

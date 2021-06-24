@@ -44,7 +44,6 @@
     <script async src="js/resizer.js"></script>
     <script async defer src="js/buttons.js"></script>
     <script id="MathJax-script" async src="js/mathjax/tex-mml-chtml.js"></script>
-
     <script>
         // OCaml Toplevel version loading
         let params = new URLSearchParams(window.location.search);
@@ -245,27 +244,14 @@
     <div class="container-boc container right-container vertical" name="right-box">
         <!-- Toplevel flexbox -->
         <div id="box_education" class="box education-box">
-            <div class="education content">
-                <h3 class="center-align">Cours n-4 : Listes</h3>
-                <div class="education-exercice">
-                    <div class="row">
-                        <div class="col s12">
-                            <div class="card">
-                                <div class="card">
-                                    <span class="card-title">1 - Nombre de 1 à n</span>
-                                    <a class="btn-floating halfway-fab test-button"><i
-                                            class="material-icons">play_arrow</i></a>
-                                </div>
-                                <div class="card-content">
-                                    <p>Ecrire une fonction \(f\) qui renvoie une liste des nombres de \(1\) à \(n\)
-                                        et une equation \[x = {-b \pm \sqrt{b^2-4ac} \over 2a}.\]
-                                        <pre class="pre-example">f : int -> int list</pre>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="education-loading center-block center-align">
+                <a class="waves-effect waves-light btn-large">
+                    <label for="file-upload-education" class="custom-file-upload">
+                        <i class="material-icons left">folder</i>
+                        <input id="file-upload-education" type="file" style="display: none;"/>
+                        Open courses
+                    </label>
+                </a>
             </div>
         </div>
         <div name="resizerV1"></div>
@@ -285,6 +271,13 @@
 <script src="js/materialize.min.js"></script>
 <script src="js/editor_change.js"></script>
 <script type="text/javascript">
+    // Education : setup log
+    console.stdlog = console.log.bind(console);
+    console.logs = undefined;
+    console.log = function () {
+        console.logs = Array.from(arguments)[0].slice(0, -1);
+    }
+    var current_course = undefined;
     // Loading global var
     init_local_storage();
     var editors, resize_bar, education_resize_bar;
@@ -363,6 +356,9 @@
     // Open file
     document.getElementById('file-upload')
         .addEventListener('change', readSingleFile, false);
+
+    document.getElementById('file-upload-education')
+        .addEventListener('change', readCoursesFile, false);
 
     // Change theme
     document.getElementById('theme-select')

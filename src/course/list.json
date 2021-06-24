@@ -1,0 +1,17 @@
+{
+  "name": "Listes",
+  "author": "jbdoderlein",
+  "license": "Apache 2.0",
+  "exercises": [
+    {
+      "id" : 1,
+      "name" : "Nombre de 1 à n",
+      "content" : "Ecrire une fonction \\(f\\) qui renvoie une liste des nombres de \\(1\\) à \\(n\\). Si \\(n = 0\\) la fonction renvoie la liste vide.",
+      "type" : "f : int -> int list",
+      "test": {
+        "f 0" : "- : int list = []",
+        "f 10" : "- : int list = [10; 9; 8; 7; 6; 5; 4; 3; 2; 1]"
+      }
+    }
+  ]
+}

@@ -488,3 +488,54 @@ function navbar_resize() {
 
     }
 }
+
+
+//Education
+function test_result(command,result) {
+    if (!command.endsWith(';;')) command += ';;';
+    executecallback.execute("console", command);
+    return console.logs==result;
+}
+
+function readCoursesFile(e) {
+    let file = e.target.files[0];
+    if (!file) {
+        return;
+    }
+    let reader = new FileReader();
+    reader.onload = function (e) {
+        let contents = e.target.result;
+        let result = JSON.parse(contents);
+        load_courses(result);
+
+    };
+    reader.readAsText(file);
+    return false;
+}
+
+function load_courses(json){
+    current_course = json;
+    let $pdiv = $('#box_education')
+    let loaddiv = document.getElementsByClassName("education-loading")[0]
+    loaddiv.style.display = "none"
+    // Generate exercice
+    let exercises = "";
+    for (let i = 0; i < json["exercises"].length; i++) {
+        exercises += '<div class="col s12"><div class="card"><div class="card"><span class="card-title">'
+            + json["exercises"][i]["id"] + '-' + json["exercises"][i]["name"]
+            + '</span><a class="btn-floating halfway-fab test-button"><i class="material-icons">play_arrow</i></a></div><div class="card-content"><p>'
+            + json["exercises"][i]["content"]
+            + '<pre class="pre-example">'
+            + json["exercises"][i]["type"]
+            + '</pre></p></div></div></div>'
+    }
+    // Combine all
+    let base =
+        '<div class="education content"><h3 class="center-align">'
+        + json['name']
+        + '</h3> <div class="education-exercice"><div class="row">'
+        + exercises
+        + '</div></div></div>'
+    $pdiv.append(base);
+    MathJax.typeset();
+}

@@ -357,6 +357,15 @@ img {
     width: 100%;
 }
 
+.education-loading{
+    margin: auto;
+}
+
+.education-loading .btn-large{
+    margin-bottom: 10%;
+    background-color: var(--form-button-bg-color);
+}
+
 .card {
     background-color: var(--nav-bg-color);
     white-space: normal;

@@ -509,7 +509,7 @@ function test_exercice(id) {
     }
     if (success){
         M.toast({html: 'Exercice '+id+' réussi !'});
-        document.getElementById("icon_ex_1").classList.add("finished")
+        document.getElementById("icon_ex_"+id).classList.add("finished")
     }
     else{
         M.toast({html: 'Exercice '+id+' faux'});
@@ -530,6 +530,12 @@ function readCoursesFile(e) {
     };
     reader.readAsText(file);
     return false;
+}
+
+function loadJSCourseFile(path) {
+    $.getJSON("course/"+path, function(json) {
+        load_courses(json);
+    });
 }
 
 function load_courses(json){

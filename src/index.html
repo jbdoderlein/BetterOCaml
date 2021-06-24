@@ -257,20 +257,15 @@
                         <select name="theme" id="course-select" class="config-element theme-select">
                             <optgroup label="Fondamentaux">
                                 <option value="list.json">Les listes</option>
-                                <option value="array.json">les tableaux</option>
                             </optgroup>
                             <optgroup label="Intermédiaire">
-                                <option value="3">Option 3</option>
-                                <option value="4">Option 4</option>
                             </optgroup>
                             <optgroup label="Expérimenté">
-                                <option value="3">Option 3</option>
-                                <option value="4">Option 4</option>
                             </optgroup>
 
                         </select></div>
                     <div class="input-field col s4">
-                        <a class="waves-effect waves-light btn-large"><i class="material-icons left">play_arrow</i>open</a>
+                        <a class="waves-effect waves-light btn-large" onclick="loadJSCourseFile(document.getElementById('course-select').value)"><i class="material-icons left">play_arrow</i>open</a>
                     </div>
                 </div>
             </div>

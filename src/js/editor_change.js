@@ -554,7 +554,7 @@ function load_courses(json){
             + json["exercises"][i]["id"]
             + '" class="exercice-number">'
             + json["exercises"][i]["id"] + '</span>' + json["exercises"][i]["name"]
-            + '</span><a class="btn-floating halfway-fab test-button" onclick="test_exercice('
+            + '</span><a class="btn-floating right test-button" onclick="test_exercice('
             + json["exercises"][i]["id"]
             + ')"><i class="material-icons">play_arrow</i></a></div><div class="card-content"><p><h6>Enoncé : </h6>'
             + json["exercises"][i]["content"]
@@ -566,11 +566,18 @@ function load_courses(json){
     }
     // Combine all
     let base =
-        '<div class="education content"><h3 class="center-align">'
+        '<div class="education content"><a class="btn-floating btn-small waves-effect waves-light zoom-button close-educ-button right" onclick="close_courses()"><i class="material-icons">close</i></a><h3 class="center-align">'
         + json['name']
         + '</h3> <div class="education-exercice"><div class="row">'
         + exercises
         + '</div></div></div>'
     $pdiv.append(base);
     MathJax.typeset();
+}
+
+function close_courses() {
+    let loaddiv = document.getElementsByClassName("education-loading")[0]
+    loaddiv.style.display = "block"
+    document.getElementsByClassName("education")[0].remove()
+    current_course = undefined;
 }

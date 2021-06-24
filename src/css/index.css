@@ -362,7 +362,12 @@ img {
 }
 
 .education-loading{
-    margin: auto;
+    margin: 10%;
+    width: 100%;
+}
+
+.select-dropdown li.optgroup{
+    border-top: 1px solid var(--toplevel-bg-color);
 }
 
 .education-loading .btn-large{

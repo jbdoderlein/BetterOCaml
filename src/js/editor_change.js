@@ -497,6 +497,25 @@ function test_result(command,result) {
     return console.logs==result;
 }
 
+function test_exercice(id) {
+    let exo = current_course["exercises"].find(o => o.id === id);
+    let success = true;
+    for (var k in exo["test"]) {
+        if (exo["test"].hasOwnProperty(k) & success) {
+            if(!test_result(k,exo["test"][k])){
+                success = false;
+            }
+        }
+    }
+    if (success){
+        M.toast({html: 'Exercice '+id+' réussi !'});
+        document.getElementById("icon_ex_1").classList.add("finished")
+    }
+    else{
+        M.toast({html: 'Exercice '+id+' faux'});
+    }
+}
+
 function readCoursesFile(e) {
     let file = e.target.files[0];
     if (!file) {
@@ -521,13 +540,29 @@ function load_courses(json){
     // Generate exercice
     let exercises = "";
     for (let i = 0; i < json["exercises"].length; i++) {
-        exercises += '<div class="col s12"><div class="card"><div class="card"><span class="card-title">'
-            + json["exercises"][i]["id"] + '-' + json["exercises"][i]["name"]
-            + '</span><a class="btn-floating halfway-fab test-button"><i class="material-icons">play_arrow</i></a></div><div class="card-content"><p>'
+        let examples = "";
+        for (var k in json["exercises"][i]["example"]) {
+            if (json["exercises"][i]["example"].hasOwnProperty(k)) {
+                examples+='<pre class="pre-example">'
+                    + k
+                    + '</pre> renvoie <pre class="pre-example">'
+                    + json["exercises"][i]["example"][k]
+                    + '</pre><br>'
+            }
+        }
+        exercises += '<div class="col s12"><div class="card"><div class="card card-header"><span class="card-title"><span id="icon_ex_'
+            + json["exercises"][i]["id"]
+            + '" class="exercice-number">'
+            + json["exercises"][i]["id"] + '</span>' + json["exercises"][i]["name"]
+            + '</span><a class="btn-floating halfway-fab test-button" onclick="test_exercice('
+            + json["exercises"][i]["id"]
+            + ')"><i class="material-icons">play_arrow</i></a></div><div class="card-content"><p><h6>Enoncé : </h6>'
             + json["exercises"][i]["content"]
-            + '<pre class="pre-example">'
+            + '<h6>Type : </h6><pre class="pre-example">'
             + json["exercises"][i]["type"]
-            + '</pre></p></div></div></div>'
+            + '</pre><h6>Exemples : </h6>'
+            + examples
+            + '</p></div></div></div>'
     }
     // Combine all
     let base =

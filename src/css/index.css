@@ -366,13 +366,35 @@ img {
     background-color: var(--form-button-bg-color);
 }
 
+
 .card {
     background-color: var(--nav-bg-color);
     white-space: normal;
 }
 
+.card.card-header{
+    height: 60px;
+    line-height: 60px;
+}
+
+.exercice-number{
+    padding-left: 2%;
+    padding-right: 2%;
+    background-color: rgba(240, 246, 252, 0.15);
+    border-radius: 25%;
+    margin-left: 2%;
+    margin-right: 3%;
+}
+
+.exercice-number.finished{
+    background-color:#6bb370b0;
+}
+
 .test-button {
     background-color: hsl(200, 20%, 10%);
+    top: 10px;
+    right: 10px;
+    border-radius: 25%;
 }
 
 .pre-example {

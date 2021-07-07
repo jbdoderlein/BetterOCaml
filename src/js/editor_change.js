@@ -43,15 +43,12 @@ let line_with_last = function (instance) {
 }
 
 let exec_last = function (instance) {
+    autosave_editor(instance.id)
     let beforecur = instance.getRange({line: 0, ch: 0}, {line: line_with_last(instance)});
-    if ($(window).width() < 600) {
-        parse(clean_content(beforecur).slice(-1)[0]); // Remove comments
-    } else {
-        parse(clean_content(beforecur).slice(-1)[0], instance); // Remove comments
-    }
-
+    parse(clean_content(beforecur).slice(-1)[0]); // Remove comments
 };
 let exec_all = function (instance) {
+    autosave_editor(instance.id)
     let commands = clean_content(instance.getValue());
     for (let commandsKey in commands) {
         setTimeout(function () {
@@ -73,6 +70,7 @@ let calculate_highlight = function (instance) {
 };
 
 function save(instance) {
+
     if (instance.name == "untitled.ml") {
         M.Modal.getInstance(document.getElementById('saveas')).open()
     } else {
@@ -123,6 +121,7 @@ let program_save = function (instance) {
     downloadLink.click();
     M.toast({html: 'File saved'})
     instance.is_saved = true;
+    localStorage.removeItem("betterocaml-autosave-"+instance.id)
 }
 
 function destroyClickedElement(event) {
@@ -348,7 +347,7 @@ function delete_editor(id) {
     else {
         var $tabs = $('#editor-files');
     }
-
+    localStorage.removeItem("betterocaml-autosave-"+id)
     $tabs.children().removeAttr('style');
     $tabs.children().remove('#li_tab_' + String(id));
     $("#editorCollection").children().remove('#editor_tab_' + String(id)); // codebox
@@ -364,7 +363,6 @@ function select_editor(id) {
         }, 5);
     }
     else {
-        console.log('select : ', id)
         let instance = M.Tabs.getInstance(document.getElementById('editor-files'));
         instance.select('editor_tab_' + String(id));
         setTimeout(function () {
@@ -486,5 +484,41 @@ function navbar_resize() {
         });
         $('.normal-tabs').tabs();
 
+    }
+}
+
+// Autosave
+
+function autosave_editor(editor_id) {
+    content = {name:editors[editor_id].name, text: editors[editor_id].getValue()}
+    localStorage.setItem("betterocaml-autosave-"+editor_id, JSON.stringify(content))
+}
+
+function clear_autosave() {
+    for (const [key, _] of Object.entries(localStorage)) {
+        if (key.split("-").slice(-2,-1)[0] === "autosave"){
+            localStorage.removeItem(key)
+        }
+    }
+}
+
+function autosave_number() {
+    let nb = 0
+    for (const [key, _] of Object.entries(localStorage)) {
+        if (key.split("-").slice(-2,-1)[0] === "autosave"){
+            nb+=1
+        }
+    }
+    return nb
+}
+
+function restore_editors() {
+    for (const [key, value] of Object.entries(localStorage).reverse()) {
+        if (key.split("-").slice(-2,-1)[0] === "autosave"){
+            let editor_value = JSON.parse(value)
+            let next = Math.max(...Object.keys(editors).map(x => +x)) + 1;
+            editors[next] = create_editor(id = next, name = editor_value.name);
+            editors[next].setValue(editor_value.text);
+        }
     }
 }

@@ -300,6 +300,16 @@
         if (ev.type === "animationend") {
             document.getElementById("loader-wrapper").style.display = "none";
             $('body').off('DOMNodeInserted');
+            if (autosave_number()>0){
+                if(confirm("Des documents ont été sauvegardé automatiquement lors de la dernière session, voulez vous les restaurez ?")){
+                    restore_editors();
+                    remove_editor(0);
+                    clear_autosave();
+                }
+                else {
+                    clear_autosave()
+                }
+            }
         }
     }, false);
 
@@ -346,6 +356,7 @@
     document.getElementById("toplevel-container").addEventListener("click", (event) => {
         if (event.target === event.currentTarget) document.getElementById('userinput').focus();
     });
+
 
 </script>
 

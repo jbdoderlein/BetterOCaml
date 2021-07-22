@@ -80,7 +80,7 @@ function change_font_size(type, change) {
 /**
  * Clean code before execution or processing (remove comments and split command)
  * @param {string} content - Code to clean
- * @return {object} - List that contains all codes to execute
+ * @return {string[]} - List that contains all codes to execute
  */
 let clean_content = function (content) {
     return content.replace(COMMENT_REGEX, '').match(CODE_SEPARATOR_REGEX)
@@ -88,7 +88,7 @@ let clean_content = function (content) {
 
 /**
  * Get the last line of the actual command (useful to highlight code)
- * @param {object} instance - CodeMirror instance
+ * @param {CodeMirror} instance - CodeMirror instance
  * @return {number} The las line number
  */
 let line_with_last = function (instance) {
@@ -101,7 +101,7 @@ let line_with_last = function (instance) {
 
 /**
  * Execute the last command in the editor
- * @param {object} instance - CodeMirror instance
+ * @param {CodeMirror} instance - CodeMirror instance
  * @return {void} Nothing
  */
 let exec_last = function (instance) {
@@ -112,7 +112,7 @@ let exec_last = function (instance) {
 
 /**
  * Execute all the code in the editor
- * @param {object} instance - CodeMirror instance
+ * @param {CodeMirror} instance - CodeMirror instance
  * @return {void} Nothing
  */
 let exec_all = function (instance) {
@@ -127,7 +127,7 @@ let exec_all = function (instance) {
 
 /**
  * Calculate the cursor of the code to highlight
- * @param {object} instance - CodeMirror instance
+ * @param {CodeMirror} instance - CodeMirror instance
  * @return {*} CodeMirror cursor
  */
 let calculate_highlight = function (instance) {
@@ -145,7 +145,7 @@ let calculate_highlight = function (instance) {
 
 /**
  * Trigger saving process
- * @param {object} instance - CodeMirror instance
+ * @param {CodeMirror} instance - CodeMirror instance
  * @return {void} Nothing
  */
 function save(instance) {
@@ -156,6 +156,11 @@ function save(instance) {
     }
 }
 
+/**
+ * Attribute a name and save file
+ * @param {CodeMirror} instance - CodeMirror instance
+ * @return {void} Nothing
+ */
 function name_and_save(instance) {
     let potential_filename = document.getElementById('saveas_text').value;
     let fileNameToSaveAs = "untitled.ml";
@@ -173,6 +178,11 @@ function name_and_save(instance) {
     program_save(instance);
 }
 
+/**
+ * Save the file (create a download object)
+ * @param {CodeMirror} instance - CodeMirror instance
+ * @return {void} Nothing
+ */
 let program_save = function (instance) {
     let textToWrite = instance.getValue()
 
@@ -201,11 +211,20 @@ let program_save = function (instance) {
     localStorage.removeItem("betterocaml-autosave-"+instance.id)
 }
 
+/**
+ * Destroy the element on event
+ * @param event
+ */
 function destroyClickedElement(event) {
     document.body.removeChild(event.target);
 }
 
-function readSingleFile(e, editor) {
+/**
+ * Create a new editor with the file in e
+ * @param e - The file
+ * @return {boolean}
+ */
+function readSingleFile(e) {
     let file = e.target.files[0];
     if (!file) {
         return;
@@ -222,7 +241,11 @@ function readSingleFile(e, editor) {
     return false;
 }
 
-
+/**
+ * CodeMirror editor function : Highlight text on change
+ * @param {CodeMirror} instance - CodeMirror instance
+ * @param changeObj - CodeMirror change status
+ */
 function cursor_activity(instance, changeObj) {
     let cursor = calculate_highlight(instance);
     if (!(cursor.from() == undefined)) {
@@ -234,6 +257,12 @@ function cursor_activity(instance, changeObj) {
     instance.is_saved = false;
 }
 
+/**
+ * CodeMirror editor function : new editor on drop
+ * @param data
+ * @param e
+ * @return {boolean}
+ */
 function editor_drop(data, e) {
     let file;
     let files;
@@ -256,6 +285,12 @@ function editor_drop(data, e) {
     }
 }
 
+/**
+ * Sort the elements of the list which started with prefix
+ * @param {string[]} l - the list to sort
+ * @param {string} w - the prefix
+ * @return {string[]} sorted list
+ */
 let includer = function (l, w) {
     let r = [];
     for (var i = 0; i < l.length; i++) {
@@ -266,6 +301,12 @@ let includer = function (l, w) {
     return r;
 }
 
+/**
+ * CodeMirror editor function : Generate the hint/autocomplete suggestion
+ * @param {CodeMirror} cm - CodeMirror instance
+ * @param option
+ * @return {Promise<unknown>}
+ */
 function hint_prediction(cm, option) {
     return new Promise(function (accept) {
         setTimeout(function () {
@@ -319,6 +360,12 @@ function hint_prediction(cm, option) {
     })
 }
 
+/**
+ * Create the editor instance
+ * @param id - Editor id
+ * @param name - Editor name
+ * @return {CodeMirror} Editor instance
+ */
 function create_editor(id, name) {
     if (MOBILE){
         var $tabs = $('#mobile-sidenav');
@@ -370,6 +417,10 @@ function create_editor(id, name) {
     return editor
 }
 
+/**
+ * Get the focused editor id in editors list
+ * @return {number} focused editor id
+ */
 function actual_editor() {
     var actual_instance, actual_id
     if (MOBILE){
@@ -387,6 +438,10 @@ function actual_editor() {
     return actual_id;
 }
 
+/**
+ * Delete the editor instance
+ * @param id - editor id in editors list
+ */
 function delete_editor(id) {
     if (MOBILE){
         var $tabs = $('#mobile-sidenav');
@@ -401,6 +456,10 @@ function delete_editor(id) {
     $tabs.tabs();
 }
 
+/**
+ * Select the editor
+ * @param id - editor id in editors list
+ */
 function select_editor(id) {
     if (MOBILE){
         let instance = M.Tabs.getInstance(document.getElementById('mobile-sidenav'));
@@ -419,11 +478,21 @@ function select_editor(id) {
 
 }
 
+/**
+ * Change the name of an editor tab
+ * @param id - editor id in editors list
+ * @param name - new name
+ */
 function change_name(id, name) {
     let ele = document.querySelector('a[href="#editor_tab_' + String(id) + '"]');
     ele.innerHTML = name + ele.innerHTML.substr(-79);
 }
 
+/**
+ * Change the orientation of the resize bar
+ * @param resize_obj
+ * @param {string} type - type to change (H or V)
+ */
 function change_resize_bar(resize_obj, type) {
     resize_obj.resizer.type = type;
     resize_obj.resizer.node.setAttribute('data-resizer-type', type);
@@ -436,7 +505,10 @@ function change_resize_bar(resize_obj, type) {
     localStorage.setItem("betterocaml-resize-bar", type);
 }
 
-
+/**
+ * Remove the editor instance
+ * @param id
+ */
 function remove_editor(id) {
     if (Object.keys(editors).length > 1) {
         let act = actual_editor();
@@ -458,7 +530,12 @@ function remove_editor(id) {
 
 // Configuration
 
-
+/**
+ * Change a configuration element
+ * @param name - configuration name
+ * @param value - new value
+ * @param editors - editors list
+ */
 function change_configuration(name, value, editors) {
     localStorage.setItem(name, value);
     switch (name) {
@@ -480,6 +557,9 @@ function change_configuration(name, value, editors) {
 
 }
 
+/**
+ * Local storage init
+ */
 function init_local_storage() {
     let initial_parameter = {
         'betterocaml-theme': "material",
@@ -496,6 +576,9 @@ function init_local_storage() {
 
 }
 
+/**
+ * Setup custom files navbar for mobile devices
+ */
 function navbar_resize() {
     files.style.width = ((wrapper.offsetWidth - buttons.offsetWidth - 5)) + "px";
     if (!MOBILE && window.innerWidth<=600){
@@ -536,11 +619,18 @@ function navbar_resize() {
 
 // Autosave
 
+/**
+ * Save editor content in local storage
+ * @param editor_id
+ */
 function autosave_editor(editor_id) {
     content = {name:editors[editor_id].name, text: editors[editor_id].getValue()}
     localStorage.setItem("betterocaml-autosave-"+editor_id, JSON.stringify(content))
 }
 
+/**
+ * Clear autosaved elements
+ */
 function clear_autosave() {
     for (const [key, _] of Object.entries(localStorage)) {
         if (key.split("-").slice(-2,-1)[0] === "autosave"){
@@ -549,6 +639,10 @@ function clear_autosave() {
     }
 }
 
+/**
+ * Get the number of file autosaved in local storage
+ * @return {number} autosave number
+ */
 function autosave_number() {
     let nb = 0
     for (const [key, _] of Object.entries(localStorage)) {
@@ -559,6 +653,9 @@ function autosave_number() {
     return nb
 }
 
+/**
+ * Restore autosaved editor in the actual session
+ */
 function restore_editors() {
     for (const [key, value] of Object.entries(localStorage).reverse()) {
         if (key.split("-").slice(-2,-1)[0] === "autosave"){

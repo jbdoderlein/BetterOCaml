@@ -168,20 +168,20 @@
             <div class="zoom-option config-element">
                 Editor zoom :
                 <a class="btn-floating btn-small waves-effect waves-light zoom-button"
-                   onclick="changefontsize('box_1', 1.1)"><i
+                   onclick="change_font_size('editor', 0.1)"><i
                         class="material-icons">add</i></a>
                 <a class="btn-floating btn-small waves-effect waves-light zoom-button"
-                   onclick="changefontsize('box_1', 0.9)"><i
+                   onclick="change_font_size('editor', -0.1)"><i
                         class="material-icons">remove</i></a>
             </div>
 
             <div class="zoom-option config-element">
                 Console zoom :
                 <a class="btn-floating btn-small waves-effect waves-light zoom-button"
-                   onclick="changefontsize('box_2', 1.1)"><i
+                   onclick="change_font_size('toplevel', 0.1)"><i
                         class="material-icons">add</i></a>
                 <a class="btn-floating btn-small waves-effect waves-light zoom-button"
-                   onclick="changefontsize('box_2', 0.9)"><i
+                   onclick="change_font_size('toplevel', -0.1)"><i
                         class="material-icons">remove</i></a>
             </div>
 
@@ -275,8 +275,9 @@
         change_resize_bar(resize_bar, (localStorage.getItem("betterocaml-resize-bar") || "H"));
 
         // Set text zoom
-        document.getElementById('box_1').style.fontSize = (localStorage.getItem("betterocaml-text-box_1") || "1.2em");
-        document.getElementById('box_2').style.fontSize = (localStorage.getItem("betterocaml-text-box_2") || "1.2em");
+        let r = document.querySelector(':root')
+        r.style.setProperty('--editor-font-size', (localStorage.getItem("betterocaml-text-editor") || "1.8em"));
+        r.style.setProperty('--toplevel-font-size', (localStorage.getItem("betterocaml-text-toplevel") || "1.2em"));
 
         // Service Worker
         if ('serviceWorker' in navigator) {

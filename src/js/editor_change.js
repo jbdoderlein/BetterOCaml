@@ -1,17 +1,49 @@
+// REGEX
 const COMMENT_REGEX = new RegExp(/[(][*][\s\S]*?[*][)][\s]*/g);
 const CODE_SEPARATOR_REGEX = new RegExp(/[\S][\s\S]*?(;;)/g);
 const VARIABLE_1_REGEX = new RegExp(/((let rec \w+)|(let \w+)|(and \w+))/g);
 const VARIABLE_2_REGEX = new RegExp(/(let )|(rec )|(and )/g);
 
+// HTML Elements
 const wrapper = document.getElementsByClassName("nav-wrapper")[0];
 const files = document.getElementById("editor-files");
 const mobile_sidenav = document.getElementById("mobile-sidenav");
 const buttons =document.getElementById("menu-button");
 
-
 var MOBILE = false;
+var MODULE_HINT = {
+    'Base': [
+        "and", "as", "assert", "asr", "begin", "class", "constraint", "decr", "Division_by_zero", "do",
+        "done", "downto", "else", "end", "epsilon_float", "exception", "external", "Failure", "failwith",
+        "false", "for", "fst", "function", "functor", "if", "in", "include", "incr", "inherit", "initializer",
+        "land", "lazy", "let", "lor", "lsl", "lsr", "lxor", "match", "max_float", "max_int", "method",
+        "min_float", "min_int", "mod", "module", "mutable", "new", "nonrec", "not", "object", "of", "open",
+        "or", "Out_of_memory", "private", "raise", "rec", "ref", "sig", "snd", "struct", "then", "to", "true",
+        "try", "type", "val", "virtual", "when", "while", "with", "prerr_endline", "print_int", "print_float", "print_string",
+        "print_endline", "print_newline", "int_of_float", "float_of_int", "int_of_string", "float_of_string", "bool_of_string",
+        "string_of_int", "string_of_float", "string_of_bool", "int_of_char", "char_of_int", "sqrt", "max", "min", "exp", "log",
+        "log10", "cos", "acos", "sin", "asin", "tan", "atan", "atan2", "hypot", "cosh", "sinh", "tanh", "floor", "ceil",
+        "truncate", "abs_float", "abs",
+        "Sys", "Array", "Random", "List", "Graphics"
+    ],
+    'Sys': ["time", "unix", "win32", "word_size", "int_size", "max_string_length", "max_array_length", "ocaml_version"],
+    'Array': ["make", "make_matrix", "append", "concat", "copy", "fill", "map", "exists", "mem", "sort", "length", "get", "set", "sub"],
+    'Random': ["init", "int", "float", "bool"],
+    'List': ["hd", "tl", "concat", "mem", "filter", "exists", "iter", "map", "nth", "rev", "sort"],
+    'Graphics': [
+        "open_graph", "close_graph", "width", "height", "size_x", "size_y", "clear_graph", "set_window_title",
+        "resize_window", "plot", "plots", "moveto", "rmoveto", "lineto", "rlineto", "draw_circle", "fill_circle",
+        "set_color", "set_line_width", "rgb", "background", "foreground", "black", "white", "red", "green", "blue",
+        "yellow", "cyan", "magenta", "point_color", "current_x", "current_y", "current_point", "curveto", "draw_rect",
+        "fill_rect", "draw_poly_line", "draw_poly", "fill_poly", "draw_segments", "draw_arc", "fill_arc", "draw_ellipse",
+        "fill_ellipse", "draw_char", "draw_string", "set_text_size", "text_size"],
+}
 
-
+/**
+ * Execute Ocaml code in toplevel
+ * @param {string} str - Code to execute
+ * @return {void} Nothing
+ */
 function parse(str) {
     let cmd = str.split(';;\n');
     for (let i = 0; i < cmd.length; i++) {
@@ -20,20 +52,45 @@ function parse(str) {
     }
 }
 
+/**
+ * Reset Ocaml Toplevel
+ * @return {void} Nothing
+ */
 function reset_ocaml() {
     document.getElementById('output').innerHTML = '';
     toplevelcallback.setup();
 }
 
-function changefontsize(id, a) {
-    let newsize = String(parseFloat(document.getElementById(id).style.fontSize.slice(0, -2)) * a) + "em";
-    document.getElementById(id).style.fontSize = newsize;
-    localStorage.setItem("betterocaml-text-"+id, newsize)
+/**
+ * Change font size of editor or toplevel, and apply the changes in memory.
+ * @param {string} type - The font to change (editor or toplevel)
+ * @param {number} change - The change to apply
+ * @return {void} Nothing
+ */
+function change_font_size(type, change) {
+    let r = document.querySelector(':root')
+    let value = parseFloat(r.style.getPropertyValue('--'+type+"-font-size").slice(0, -2)) + change;
+    r.style.setProperty('--'+type+'-font-size', value + "em");
+    if (type=='editor'){ // If editor, need to change the hint font size
+        r.style.setProperty('--hint-font-size', (value*0.8) + "em");
+    }
+    localStorage.setItem("betterocaml-text-"+type, value + "em")
 }
 
+/**
+ * Clean code before execution or processing (remove comments and split command)
+ * @param {string} content - Code to clean
+ * @return {object} - List that contains all codes to execute
+ */
 let clean_content = function (content) {
     return content.replace(COMMENT_REGEX, '').match(CODE_SEPARATOR_REGEX)
 }
+
+/**
+ * Get the last line of the actual command (useful to highlight code)
+ * @param {object} instance - CodeMirror instance
+ * @return {number} The las line number
+ */
 let line_with_last = function (instance) {
     let i = instance.getCursor().line
     while (!instance.getLine(i).includes(";;")) {
@@ -42,11 +99,22 @@ let line_with_last = function (instance) {
     return i
 }
 
+/**
+ * Execute the last command in the editor
+ * @param {object} instance - CodeMirror instance
+ * @return {void} Nothing
+ */
 let exec_last = function (instance) {
     autosave_editor(instance.id)
     let beforecur = instance.getRange({line: 0, ch: 0}, {line: line_with_last(instance)});
     parse(clean_content(beforecur).slice(-1)[0]); // Remove comments
 };
+
+/**
+ * Execute all the code in the editor
+ * @param {object} instance - CodeMirror instance
+ * @return {void} Nothing
+ */
 let exec_all = function (instance) {
     autosave_editor(instance.id)
     let commands = clean_content(instance.getValue());
@@ -56,6 +124,12 @@ let exec_all = function (instance) {
         }, 200);
     }
 };
+
+/**
+ * Calculate the cursor of the code to highlight
+ * @param {object} instance - CodeMirror instance
+ * @return {*} CodeMirror cursor
+ */
 let calculate_highlight = function (instance) {
     let execselected;
     try {
@@ -69,14 +143,17 @@ let calculate_highlight = function (instance) {
     return cursor;
 };
 
+/**
+ * Trigger saving process
+ * @param {object} instance - CodeMirror instance
+ * @return {void} Nothing
+ */
 function save(instance) {
-
     if (instance.name == "untitled.ml") {
         M.Modal.getInstance(document.getElementById('saveas')).open()
     } else {
         program_save(instance);
     }
-
 }
 
 function name_and_save(instance) {
@@ -188,36 +265,6 @@ let includer = function (l, w) {
     }
     return r;
 }
-
-
-var MODULE_HINT = {
-    'Base': [
-        "and", "as", "assert", "asr", "begin", "class", "constraint", "decr", "Division_by_zero", "do",
-        "done", "downto", "else", "end", "epsilon_float", "exception", "external", "Failure", "failwith",
-        "false", "for", "fst", "function", "functor", "if", "in", "include", "incr", "inherit", "initializer",
-        "land", "lazy", "let", "lor", "lsl", "lsr", "lxor", "match", "max_float", "max_int", "method",
-        "min_float", "min_int", "mod", "module", "mutable", "new", "nonrec", "not", "object", "of", "open",
-        "or", "Out_of_memory", "private", "raise", "rec", "ref", "sig", "snd", "struct", "then", "to", "true",
-        "try", "type", "val", "virtual", "when", "while", "with", "prerr_endline", "print_int", "print_float", "print_string",
-        "print_endline", "print_newline", "int_of_float", "float_of_int", "int_of_string", "float_of_string", "bool_of_string",
-        "string_of_int", "string_of_float", "string_of_bool", "int_of_char", "char_of_int", "sqrt", "max", "min", "exp", "log",
-        "log10", "cos", "acos", "sin", "asin", "tan", "atan", "atan2", "hypot", "cosh", "sinh", "tanh", "floor", "ceil",
-        "truncate", "abs_float", "abs",
-        "Sys", "Array", "Random", "List", "Graphics"
-    ],
-    'Sys': ["time", "unix", "win32", "word_size", "int_size", "max_string_length", "max_array_length", "ocaml_version"],
-    'Array': ["make", "make_matrix", "append", "concat", "copy", "fill", "map", "exists", "mem", "sort", "length", "get", "set", "sub"],
-    'Random': ["init", "int", "float", "bool"],
-    'List': ["hd", "tl", "concat", "mem", "filter", "exists", "iter", "map", "nth", "rev", "sort"],
-    'Graphics': [
-        "open_graph", "close_graph", "width", "height", "size_x", "size_y", "clear_graph", "set_window_title",
-        "resize_window", "plot", "plots", "moveto", "rmoveto", "lineto", "rlineto", "draw_circle", "fill_circle",
-        "set_color", "set_line_width", "rgb", "background", "foreground", "black", "white", "red", "green", "blue",
-        "yellow", "cyan", "magenta", "point_color", "current_x", "current_y", "current_point", "curveto", "draw_rect",
-        "fill_rect", "draw_poly_line", "draw_poly", "fill_poly", "draw_segments", "draw_arc", "fill_arc", "draw_ellipse",
-        "fill_ellipse", "draw_char", "draw_string", "set_text_size", "text_size"],
-}
-
 
 function hint_prediction(cm, option) {
     return new Promise(function (accept) {

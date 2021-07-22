@@ -1,4 +1,9 @@
 /* BODY */
+:root {
+    --editor-font-size : 1.2em;
+    --hint-font-size: 0.96em;
+    --toplevel-font-size : 1.2em;
+}
 
 body,
 html {
@@ -40,6 +45,14 @@ html {
     overflow-x: hidden;
     overflow-y: auto;
     white-space: nowrap;
+}
+
+.editor-box{
+    font-size: var(--editor-font-size);
+}
+
+.console-box{
+    font-size: var(--toplevel-font-size);
 }
 
 .fixedab {
@@ -261,6 +274,17 @@ samp {
 .CodeMirror-hints {
     max-height: 10rem !important;
     overflow-y: hidden !important;
+    background: var(--toplevel-bg-color)!important;
+    border: none!important;
+}
+
+.CodeMirror-hint {
+    color: var(--code-text-color);
+}
+
+li.CodeMirror-hint-active {
+    background: var(--editor-selection-bg-color);
+    color: var(--code-text-color);
 }
 
 .code-box {

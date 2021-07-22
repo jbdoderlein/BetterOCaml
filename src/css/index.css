@@ -276,6 +276,7 @@ samp {
     overflow-y: hidden !important;
     background: var(--toplevel-bg-color)!important;
     border: none!important;
+    font-size: var(--hint-font-size)!important;
 }
 
 .CodeMirror-hint {

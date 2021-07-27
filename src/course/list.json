@@ -4,142 +4,88 @@
   "license": "Apache 2.0",
   "exercises": [
     {
-      "id" : 1,
-      "name" : "Down From",
-      "content" : "Ecrire une fonction récursive \\(\\texttt{down_from}\\), qui étant donné un entier \\(n\\), renvoie la liste décroissante des entiers de \\(n\\) à 1 si \\(n\\geqslant 1\\) et la liste vide sinon.",
-      "type" : "down_from : int -> int list",
+      "id": 1,
+      "name": "Down From",
+      "content": "Ecrire une fonction récursive \\(\\texttt{down_from}\\), qui étant donné un entier \\(n\\), renvoie la liste décroissante des entiers de \\(n\\) à 1 si \\(n\\geqslant 1\\) et la liste vide sinon.",
+      "type": "down_from : int -> int list",
       "example": {
-        "down_from 0" : "[]",
-        "down_from 10" : "[10; 9; 8; 7; 6; 5; 4; 3; 2; 1]"
+        "down_from 0": "[]",
+        "down_from 10": "[10; 9; 8; 7; 6; 5; 4; 3; 2; 1]"
       },
       "test": {
-        "down_from 0" : "- : int list = []",
-        "down_from 10" : "- : int list = [10; 9; 8; 7; 6; 5; 4; 3; 2; 1]"
+        "down_from 0": "- : int list = []",
+        "down_from 10": "- : int list = [10; 9; 8; 7; 6; 5; 4; 3; 2; 1]"
       }
     },
     {
-      "id" : 2,
-      "name" : "Up To",
-      "content" : "Ecrire une fonction \\(\\texttt{up_to}\\), qui étant donné un entier \\(n\\), renvoie la liste croissante des entiers de 1 à \\(n\\)  si \\(n\\geqslant 1\\) et la liste vide sinon.",
-      "type" : "up_to : int -> int list",
+      "id": 2,
+      "name": "Up To",
+      "content": "Ecrire une fonction \\(\\texttt{up_to}\\), qui étant donné un entier \\(n\\), renvoie la liste croissante des entiers de 1 à \\(n\\)  si \\(n\\geqslant 1\\) et la liste vide sinon.",
+      "type": "up_to : int -> int list",
       "example": {
-        "up_to 0" : "[]",
-        "up_to 10" : "[1; 2; 3; 4; 5; 6; 7; 8; 9; 10]"
+        "up_to 0": "[]",
+        "up_to 10": "[1; 2; 3; 4; 5; 6; 7; 8; 9; 10]"
       },
       "test": {
-        "up_to 0" : "- : int list = []",
-        "up_to 10" : "- : int list = [1; 2; 3; 4; 5; 6; 7; 8; 9; 10]"
+        "up_to 0": "- : int list = []",
+        "up_to 10": "- : int list = [1; 2; 3; 4; 5; 6; 7; 8; 9; 10]"
       }
     },
     {
-        "id" : 3,
-        "name" : "Phi",
-        "content" : "Ecrire une fonction récursive \\(\\texttt{phi}\\), qui étant donné un entier \\(n\\geqslant 1\\), renvoie la liste \\([[n;...,1];...;[1]]\\).",
-        "type" : "phi : int -> int list list",
-        "example": {
-          "phi 1" : "[1]",
-          "phi 3" : "[[3; 2; 1]; [2; 1]; [1]]"
-        },
-        "test": {
-          "phi 1" : "- : int list list = [[1]]",
-          "phi 3" : "- : int list list = [[3;2;1];[2;1];[1]]"
-        }
+      "id": 3,
+      "name": "Phi",
+      "content": "Ecrire une fonction récursive \\(\\texttt{phi}\\), qui étant donné un entier \\(n\\geqslant 1\\), renvoie la liste \\([[n;...,1];...;[1]]\\).",
+      "type": "phi : int -> int list list",
+      "example": {
+        "phi 1": "[1]",
+        "phi 3": "[[3; 2; 1]; [2; 1]; [1]]"
       },
-      {
-        "id" : 4,
-        "name" : "Psi",
-        "content" : "Utiliser les fonctions \\(\\texttt{List.map}\\) (prédéfinie) et \\(\\texttt{up_to}\\) (cf. ex 2) pour écrire une fonction \\(\\texttt{psi}\\) telle que \\(\\texttt{psi n}\\) renvoie la liste \\([[1];...;[1;...,n]]\\).",
-        "type" : "psi : int -> int list list",
-        "example": {
-          "psi 1" : "[1]",
-          "psi 3" : "[[1]; [1; 2]; [1; 2; 3]]"
-        },
-        "test": {
-          "psi 1" : "- : int list list = [[1]]",
-          "psi 3" : "- : int list list = [[1];[1;2];[1;2;3]]"
-        }
-      },
-      {
-        "id" : 5,
-        "name" : "Psi 2",
-        "content" : "Combiner la fonction \\(\\texttt{phi}\\) (cf. ex 3) et la fonction \\(\\texttt{List.rev}\\) (prédéfinie) pour obtenir de nouveau le résultat demandé à l'ex 4.",
-        "type" : "psi : int -> int list list",
-        "example": {
-          "psi 1" : "[1]",
-          "psi 3" : "[[1]; [1; 2]; [1; 2; 3]]"
-        },
-        "test": {
-          "psi 1" : "- : int list list = [[1]]",
-          "psi 3" : "- : int list list = [[1];[1;2];[1;2;3]]"
-        }
-      },
-      {
-        "id" : 6,
-        "name" : "Longueur",
-        "content" : "Ecrire une fonction \\(\\texttt{longueur}\\) qui imite la fonction prédefinie \\(\\texttt{List.length}\\). On proposera 2 versions : l'une récursive, et l'une faisant appel à une fonction récursive terminale.",
-        "type" : "longueur : 'a list-> int",
-        "example": {
-          "longueur []" : "0",
-          "longueur [10;45;2;3]" : "4"
-        },
-        "test": {
-          "longueur []" : "- : int = 0",
-          "longueur [10;45;2;3]" : "- : int = 4"
-        }
-      },
-      {
-        "id" : 7,
-        "name" : "Map_to_list",
-        "content" : "Ecrire une fonction \\(\\texttt{map_to_list}\\) imitant la fonction prédefinie \\(\\texttt{List.map}\\).",
-        "type" : "map_to_list : ('a -> 'b) -> 'a list-> 'b list",
-        "example": {
-          "map_to_list (fun x -> x+1) [1; 2; 3]" : "[2; 3; 4]",
-          "map_to_list (fun x -> x@x) [[1]; [1; 2]]" : "[[1; 1]; [1; 2; 1; 2]]"
-        },
-        "test": {
-          "map_to_list (fun x -> x+1) [1;2;3]" : "- : int list = [2;3;4]",
-          "map_to_list (fun x -> x@x) [[1];[1;2]]" : "- : int list list = [[1;1];[1;2;1;2]]"
-        }
-      },
-      {
-        "id" : 8,
-        "name" : "Member",
-        "content" : "Ecrire une fonction \\(\\texttt{member}\\) imitant la fonction prédefinie \\(\\texttt{List.mem}\\).",
-        "type" : "member : 'a -> 'a list-> bool",
-        "example": {
-          "member 3 [1; 2; 3]" : "true",
-          "member [2] [[1]; [1; 2]]" : "false"
-        },
-        "test": {
-          "member 3 [1;2;3]" : "- : bool = true",
-          "member [2] [[1];[1;2]]" : "- : bool = false"
-        }
-      },
-      {
-        "id" : 9,
-        "name" : "Statistique",
-        "content" : "Ecrire une fonction \\(\\texttt{statistique}\\) qui, à partir d'une liste de nombres, renvoie le triplet (mini,maxi,moy) constitué des valeurs minimum et maximum ainsi que de la moyenne des termes de cette liste.",
-        "type" : "statistique : flat list-> float * float * float",
-        "example": {
-          "statistique [-1.; 0.; 1.]" : "(-1., 1., 0.)",
-          "statistique [4.; 3.; -1.]" : "(-1., 4., 2.)"
-        },
-        "test": {
-          "statistique [-1.;0.;1.]" : "- : float * float * float = (-1., 1., 0.)",
-          "statistique [4.;3.;-1.]" : "- : float * float * float = (-1., 4., 2.)"
-        }
-      },
-      {
-        "id" : 10,
-        "name" : "Flatten",
-        "content" : "Ecrire une fonction \\(\\texttt{flatten}\\) qui applatit une liste de listes, c'est-à-dire renvoie la liste obtenue en supprimant les \"crochets internes \".",
-        "type" : "flatten : 'a list list -> 'a list'",
-        "example": {
-          "flatten [[1; 2; 3]; [4; 5]; []; [6]]" : "[1; 2; 3; 4; 5; 6]"
-        },
-        "test": {
-          "flatten [[1;2;3];[4;5];[];[6]]" : "- : int list = [1;2;3;4;5;6]"
-        }
+      "test": {
+        "phi 1": "- : int list list = [[1]]",
+        "phi 3": "- : int list list = [[3;2;1];[2;1];[1]]"
       }
+    },
+    {
+      "id": 4,
+      "name": "Psi",
+      "content": "Utiliser les fonctions \\(\\texttt{List.map}\\) (prédéfinie) et \\(\\texttt{up_to}\\) (cf. ex 2) pour écrire une fonction \\(\\texttt{psi}\\) telle que \\(\\texttt{psi n}\\) renvoie la liste \\([[1];...;[1;...,n]]\\).",
+      "type": "psi : int -> int list list",
+      "example": {
+        "psi 1": "[1]",
+        "psi 3": "[[1]; [1; 2]; [1; 2; 3]]"
+      },
+      "test": {
+        "psi 1": "- : int list list = [[1]]",
+        "psi 3": "- : int list list = [[1];[1;2];[1;2;3]]"
+      }
+    },
+    {
+      "id": 5,
+      "name": "Psi 2",
+      "content": "Combiner la fonction \\(\\texttt{phi}\\) (cf. ex 3) et la fonction \\(\\texttt{List.rev}\\) (prédéfinie) pour obtenir de nouveau le résultat demandé à l'ex 4.",
+      "type": "psi : int -> int list list",
+      "example": {
+        "psi 1": "[1]",
+        "psi 3": "[[1]; [1; 2]; [1; 2; 3]]"
+      },
+      "test": {
+        "psi 1": "- : int list list = [[1]]",
+        "psi 3": "- : int list list = [[1];[1;2];[1;2;3]]"
+      }
+    },
+    {
+      "id": 6,
+      "name": "Longueur",
+      "content": "Ecrire une fonction \\(\\texttt{longueur}\\) qui imite la fonction prédefinie \\(\\texttt{List.length}\\). On proposera 2 versions : l'une récursive, et l'une faisant appel à une fonction récursive terminale.",
+      "type": "longueur : 'a list-> int",
+      "example": {
+        "longueur []": "0",
+        "longueur [10;45;2;3]": "4"
+      },
+      "test": {
+        "longueur []": "- : int = 0",
+        "longueur [10;45;2;3]": "- : int = 4"
+      }
+    }
   ]
 }

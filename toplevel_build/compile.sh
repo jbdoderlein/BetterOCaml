@@ -70,7 +70,7 @@ Build_Toplevel () {
     # Install dependencies
     echo "Installing dependencies ..."
     eval $(opam env)
-    opam install --yes tyxml ocp-indent higlo cohttp lwt tyxml reactiveData yojson graphics menhirLib cmdliner ppxlib react menhir dune
+    opam install --yes tyxml ocp-indent higlo cohttp lwt tyxml reactiveData yojson graphics menhirLib cmdliner ppxlib react menhir dune zarith zarith_stubs_js
     eval $(opam env)
 
     # Build

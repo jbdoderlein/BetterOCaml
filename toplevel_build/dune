@@ -10,6 +10,7 @@
     graphics
     js_of_ocaml.deriving
     bigarray
+    zarith
     react reactiveData
     str
    (select ocp_indent.ml from
@@ -60,6 +61,7 @@
       js_of_ocaml-ppx.as-lib
       js_of_ocaml.deriving
       lwt bigarray
+      zarith
       tyxml.functor
       tyxml.functor:html_types.cmi
       react reactiveData
@@ -74,6 +76,7 @@
  (action
     (run %{bin:js_of_ocaml}
          -I %{lib:reactiveData:.}
+         -I %{lib:zarith:.}
          -I .
          --file %{dep:examples.ml}
          --file %{dep:test_dynlink.cmo}
@@ -85,6 +88,8 @@
          --disable genprim
          +base/runtime.js
          +toplevel.js +dynlink.js
+	 +zarith_stubs_js/biginteger.js
+	 +zarith_stubs_js/runtime.js
          %{dep:toplevel.bc}
          -o %{targets}
     )))

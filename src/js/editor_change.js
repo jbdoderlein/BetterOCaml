@@ -87,6 +87,17 @@ let clean_content = function (content) {
 }
 
 /**
+ * Auto scroll down output interpreter
+ */
+function resize_output() {
+    let textbox = document.getElementById("output")
+    let container = document.getElementById("toplevel-container")
+    textbox.style.height = "auto";
+    textbox.style.height = `${textbox.scrollHeight}px`;
+    container.scrollTop = container.scrollHeight;
+}
+
+/**
  * Get the last line of the actual command (useful to highlight code)
  * @param {CodeMirror} instance - CodeMirror instance
  * @return {number} The las line number
@@ -107,7 +118,17 @@ let line_with_last = function (instance) {
 let exec_last = function (instance) {
     autosave_editor(instance.id)
     let beforecur = instance.getRange({line: 0, ch: 0}, {line: line_with_last(instance)});
-    parse(clean_content(beforecur).slice(-1)[0]); // Remove comments
+    let all = clean_content(instance.getValue());
+    let command = clean_content(beforecur).slice(-1)[0];
+    let indice = all.indexOf(command);
+    if (indice<all.length-1){
+        let next =  all[indice+1];
+        let sc = instance.getSearchCursor(next);
+        sc.find();
+        instance.setCursor(sc.pos.to);
+    }
+    parse(command); // Remove comments
+    resize_output();
 };
 
 /**
@@ -123,6 +144,7 @@ let exec_all = function (instance) {
             parse(commands[commandsKey])
         }, 200);
     }
+    resize_output();
 };
 
 /**
@@ -394,7 +416,9 @@ function create_editor(id, name) {
             "Shift-Cmd-Enter": exec_all,
             "Ctrl-Space": "autocomplete",
             "Cmd-Space": "autocomplete",
-            "Alt-F": "findPersistent"
+            "Alt-F": "findPersistent",
+            "Ctrl-S": save,
+            "Cmd-S": save
         },
         hintOptions: {hint: hint_prediction}
     });

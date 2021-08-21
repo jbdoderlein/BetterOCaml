@@ -302,7 +302,7 @@
             document.getElementById("loader-wrapper").style.display = "none";
             $('body').off('DOMNodeInserted');
             if (autosave_number()>0){
-                if(confirm("Des documents ont été sauvegardé automatiquement lors de la dernière session, voulez vous les restaurez ?")){
+                if(confirm("Des documents ont été sauvegardé automatiquement lors de la dernière session, voulez vous les restaurer ?")){
                     restore_editors();
                     remove_editor(0);
                     clear_autosave();

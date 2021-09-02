@@ -89,11 +89,8 @@ let clean_content = function (content) {
 /**
  * Auto scroll down output interpreter
  */
-function resize_output() {
-    let textbox = document.getElementById("output")
+function autoscroll_output() {
     let container = document.getElementById("toplevel-container")
-    textbox.style.height = "auto";
-    textbox.style.height = `${textbox.scrollHeight}px`;
     container.scrollTop = container.scrollHeight;
 }
 
@@ -128,7 +125,7 @@ let exec_last = function (instance) {
         instance.setCursor(sc.pos.to);
     }
     parse(command); // Remove comments
-    resize_output();
+    autoscroll_output();
 };
 
 /**
@@ -144,7 +141,7 @@ let exec_all = function (instance) {
             parse(commands[commandsKey])
         }, 200);
     }
-    resize_output();
+    autoscroll_output();
 };
 
 /**

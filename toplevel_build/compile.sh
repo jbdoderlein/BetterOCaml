@@ -53,7 +53,7 @@ Build_Toplevel () {
     cd js_of_ocaml/toplevel/examples/lwt_toplevel
 
     # Check if OCaml version $BUILD_VERSION is installed
-    if [[ -d ~/.opam/$BUILD_VERSION ]]; then
+    if [[ -d "$HOME/.opam/$BUILD_VERSION" ]]; then
         VERSION_ALREADY_INSTALLED=true
     else
         VERSION_ALREADY_INSTALLED=false
@@ -70,8 +70,20 @@ Build_Toplevel () {
     # Install dependencies
     echo "Installing dependencies ..."
     eval $(opam env)
-    opam install --yes tyxml ocp-indent higlo cohttp lwt tyxml reactiveData yojson graphics menhirLib cmdliner ppxlib react menhir dune zarith.1.11 zarith_stubs_js.v0.14.0
+    opam install --yes tyxml ocp-indent higlo cohttp lwt tyxml reactiveData yojson graphics menhirLib cmdliner ppxlib react menhir dune zarith zarith_stubs_js
     eval $(opam env)
+    
+    # Add missing primitive ml_z_mul_overflows
+    ZARITH_STUBS_JS="$HOME/.opam/$BUILD_VERSION/lib/zarith_stubs_js/runtime.js"
+    if [[ $(grep -LF "ml_z_mul_overflows" "$ZARITH_STUBS_JS") ]]; then
+        echo ""                                  >> "$ZARITH_STUBS_JS"
+        echo ""                                  >> "$ZARITH_STUBS_JS"
+        echo "//Provides: ml_z_mul_overflows"    >> "$ZARITH_STUBS_JS"
+        echo "function ml_z_mul_overflows(x,y){" >> "$ZARITH_STUBS_JS"
+        echo "    var z = x*y;"                  >> "$ZARITH_STUBS_JS"
+        echo "    return z != (z|0);"            >> "$ZARITH_STUBS_JS"
+        echo "}"                                 >> "$ZARITH_STUBS_JS"
+    fi
 
     # Build
     echo "Building toplevel-$BUILD_VERSION.js ..."
@@ -84,8 +96,11 @@ Build_Toplevel () {
     # Save build
     cd ../../../..
     [[ ! -d "$OUTPUT_DIR" ]] && mkdir -p "$OUTPUT_DIR"
-    [[ -f builds/toplevel-$BUILD_VERSION.js ]] && rm -f "$OUTPUT_DIR/toplevel-$BUILD_VERSION.js"
+    [[ -f "$OUTPUT_DIR/toplevel-$BUILD_VERSION.js" ]] && rm -f "$OUTPUT_DIR/toplevel-$BUILD_VERSION.js"
     cp js_of_ocaml/_build/default/toplevel/examples/lwt_toplevel/toplevel.js "$OUTPUT_DIR/toplevel-$BUILD_VERSION.js"
+    
+    # Clean after build
+    dune clean
 }
 
 Usage () {

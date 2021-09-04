@@ -255,12 +255,12 @@ samp {
 }
 
 .resizer[data-resizer-type=H] {
-    width: 8px;
+    width: 4px;
     cursor: col-resize;
 }
 
 .resizer[data-resizer-type=V] {
-    height: 8px;
+    height: 4px;
     cursor: row-resize;
 }
 
@@ -327,7 +327,11 @@ li.CodeMirror-hint-active {
 
 ::-webkit-scrollbar {
     height: 10px;
-    width: 20px;
+    width: 10px;
+}
+
+.CodeMirror-scrollbar-filler {
+    background-color: var(--scrollbar-bg-color) !important;
 }
 
 /* LOADING SCREEN */

@@ -32,18 +32,6 @@
   (preprocess (pps js_of_ocaml-ppx)))
 
 (rule
- (targets test_dynlink.cmo test_dynlink.cmi)
- (action (run ocamlc -c %{dep:test_dynlink.ml})))
-
-(rule
- (targets test_dynlink.js)
- (action (run %{bin:js_of_ocaml}
-          -I ./
-          --pretty
-          --toplevel
-          %{dep:test_dynlink.cmo})))
-
-(rule
  (targets export.txt)
  (deps
    (package js_of_ocaml-ppx)
@@ -78,22 +66,20 @@
          -I %{lib:reactiveData:.}
          -I %{lib:zarith:.}
          -I .
-         --file %{dep:examples.ml}
-         --file %{dep:test_dynlink.cmo}
-         --file %{dep:test_dynlink.js}
          --export %{dep:export.txt}
          --toplevel
          --opt 3
          --disable shortvar
          --disable genprim
          +base/runtime.js
-         +toplevel.js +dynlink.js
-	 +zarith_stubs_js/biginteger.js
-	 +zarith_stubs_js/runtime.js
+         +toplevel.js
+         +dynlink.js
+         +zarith_stubs_js/biginteger.js
+         +zarith_stubs_js/runtime.js
          %{dep:toplevel.bc}
          -o %{targets}
     )))
 
 (alias
   (name default)
-  (deps toplevel.js index.html))
+  (deps toplevel.js))

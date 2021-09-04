@@ -13,30 +13,71 @@ const buttons =document.getElementById("menu-button");
 var MOBILE = false;
 var MODULE_HINT = {
     'Base': [
-        "and", "as", "assert", "asr", "begin", "class", "constraint", "decr", "Division_by_zero", "do",
-        "done", "downto", "else", "end", "epsilon_float", "exception", "external", "Failure", "failwith",
-        "false", "for", "fst", "function", "functor", "if", "in", "include", "incr", "inherit", "initializer",
-        "land", "lazy", "let", "lor", "lsl", "lsr", "lxor", "match", "max_float", "max_int", "method",
-        "min_float", "min_int", "mod", "module", "mutable", "new", "nonrec", "not", "object", "of", "open",
-        "or", "Out_of_memory", "private", "raise", "rec", "ref", "sig", "snd", "struct", "then", "to", "true",
-        "try", "type", "val", "virtual", "when", "while", "with", "prerr_endline", "print_int", "print_float", "print_string",
-        "print_endline", "print_newline", "int_of_float", "float_of_int", "int_of_string", "float_of_string", "bool_of_string",
-        "string_of_int", "string_of_float", "string_of_bool", "int_of_char", "char_of_int", "sqrt", "max", "min", "exp", "log",
-        "log10", "cos", "acos", "sin", "asin", "tan", "atan", "atan2", "hypot", "cosh", "sinh", "tanh", "floor", "ceil",
-        "truncate", "abs_float", "abs",
-        "Sys", "Array", "Random", "List", "Graphics"
+        "and", "as", "assert", "asr", "begin", "class", "constraint", "decr", "Division_by_zero", "do", "done", "downto", "else", "end", "epsilon_float", "exception", "external", "Failure", "failwith", "false", "for", "fst", "function", "functor", "if", "in", "include", "incr", "inherit", "initializer", "Invalid_argument", "land", "lazy", "let", "lor", "lsl", "lsr", "lxor", "match", "max_float", "max_int", "method", "min_float", "min_int", "mod", "module", "mutable", "new", "nonrec", "not", "object", "of", "open", "or", "Out_of_memory", "private", "raise", "rec", "ref", "sig", "snd", "struct", "then", "to", "true", "try", "type", "val", "virtual", "when", "while", "with", "prerr_endline", "print_int", "print_float", "print_string", "print_endline", "print_newline", "int_of_float", "float_of_int", "int_of_string", "float_of_string", "bool_of_string", "string_of_int", "string_of_float", "string_of_bool", "int_of_char", "char_of_int", "sqrt", "max", "min", "exp", "log", "log10", "cos", "acos", "sin", "asin", "tan", "atan", "atan2", "hypot", "cosh", "sinh", "tanh", "floor", "ceil", "truncate", "abs_float", "abs",
     ],
-    'Sys': ["time", "unix", "win32", "word_size", "int_size", "max_string_length", "max_array_length", "ocaml_version"],
-    'Array': ["make", "make_matrix", "append", "concat", "copy", "fill", "map", "exists", "mem", "sort", "length", "get", "set", "sub"],
-    'Random': ["init", "int", "float", "bool"],
-    'List': ["hd", "tl", "concat", "mem", "filter", "exists", "iter", "map", "nth", "rev", "sort"],
+    'Array': [
+        "length", "get", "set", "make", "create", "create_float", "make_float", "init", "make_matrix", "create_matrix", "append", "sub", "concat", "copy", "fill", "blit", "to_list", "of_list", "iter", "iteri", "map", "mapi", "fold_left", "fold_right", "iter2", "map2", "for_all", "exists", "mem", "memq", "sort", "stable_sort", "fast_sort"
+    ],
     'Graphics': [
-        "open_graph", "close_graph", "width", "height", "size_x", "size_y", "clear_graph", "set_window_title",
-        "resize_window", "plot", "plots", "moveto", "rmoveto", "lineto", "rlineto", "draw_circle", "fill_circle",
-        "set_color", "set_line_width", "rgb", "background", "foreground", "black", "white", "red", "green", "blue",
-        "yellow", "cyan", "magenta", "point_color", "current_x", "current_y", "current_point", "curveto", "draw_rect",
-        "fill_rect", "draw_poly_line", "draw_poly", "fill_poly", "draw_segments", "draw_arc", "fill_arc", "draw_ellipse",
-        "fill_ellipse", "draw_char", "draw_string", "set_text_size", "text_size"],
+        "open_graph", "close_graph", "width", "height", "size_x", "size_y", "clear_graph", "set_window_title", "resize_window", "plot", "plots", "moveto", "rmoveto", "lineto", "rlineto", "draw_circle", "fill_circle", "set_color", "set_line_width", "rgb", "background", "foreground", "black", "white", "red", "green", "blue", "yellow", "cyan", "magenta", "point_color", "current_x", "current_y", "current_point", "curveto", "draw_rect", "fill_rect", "draw_poly_line", "draw_poly", "fill_poly", "draw_segments", "draw_arc", "fill_arc", "draw_ellipse", "fill_ellipse", "draw_char", "draw_string", "set_text_size", "text_size"
+    ],
+    'List': [
+        "length", "compare_lengths", "compare_length_with", "cons", "hd", "tl", "nth", "nth_opt", "rev", "init", "append", "rev_append", "concat", "flatten", "iter", "iteri", "map", "mapi", "rev_map", "fold_left", "fold_right", "iter2", "map2", "rev_map2", "fold_left2", "fold_right2", "for_all", "exists", "for_all2", "exists2", "mem", "memq", "find", "find_opt", "filter", "find_all", "partition", "assoc", "assoc_opt", "assq", "assq_opt", "mem_assoc", "mem_assq", "remove_assoc", "remove_assq", "split", "combine", "sort", "stable_sort", "fast_sort", "sort_uniq", "merge"
+    ],
+    'Num': [
+        "zero_big_int", "unit_big_int", "minus_big_int", "abs_big_int", "add_big_int", "succ_big_int", "add_int_big_int", "sub_big_int", "pred_big_int", "mult_big_int", "mult_int_big_int", "square_big_int", "sqrt_big_int", "quomod_big_int", "div_big_int", "mod_big_int", "gcd_big_int", "power", "power_big", "power_int_positive_int", "power_big_int_positive_int", "power_int_positive_big_int", "power_big_int_positive_big_int", "sign_big_int", "compare_big_int", "eq_big_int", "le_big_int", "ge_big_int", "lt_big_int", "gt_big_int", "max_big_int", "min_big_int", "num_digits_big_int", "string_of_big_int", "big_int_of_string", "big_int_of_int", "is_int_big_int", "int_of_big_int", "big_int_of_int32", "big_int_of_nativeint", "big_int_of_int64", "int32_of_big_int", "nativeint_of_big_int", "int64_of_big_int", "float_of_big_int", "and_big_int", "or_big_int", "xor_big_int", "shift_left_big_int", "shift_right_big_int", "shift_right_towards_zero_big_int", "extract_big_int"
+    ],
+    'Random': [
+        "init", "full_init", "self_init", "bits", "int", "int32", "nativeint", "int64", "float", "bool", "get_state", "set_state"
+    ],
+    'Random.State': [
+        "t", "make", "make_self_init", "copy", "bits", "int", "int32", "nativeint", "int64", "float", "bool"
+    ],
+    'Sys': [
+        "time", "os_type", "unix", "win32", "word_size", "int_size", "big_endian", "max_string_length", "max_array_length", "max_floatarray_length", "ocaml_version"
+    ],
+    'Z': [
+        "zero", "one", "minus_one", "of_int", "of_int32", "of_int64", "of_nativeint", "of_float", "of_string", "of_substring", "of_string_base", "of_substring_base", "succ", "pred", "abs", "neg", "add", "sub", "mul", "div", "rem", "div_rem", "cdiv", "fdiv", "ediv_rem", "ediv", "erem", "divexact", "logand", "logor", "logxor", "lognot", "shift_left", "shift_right", "shift_right_trunc", "numbits", "trailing_zeros", "testbit", "popcount", "hamdist", "to_int", "to_int32", "to_int64", "to_nativeint", "to_float", "to_string", "format", "fits_int", "fits_int32", "fits_int64", "fits_nativeint", "print", "output", "sprint", "bprint", "pp_print", "compare", "equal", "leq", "geq", "lt", "gt", "sign", "min", "max", "is_even", "is_odd", "hash", "gcd", "gcdext", "lcm", "powm", "powm_sec", "invert", "probab_prime", "nextprime", "pow", "sqrt", "sqrt_rem", "root", "perfect_power", "perfect_square", "log2", "log2up", "size", "extract", "signed_extract", "to_bits", "of_bits", "version"
+    ],
+}
+
+if (compare_versions(version, "4.07.0") >= 0) {
+    MODULE_HINT["Array"].push(...["to_seq", "to_seqi", "of_seq"]);
+    MODULE_HINT["List"].push(...["to_seq", "of_seq"]);
+}
+if (compare_versions(version, "4.08.0") >= 0) {
+    MODULE_HINT["Bool"] = ["not", "compare", "equal", "to_int", "to_float", "to_string"];
+    MODULE_HINT["List"].push(...["filter_map"]);
+}
+if (compare_versions(version, "4.10.0") >= 0) {
+    MODULE_HINT["List"].push(...["concat_map", "find_map"]);
+}
+if (compare_versions(version, "4.11.0") >= 0) {
+    MODULE_HINT["Array"].push(...["for_all2", "exists2"]);
+    MODULE_HINT["List"].push(...["fold_left_map", "filteri"]);
+}
+if (compare_versions(version, "4.12.0") >= 0) {
+    MODULE_HINT["List"].push(...["equal", "compare", "partition_map"]);
+}
+
+// Add module names to autocomplete
+MODULE_HINT["Base"].push(...Object.keys(MODULE_HINT).slice(1));
+
+/**
+* Compare two OCaml versions
+* This function assumes that all versions have the format x.y.z
+* @param {string} version A
+* @param {string} version B
+* @return {number} 1 if A > B, -1 if A < B, 0 if A == B
+*/
+function compare_versions(a, b) {
+    let a_components = a.split(".");
+    let b_components = b.split(".");
+    for (let i = 0; i < a_components.length; i++) {
+        if (parseInt(a_components[i]) > parseInt(b_components[i])) return 1;
+        if (parseInt(a_components[i]) < parseInt(b_components[i])) return -1;
+    }
+    return 0;
 }
 
 /**
@@ -90,7 +131,7 @@ let clean_content = function (content) {
  * Auto scroll down output interpreter
  */
 function autoscroll_output() {
-    let container = document.getElementById("toplevel-container")
+    let container = document.getElementById("toplevel-container");
     container.scrollTop = container.scrollHeight;
 }
 
@@ -100,11 +141,11 @@ function autoscroll_output() {
  * @return {number} The las line number
  */
 let line_with_last = function (instance) {
-    let i = instance.getCursor().line
+    let i = instance.getCursor().line;
     while (!instance.getLine(i).includes(";;")) {
         i++;
     }
-    return i
+    return i;
 }
 
 /**
@@ -113,12 +154,12 @@ let line_with_last = function (instance) {
  * @return {void} Nothing
  */
 let exec_last = function (instance) {
-    autosave_editor(instance.id)
+    autosave_editor(instance.id);
     let beforecur = instance.getRange({line: 0, ch: 0}, {line: line_with_last(instance)});
     let all = clean_content(instance.getValue());
     let command = clean_content(beforecur).slice(-1)[0];
     let indice = all.indexOf(command);
-    if (indice<all.length-1){
+    if (indice<all.length-1) {
         let next =  all[indice+1];
         let sc = instance.getSearchCursor(next);
         sc.find();
@@ -346,14 +387,12 @@ function hint_prediction(cm, option) {
                             from: CodeMirror.Pos(cursor.line, start),
                             to: CodeMirror.Pos(cursor.line, end)
                         })
-                    } else {
-                        if (!MODULE_HINT[module].includes(word)) {
-                            return accept({
-                                list: includer(MODULE_HINT[module], word),
-                                from: CodeMirror.Pos(cursor.line, start),
-                                to: CodeMirror.Pos(cursor.line, end)
-                            })
-                        }
+                    } else if (!MODULE_HINT[module].includes(word)) {
+                        return accept({
+                            list: includer(MODULE_HINT[module], word),
+                            from: CodeMirror.Pos(cursor.line, start),
+                            to: CodeMirror.Pos(cursor.line, end)
+                        })
                     }
                 }
             }

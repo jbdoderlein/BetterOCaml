@@ -28,7 +28,7 @@
     )
   (flags (:standard -rectypes -linkall))
   (modes byte)
-  (modules (:standard \ test_dynlink examples))
+  (modules (:standard))
   (preprocess (pps js_of_ocaml-ppx)))
 
 (rule

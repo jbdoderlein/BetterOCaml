@@ -186,7 +186,15 @@ if [[ $FORCE = false ]]; then
 fi
 
 # Prepare build by cloning js_of_ocaml and moving files
-[[ ! -d js_of_ocaml ]] && git clone https://github.com/ocsigen/js_of_ocaml
+#[[ ! -d js_of_ocaml ]] && git clone https://github.com/ocsigen/js_of_ocaml
+if [[ ! -d js_of_ocaml ]]; then
+    wget https://github.com/ocsigen/js_of_ocaml/releases/download/3.9.1/js_of_ocaml-3.9.1.tbz
+    tar -xjf js_of_ocaml-3.9.1.tbz
+    mv js_of_ocaml-3.9.1 js_of_ocaml
+    rm js_of_ocaml-3.9.1.tbz
+fi
+
+
 cp toplevel.ml js_of_ocaml/toplevel/examples/lwt_toplevel/toplevel.ml
 cp dune js_of_ocaml/toplevel/examples/lwt_toplevel/dune
 

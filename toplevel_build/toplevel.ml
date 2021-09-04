@@ -106,6 +106,7 @@ let setup_toplevel () =
   exec' (Printf.sprintf "Format.printf \"%s@.\" Sys.ocaml_version;;" header);
   exec' "#enable \"pretty\";;";
   exec' "#disable \"shortvar\";;";
+  exec' "module Num = Big_int_Z;;";
   Ppx_support.init ();
   Hashtbl.add
     Toploop.directive_table

@@ -68,12 +68,9 @@
          -I .
          --export %{dep:export.txt}
          --toplevel
-<<<<<<< Updated upstream
          --disable shortvar
          --disable genprim
-=======
          --opt 3
->>>>>>> Stashed changes
          +base/runtime.js
          +toplevel.js
          +dynlink.js

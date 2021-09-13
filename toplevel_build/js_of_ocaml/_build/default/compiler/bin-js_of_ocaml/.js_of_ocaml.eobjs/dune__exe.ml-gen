@@ -1,0 +1,34 @@
+(** @canonical Dune__exe.Build_fs *)
+module Build_fs = Dune__exe__Build_fs
+
+
+(** @canonical Dune__exe.Build_runtime *)
+module Build_runtime = Dune__exe__Build_runtime
+
+
+(** @canonical Dune__exe.Cmd_arg *)
+module Cmd_arg = Dune__exe__Cmd_arg
+
+
+(** @canonical Dune__exe.Compile *)
+module Compile = Dune__exe__Compile
+
+
+(** @canonical Dune__exe.Findlib_support *)
+module Findlib_support = Dune__exe__Findlib_support
+
+
+(** @canonical Dune__exe.Info *)
+module Info = Dune__exe__Info
+
+
+(** @canonical Dune__exe.Js_of_ocaml *)
+module Js_of_ocaml = Dune__exe__Js_of_ocaml
+
+
+(** @canonical Dune__exe.Link *)
+module Link = Dune__exe__Link
+
+
+(** @canonical Dune__exe.Print_runtime *)
+module Print_runtime = Dune__exe__Print_runtime

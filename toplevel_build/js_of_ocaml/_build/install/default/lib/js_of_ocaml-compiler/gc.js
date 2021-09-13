@@ -1,0 +1,1 @@
+../../../../default/runtime/gc.js

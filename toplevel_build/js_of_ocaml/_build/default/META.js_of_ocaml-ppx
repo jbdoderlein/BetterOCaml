@@ -1,0 +1,25 @@
+version = "3.9.1"
+description = "Js_of_ocaml ppx"
+requires(ppx_driver) = "js_of_ocaml-ppx.as-lib"
+archive(ppx_driver,byte) = "ppx_js_rewriter.cma"
+archive(ppx_driver,native) = "ppx_js_rewriter.cmxa"
+plugin(ppx_driver,byte) = "ppx_js_rewriter.cma"
+plugin(ppx_driver,native) = "ppx_js_rewriter.cmxs"
+# This is what dune uses to find out the runtime dependencies of
+# a preprocessor
+ppx_runtime_deps = "js_of_ocaml"
+# This line makes things transparent for people mixing preprocessors
+# and normal dependencies
+requires(-ppx_driver) = "js_of_ocaml"
+ppx(-ppx_driver,-custom_ppx) = "./ppx.exe --as-ppx"
+library_kind = "ppx_rewriter"
+package "as-lib" (
+  directory = "as-lib"
+  version = "3.9.1"
+  description = "Js_of_ocaml ppx"
+  requires = "compiler-libs.common ppxlib"
+  archive(byte) = "ppx_js.cma"
+  archive(native) = "ppx_js.cmxa"
+  plugin(byte) = "ppx_js.cma"
+  plugin(native) = "ppx_js.cmxs"
+)

@@ -1,0 +1,2 @@
+(** @canonical Jsoo_cmdline.Arg *)
+module Arg = Jsoo_cmdline__Arg

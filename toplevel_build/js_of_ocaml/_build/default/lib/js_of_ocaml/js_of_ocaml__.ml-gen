@@ -1,0 +1,106 @@
+(** @canonical Js_of_ocaml.CSS *)
+module CSS = Js_of_ocaml__CSS
+
+
+(** @canonical Js_of_ocaml.Dom *)
+module Dom = Js_of_ocaml__Dom
+
+
+(** @canonical Js_of_ocaml.Dom_events *)
+module Dom_events = Js_of_ocaml__Dom_events
+
+
+(** @canonical Js_of_ocaml.Dom_html *)
+module Dom_html = Js_of_ocaml__Dom_html
+
+
+(** @canonical Js_of_ocaml.Dom_svg *)
+module Dom_svg = Js_of_ocaml__Dom_svg
+
+
+(** @canonical Js_of_ocaml.EventSource *)
+module EventSource = Js_of_ocaml__EventSource
+
+
+(** @canonical Js_of_ocaml.File *)
+module File = Js_of_ocaml__File
+
+
+(** @canonical Js_of_ocaml.Firebug *)
+module Firebug = Js_of_ocaml__Firebug
+
+
+(** @canonical Js_of_ocaml.Form *)
+module Form = Js_of_ocaml__Form
+
+
+(** @canonical Js_of_ocaml.Geolocation *)
+module Geolocation = Js_of_ocaml__Geolocation
+
+
+(** @canonical Js_of_ocaml.Import *)
+module Import = Js_of_ocaml__Import
+
+
+(** @canonical Js_of_ocaml.IntersectionObserver *)
+module IntersectionObserver = Js_of_ocaml__IntersectionObserver
+
+
+(** @canonical Js_of_ocaml.Intl *)
+module Intl = Js_of_ocaml__Intl
+
+
+(** @canonical Js_of_ocaml.Js *)
+module Js = Js_of_ocaml__Js
+
+
+(** @canonical Js_of_ocaml.Json *)
+module Json = Js_of_ocaml__Json
+
+
+(** @canonical Js_of_ocaml.Jstable *)
+module Jstable = Js_of_ocaml__Jstable
+
+
+(** @canonical Js_of_ocaml.Lib_version *)
+module Lib_version = Js_of_ocaml__Lib_version
+
+
+(** @canonical Js_of_ocaml.MutationObserver *)
+module MutationObserver = Js_of_ocaml__MutationObserver
+
+
+(** @canonical Js_of_ocaml.Regexp *)
+module Regexp = Js_of_ocaml__Regexp
+
+
+(** @canonical Js_of_ocaml.ResizeObserver *)
+module ResizeObserver = Js_of_ocaml__ResizeObserver
+
+
+(** @canonical Js_of_ocaml.Sys_js *)
+module Sys_js = Js_of_ocaml__Sys_js
+
+
+(** @canonical Js_of_ocaml.Typed_array *)
+module Typed_array = Js_of_ocaml__Typed_array
+
+
+(** @canonical Js_of_ocaml.Url *)
+module Url = Js_of_ocaml__Url
+
+
+(** @canonical Js_of_ocaml.WebGL *)
+module WebGL = Js_of_ocaml__WebGL
+
+
+(** @canonical Js_of_ocaml.WebSockets *)
+module WebSockets = Js_of_ocaml__WebSockets
+
+
+(** @canonical Js_of_ocaml.Worker *)
+module Worker = Js_of_ocaml__Worker
+
+
+(** @canonical Js_of_ocaml.XmlHttpRequest *)
+module XmlHttpRequest = Js_of_ocaml__XmlHttpRequest

@@ -1,0 +1,34 @@
+(** @canonical Dune__exe.B64 *)
+module B64 = Dune__exe__B64
+
+
+(** @canonical Dune__exe.Colorize *)
+module Colorize = Dune__exe__Colorize
+
+
+(** @canonical Dune__exe.Examples *)
+module Examples = Dune__exe__Examples
+
+
+(** @canonical Dune__exe.Graphics_support *)
+module Graphics_support = Dune__exe__Graphics_support
+
+
+(** @canonical Dune__exe.Indent *)
+module Indent = Dune__exe__Indent
+
+
+(** @canonical Dune__exe.Ocp_indent *)
+module Ocp_indent = Dune__exe__Ocp_indent
+
+
+(** @canonical Dune__exe.Ppx_support *)
+module Ppx_support = Dune__exe__Ppx_support
+
+
+(** @canonical Dune__exe.Test_dynlink *)
+module Test_dynlink = Dune__exe__Test_dynlink
+
+
+(** @canonical Dune__exe.Toplevel *)
+module Toplevel = Dune__exe__Toplevel

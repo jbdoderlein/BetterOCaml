@@ -1,0 +1,11 @@
+
+
+(env
+ (dev
+  (flags
+   (:standard -w +a-4-40-41-42-44-48-58-66))))
+
+(rule
+  (targets version.ml.in)
+  (action (with-stdout-to %{targets}
+           (echo "let s = \"3.9.1\"\nlet git_version = \"\""))))

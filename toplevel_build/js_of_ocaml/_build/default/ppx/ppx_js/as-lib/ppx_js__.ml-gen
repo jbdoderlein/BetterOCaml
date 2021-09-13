@@ -1,0 +1,2 @@
+(** @canonical Ppx_js.Ppx_js_internal *)
+module Ppx_js_internal = Ppx_js__Ppx_js_internal

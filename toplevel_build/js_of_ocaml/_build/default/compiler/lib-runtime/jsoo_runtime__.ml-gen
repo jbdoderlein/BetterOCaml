@@ -1,0 +1,2 @@
+(** @canonical Jsoo_runtime.Files *)
+module Files = Jsoo_runtime__Files

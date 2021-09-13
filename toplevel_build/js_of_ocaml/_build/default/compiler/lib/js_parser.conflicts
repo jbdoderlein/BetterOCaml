@@ -1,0 +1,37 @@
+
+** Conflict (reduce/reduce) in state 18.
+** Tokens involved: T_VIRTUAL_SEMICOLON T_STRICT_NOT_EQUAL T_STRICT_EQUAL T_SEMICOLON T_RSHIFT_ASSIGN T_RSHIFT3_ASSIGN T_RSHIFT3 T_RSHIFT T_RPAREN T_RCURLY T_RBRACKET T_PLUS_ASSIGN T_PLUS T_PLING T_PERIOD T_OR T_NOT_EQUAL T_MULT_ASSIGN T_MULT T_MOD_ASSIGN T_MOD T_MINUS_ASSIGN T_MINUS T_LSHIFT_ASSIGN T_LSHIFT T_LPAREN T_LESS_THAN_EQUAL T_LESS_THAN T_LBRACKET T_INSTANCEOF T_INCR_NB T_IN T_GREATER_THAN_EQUAL T_GREATER_THAN T_EQUAL T_DIV_ASSIGN T_DIV T_DECR_NB T_COMMA T_COLON T_BIT_XOR_ASSIGN T_BIT_XOR T_BIT_OR_ASSIGN T_BIT_OR T_BIT_AND_ASSIGN T_BIT_AND T_ASSIGN T_AND EOF
+** The following explanations concentrate on token T_COLON.
+** This state is reached from standalone_expression after reading:
+
+T_LCURLY T_WHILE
+
+** The derivations that appear below have the following common factor:
+** (The question mark symbol (?) represents the spot where the derivations begin to differ.)
+
+standalone_expression 
+expression EOF 
+assignment_expression 
+left_hand_side_expression assignment_operator assignment_expression 
+new_expression 
+member_expression 
+primary_expression 
+object_literal 
+curly_block(separated_or_terminated_list(T_COMMA,object_key_value)) 
+T_LCURLY separated_or_terminated_list(T_COMMA,object_key_value) T_RCURLY 
+         object_key_value 
+         property_name T_COLON assignment_expression // lookahead token appears
+         identifier_or_kw // lookahead token is inherited
+         (?)
+
+** In state 18, looking ahead at T_COLON, reducing production
+** identifier_or_kw -> T_WHILE
+** is permitted because of the following sub-derivation:
+
+T_WHILE . 
+
+** In state 18, looking ahead at T_COLON, reducing production
+** identifier_or_kw -> T_WHILE
+** is permitted because of the following sub-derivation:
+
+T_WHILE . 

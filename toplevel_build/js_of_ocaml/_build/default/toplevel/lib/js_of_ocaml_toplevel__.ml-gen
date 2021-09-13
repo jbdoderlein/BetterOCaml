@@ -1,0 +1,10 @@
+(** @canonical Js_of_ocaml_toplevel.JsooTop *)
+module JsooTop = Js_of_ocaml_toplevel__JsooTop
+
+
+(** @canonical Js_of_ocaml_toplevel.JsooTopError *)
+module JsooTopError = Js_of_ocaml_toplevel__JsooTopError
+
+
+(** @canonical Js_of_ocaml_toplevel.JsooTopPpx *)
+module JsooTopPpx = Js_of_ocaml_toplevel__JsooTopPpx

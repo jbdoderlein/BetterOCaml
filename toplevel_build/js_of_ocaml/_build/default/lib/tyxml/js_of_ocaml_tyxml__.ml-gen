@@ -1,0 +1,14 @@
+(** @canonical Js_of_ocaml_tyxml.Import *)
+module Import = Js_of_ocaml_tyxml__Import
+
+
+(** @canonical Js_of_ocaml_tyxml.Tyxml_cast *)
+module Tyxml_cast = Js_of_ocaml_tyxml__Tyxml_cast
+
+
+(** @canonical Js_of_ocaml_tyxml.Tyxml_cast_sigs *)
+module Tyxml_cast_sigs = Js_of_ocaml_tyxml__Tyxml_cast_sigs
+
+
+(** @canonical Js_of_ocaml_tyxml.Tyxml_js *)
+module Tyxml_js = Js_of_ocaml_tyxml__Tyxml_js

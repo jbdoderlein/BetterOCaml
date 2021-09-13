@@ -183,6 +183,7 @@ let exec_all = function (instance) {
         }, 200);
     }
     autoscroll_output();
+    update_pfs(instance);
 };
 
 /**
@@ -269,6 +270,7 @@ let program_save = function (instance) {
     M.toast({html: 'File saved'})
     instance.is_saved = true;
     localStorage.removeItem("betterocaml-autosave-"+instance.id)
+    update_pfs(instance)
 }
 
 /**
@@ -295,6 +297,7 @@ function readSingleFile(e) {
         let next = Math.max(...Object.keys(editors).map(x => +x)) + 1;
         editors[next] = create_editor(id = next, name = file.name);
         editors[next].setValue(contents)
+        update_pfs(editors[next]);
 
     };
     reader.readAsText(file);
@@ -338,6 +341,7 @@ function editor_drop(data, e) {
             let next = Math.max(...Object.keys(editors).map(x => +x)) + 1;
             editors[next] = create_editor(next, file.name);
             editors[next].setValue(contents)
+            update_pfs(editors[next]);
 
         };
         reader.readAsText(file);
@@ -723,6 +727,13 @@ function restore_editors() {
             let next = Math.max(...Object.keys(editors).map(x => +x)) + 1;
             editors[next] = create_editor(id = next, name = editor_value.name);
             editors[next].setValue(editor_value.text);
+            update_pfs(editors[next]);
         }
     }
+}
+
+
+function update_pfs(editor) {
+    executecallback.update(editor.name, editor.getValue())
+    executecallback.execute("internal", "#directory \"/static\""); // Register files
 }

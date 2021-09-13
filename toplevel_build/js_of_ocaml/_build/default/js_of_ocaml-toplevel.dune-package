@@ -1,0 +1,48 @@
+(lang dune 2.9)
+(name js_of_ocaml-toplevel)
+(version 3.9.1)
+(library
+ (name js_of_ocaml-toplevel)
+ (kind normal)
+ (synopsis "Js_of_ocaml toplevel library")
+ (archives (byte js_of_ocaml_toplevel.cma) (native js_of_ocaml_toplevel.cmxa))
+ (plugins (byte js_of_ocaml_toplevel.cma) (native js_of_ocaml_toplevel.cmxs))
+ (native_archives js_of_ocaml_toplevel.a)
+ (requires
+  js_of_ocaml-compiler
+  js_of_ocaml
+  bytes
+  compiler-libs.bytecomp
+  compiler-libs.toplevel)
+ (main_module_name Js_of_ocaml_toplevel)
+ (modes byte native)
+ (modules
+  (wrapped
+   (main_module_name Js_of_ocaml_toplevel)
+   (modules
+    ((name Js_of_ocaml_toplevel)
+     (obj_name js_of_ocaml_toplevel)
+     (visibility public)
+     (impl))
+    ((name JsooTop)
+     (obj_name js_of_ocaml_toplevel__JsooTop)
+     (visibility public)
+     (impl)
+     (intf))
+    ((name JsooTopError)
+     (obj_name js_of_ocaml_toplevel__JsooTopError)
+     (visibility public)
+     (impl)
+     (intf))
+    ((name JsooTopPpx)
+     (obj_name js_of_ocaml_toplevel__JsooTopPpx)
+     (visibility public)
+     (impl)
+     (intf)))
+   (alias_module
+    (name Js_of_ocaml_toplevel__)
+    (obj_name js_of_ocaml_toplevel__)
+    (visibility public)
+    (kind alias)
+    (impl))
+   (wrapped true))))

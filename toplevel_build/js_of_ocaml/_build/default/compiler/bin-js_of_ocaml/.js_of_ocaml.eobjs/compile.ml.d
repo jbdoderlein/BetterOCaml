@@ -1,0 +1,1 @@
+compiler/bin-js_of_ocaml/compile.ml: Builtins Char Cmd_arg Cmdliner Cmo_format Code Config Debug Driver Eval Filename Findlib Format Hashtbl Info Js_of_ocaml_compiler Jsoo_cmdline Jsoo_runtime Linker List Option Parse_bytecode Pretty_print Primitive Printf Pseudo_fs String StringSet Sys Timer Var

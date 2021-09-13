@@ -70,6 +70,7 @@
          --toplevel
          --disable shortvar
          --disable genprim
+         --opt 3
          +base/runtime.js
          +toplevel.js
          +dynlink.js

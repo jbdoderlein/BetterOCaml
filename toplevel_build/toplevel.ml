@@ -115,6 +115,16 @@ let setup_toplevel () =
   Sys.interactive := true;
   ()
 
+let clear_toplevel () =
+  (by_id "output")##.innerHTML := Js.string "";
+  ()
+
+let reset_toplevel () =
+  (by_id "output")##.innerHTML := Js.string "";
+  setup_toplevel ();
+  ()
+
+
 let resize ~container ~textbox () =
   Lwt.pause ()
   >>= fun () ->
@@ -125,9 +135,7 @@ let resize ~container ~textbox () =
   Lwt.return ()
 
 let setup_printers () =
-  exec'
-    "let _print_error fmt e = Format.pp_print_string fmt (Js_of_ocaml.Js.string_of_error \
-     e)";
+  exec' "let _print_error fmt e = Format.pp_print_string fmt (Js_of_ocaml.Js.string_of_error e)";
   Topdirs.dir_install_printer Format.std_formatter Longident.(Lident "_print_error");
   exec' "let _print_unit fmt (_ : 'a) : 'a = Format.pp_print_string fmt \"()\"";
   Topdirs.dir_install_printer Format.std_formatter Longident.(Lident "_print_unit")
@@ -171,13 +179,20 @@ module History = struct
   let data = ref [| "" |]
 
   let idx = ref 0
-
+  
   let get_storage () =
     match Js.Optdef.to_option Dom_html.window##.localStorage with
     | exception _ -> raise Not_found
     | None -> raise Not_found
     | Some t -> t
-
+  
+  let set_storage () =
+    try
+      let s = get_storage () in
+      let str = Json.output !data in
+      s##setItem (Js.string "history") str
+    with Not_found -> ()
+    
   let setup () =
     try
       let s = get_storage () in
@@ -190,17 +205,14 @@ module History = struct
     with _ -> ()
 
   let push text =
-    let l = Array.length !data in
-    let n = Array.make (l + 1) "" in
-    !data.(l - 1) <- text;
-    Array.blit !data 0 n 0 l;
-    data := n;
-    idx := l;
-    try
-      let s = get_storage () in
-      let str = Json.output !data in
-      s##setItem (Js.string "history") str
-    with Not_found -> ()
+    let _ = match Array.length !data, text with
+     | _, "" -> ()
+     | 1, text -> if text <> "" then data := [| text ; "" |]; set_storage ();
+     | _, text -> if text <> !data.(Array.length !data - 2) then
+        data := Array.append !data [| "" |];
+        !data.(Array.length !data - 2) <- text;
+        set_storage ();
+    in idx := Array.length !data - 1
 
   let current text = !data.(!idx) <- text
 
@@ -322,11 +334,11 @@ let run _ =
         | 09 ->
             Indent.textarea textbox;
             Js._false
-        | 76 when meta e ->
-            output##.innerHTML := Js.string "";
-            Js._true
         | 75 when meta e ->
-            setup_toplevel ();
+            clear_toplevel ();
+            Js._false
+        | 76 when meta e ->
+            reset_toplevel ();
             Js._false
         | 38 -> history_up e
         | 40 -> history_down e
@@ -390,8 +402,10 @@ let _ =
         run ();
         Js._false);
   Js.Unsafe.global##.toplevelcallback := (object%js
-      val setup_toplevel = Js.wrap_meth_callback
+      val setup_toplevel_ = Js.wrap_meth_callback
           (fun () -> setup_toplevel ())
-      val reset_toplevel = Js.wrap_meth_callback
-          (fun () -> run ())
+      val clear_toplevel_ = Js.wrap_meth_callback
+          (fun () -> clear_toplevel ())
+      val reset_toplevel_ = Js.wrap_meth_callback
+          (fun () -> reset_toplevel ())
     end)

@@ -80,27 +80,6 @@ function compare_versions(a, b) {
     return 0;
 }
 
-/**
- * Execute Ocaml code in toplevel
- * @param {string} str - Code to execute
- * @return {void} Nothing
- */
-function parse(str) {
-    let cmd = str.split(';;\n');
-    for (let i = 0; i < cmd.length; i++) {
-        if (!cmd[i].endsWith(';;')) cmd[i] += ';;';
-        executecallback.execute("toplevel", cmd[i]);
-    }
-}
-
-/**
- * Reset Ocaml Toplevel
- * @return {void} Nothing
- */
-function reset_ocaml() {
-    document.getElementById('output').innerHTML = '';
-    toplevelcallback.setup();
-}
 
 /**
  * Change font size of editor or toplevel, and apply the changes in memory.
@@ -138,14 +117,13 @@ function autoscroll_output() {
 /**
  * Get the last line of the actual command (useful to highlight code)
  * @param {CodeMirror} instance - CodeMirror instance
- * @return {number} The las line number
+ * @return {number} The last line number
  */
 let line_with_last = function (instance) {
-    let i = instance.getCursor().line;
-    while (!instance.getLine(i).includes(";;")) {
-        i++;
+    for (let i = instance.getCursor().line; i < instance.lineCount(); i ++) {
+        if (instance.getLine(i).includes(";;")) return i;
     }
-    return i;
+    return -1;
 }
 
 /**
@@ -155,7 +133,9 @@ let line_with_last = function (instance) {
  */
 let exec_last = function (instance) {
     autosave_editor(instance.id);
-    let beforecur = instance.getRange({line: 0, ch: 0}, {line: line_with_last(instance)});
+    let last_line = line_with_last(instance);
+    if (last_line == -1) return;
+    let beforecur = instance.getRange({line: 0, ch: 0}, {line: last_line});
     let all = clean_content(instance.getValue());
     let command = clean_content(beforecur).slice(-1)[0];
     let indice = all.indexOf(command);
@@ -165,7 +145,7 @@ let exec_last = function (instance) {
         sc.find();
         instance.setCursor(sc.pos.to);
     }
-    parse(command); // Remove comments
+    executecallback.execute("toplevel", command);
     autoscroll_output();
 };
 
@@ -178,9 +158,9 @@ let exec_all = function (instance) {
     autosave_editor(instance.id)
     let commands = clean_content(instance.getValue());
     for (let commandsKey in commands) {
-        setTimeout(function () {
-            parse(commands[commandsKey])
-        }, 200);
+//        setTimeout(function () {
+            executecallback.execute("toplevel", commands[commandsKey]);
+//        }, 200);
     }
     autoscroll_output();
     update_pfs(instance);
@@ -485,7 +465,7 @@ function create_editor(id, name) {
  * Get the focused editor id in editors list
  * @return {number} focused editor id
  */
-function actual_editor() {
+function current_editor() {
     var actual_instance, actual_id
     if (MOBILE){
         actual_instance = M.Tabs.getInstance(document.getElementById('mobile-sidenav'));
@@ -575,7 +555,7 @@ function change_resize_bar(resize_obj, type) {
  */
 function remove_editor(id) {
     if (Object.keys(editors).length > 1) {
-        let act = actual_editor();
+        let cur = current_editor();
         if (! editors[id].is_saved){
             if (!confirm("Document non sauvegardé, voulez vous continuer ?")){
                 return
@@ -583,11 +563,11 @@ function remove_editor(id) {
         }
         delete editors[id];
         delete_editor(id);
-        if (id==act){
+        if (id == cur) {
             select_editor(Math.max(...Object.keys(editors).map(x => +x)));
         }
-        else{
-            select_editor(act)
+        else {
+            select_editor(cur);
         }
     }
 }

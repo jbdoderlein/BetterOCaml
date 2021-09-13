@@ -1,7 +1,0 @@
-version = "3.9.1"
-description = "Tyxml for js_of_ocaml."
-requires = "js_of_ocaml react reactiveData tyxml tyxml.functor"
-archive(byte) = "js_of_ocaml_tyxml.cma"
-archive(native) = "js_of_ocaml_tyxml.cmxa"
-plugin(byte) = "js_of_ocaml_tyxml.cma"
-plugin(native) = "js_of_ocaml_tyxml.cmxs"

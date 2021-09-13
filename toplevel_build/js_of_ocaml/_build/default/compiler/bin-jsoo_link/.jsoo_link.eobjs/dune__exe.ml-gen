@@ -1,6 +1,0 @@
-(** @canonical Dune__exe.Cmd_arg *)
-module Cmd_arg = Dune__exe__Cmd_arg
-
-
-(** @canonical Dune__exe.Jsoo_link *)
-module Jsoo_link = Dune__exe__Jsoo_link

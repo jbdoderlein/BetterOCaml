@@ -1,1 +1,0 @@
-compiler/bin-jsoo_minify/jsoo_minify.ml: Array Cmd_arg Cmdliner Code Config Filename Flag Format Js_assign Js_of_ocaml_compiler Js_output Js_traverse Jsoo_cmdline List Parse_info Parse_js Pretty_print Printexc StringSet Sys Timer Var_printer

@@ -1,2 +1,0 @@
-(** @canonical Ppx_optcomp_light.Properties *)
-module Properties = Ppx_optcomp_light__Properties

@@ -359,10 +359,15 @@ let run _ =
   setup_printers ();
   History.setup ();
   textbox##.value := Js.string "";
+  exec' "#directory \"/static\"";
   (* Add callback*)
   Js.Unsafe.global##.executecallback := (object%js
         val execute = Js.wrap_meth_callback
             (fun _ mode content -> execute_callback (Js.to_string mode) (Js.to_string content))
+        val create_file = Js.wrap_meth_callback
+            (fun _ name content -> Sys_js.create_file ~name:(Js.to_string name) ~content:(Js.to_string content))
+        val update_file = Js.wrap_meth_callback
+            (fun _ name content -> Sys_js.update_file ~name:(Js.to_string name) ~content:(Js.to_string content))
       end);
   (* Run initial code if any *)
   try

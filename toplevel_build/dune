@@ -68,7 +68,6 @@
          -I .
          --export %{dep:export.txt}
          --toplevel
-         --opt 3
          --disable shortvar
          --disable genprim
          +base/runtime.js

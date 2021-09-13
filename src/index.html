@@ -117,7 +117,7 @@
 <!-- Clean console button -->
 <div class="fixed-action-btn hide-on-small-and-down" style="bottom: 15px; right: 15px;">
     <a class="btn-floating btn-small waves-effect waves-light zoom-button"
-       onclick="document.getElementById('output').innerHTML=''"><i
+       onclick="toplevelcallback.clear_toplevel()"><i
             class="material-icons">delete</i></a>
 </div>
 
@@ -126,7 +126,7 @@
     <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="exec_all(editors[actual_editor()])"><i
             class="material-icons">play_arrow</i></a>
     <a class="btn-floating btn-small waves-effect waves-light zoom-button"
-       onclick="document.getElementById('output').innerHTML=''"><i
+       onclick="toplevelcallback.clear_toplevel()"><i
             class="material-icons">delete</i></a>
 </div>
 
@@ -185,7 +185,7 @@
                         class="material-icons">remove</i></a>
             </div>
 
-            <a class="waves-effect waves-light btn config-element" onclick="reset_ocaml();"><i
+            <a class="waves-effect waves-light btn config-element" onclick="toplevelcallback.reset_toplevel()"><i
                     class="material-icons right">refresh</i>Reset
                 OCaml Interpreter</a>
         </div>
@@ -243,7 +243,7 @@
 
     <!-- Toplevel flexbox -->
     <div id="box_2" class="box console-box">
-        <div id="toplevel-container" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+        <div id="toplevel-container">
             <pre id="output" height="auto"></pre>
             <div>
                 <div id="sharp" class="sharp"></div>
@@ -276,7 +276,7 @@
 
         // Set text zoom
         let r = document.querySelector(':root')
-        r.style.setProperty('--editor-font-size', (localStorage.getItem("betterocaml-text-editor") || "1.8em"));
+        r.style.setProperty('--editor-font-size', (localStorage.getItem("betterocaml-text-editor") || "1.2em"));
         r.style.setProperty('--toplevel-font-size', (localStorage.getItem("betterocaml-text-toplevel") || "1.2em"));
 
         // Service Worker

@@ -362,7 +362,7 @@ let run _ =
   let readline () =
     Js.Opt.case
       (Dom_html.window##prompt (Js.string "The toplevel expects inputs:") (Js.string ""))
-      (fun () -> "")
+      (fun () -> "\n")
       (fun s -> Js.to_string s ^ "\n")
   in
   Sys_js.set_channel_filler stdin readline;

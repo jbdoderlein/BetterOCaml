@@ -1,16 +1,10 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: CI Pull
 
 # Controls when the action will run. 
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
-  push:
-    paths:
-      - 'toplevel_build/**'
-      - '!toplevel_build/BUILD.md'
-      - '!toplevel_build/compile.sh'
-    branches: [ master ]
   pull_request:
     paths:
       - 'toplevel_build/**'
@@ -50,14 +44,6 @@ jobs:
       
       - name: Check if file exist
         run: test -f "./toplevel_build/builds/toplevel-4.12.0.js" || exit 1
-      
-      - name: Commit changes
-        uses: EndBug/add-and-commit@v7
-        with:
-          author_name: jbdoderlein
-          author_email: jean.baptiste.doderlein@gmail.com
-          message: 'Update compiled toplevel'
-          add: 'src/toplevels/toplevel-4.12.0.js'
         
       
       

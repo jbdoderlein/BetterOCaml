@@ -117,7 +117,7 @@
 <!-- Clean console button -->
 <div class="fixed-action-btn hide-on-small-and-down" style="bottom: 15px; right: 15px;">
     <a class="btn-floating btn-small waves-effect waves-light zoom-button"
-       onclick="toplevelcallback.clear_toplevel()"><i
+       onclick="toplevelcallback.clear()"><i
             class="material-icons">delete</i></a>
 </div>
 
@@ -126,7 +126,7 @@
     <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="exec_all(editors[actual_editor()])"><i
             class="material-icons">play_arrow</i></a>
     <a class="btn-floating btn-small waves-effect waves-light zoom-button"
-       onclick="toplevelcallback.clear_toplevel()"><i
+       onclick="toplevelcallback.clear()"><i
             class="material-icons">delete</i></a>
 </div>
 
@@ -185,7 +185,7 @@
                         class="material-icons">remove</i></a>
             </div>
 
-            <a class="waves-effect waves-light btn config-element" onclick="toplevelcallback.reset_toplevel()"><i
+            <a class="waves-effect waves-light btn config-element" onclick="toplevelcallback.reset()"><i
                     class="material-icons right">refresh</i>Reset
                 OCaml Interpreter</a>
         </div>

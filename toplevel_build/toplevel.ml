@@ -26,7 +26,7 @@ let current_position = ref 0
 module Version = struct
   type t = int list
   
-  let split v = List.map int_of_string (String.split_on_char '.' v)
+  let from_string v = List.map int_of_string (String.split_on_char '.' v)
   
   let rec comp v v' = match v, v' with
     | [], [] -> 0
@@ -37,7 +37,7 @@ module Version = struct
         | 0 -> comp xs ys
         | n -> n)
   
-  let current = split Sys.ocaml_version
+  let current = from_string Sys.ocaml_version
 end
 
 module History = struct

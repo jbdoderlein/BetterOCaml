@@ -106,6 +106,7 @@ let setup_toplevel () =
   exec' (Printf.sprintf "Format.printf \"%s@.\" Sys.ocaml_version;;" header);
   exec' "#enable \"pretty\";;";
   exec' "#disable \"shortvar\";;";
+  exec' "#directory \"/static\";;";
   exec' "module Num = Big_int_Z;;";
   Ppx_support.init ();
   Hashtbl.add
@@ -362,7 +363,7 @@ let run _ =
   let readline () =
     Js.Opt.case
       (Dom_html.window##prompt (Js.string "The toplevel expects inputs:") (Js.string ""))
-      (fun () -> "")
+      (fun () -> "\n")
       (fun s -> Js.to_string s ^ "\n")
   in
   Sys_js.set_channel_filler stdin readline;
@@ -371,7 +372,6 @@ let run _ =
   setup_printers ();
   History.setup ();
   textbox##.value := Js.string "";
-  exec' "#directory \"/static\"";
   (* Add callback*)
   Js.Unsafe.global##.executecallback := (object%js
         val execute = Js.wrap_meth_callback

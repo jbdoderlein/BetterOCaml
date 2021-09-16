@@ -227,7 +227,6 @@ let execute_callback mode content =
     |"console" -> JsooTop.execute true ~pp_code:binsharp_ppf ~highlight_location consolecaml_ppf content'
     |"toplevel" -> (
         current_position := (by_id "output")##.childNodes##.length;
-        History.push content;
         JsooTop.execute true ~pp_code:sharp_ppf ~highlight_location caml_ppf content';
       )
     |_ -> ()
@@ -238,6 +237,7 @@ let run _ =
   let textbox : 'a Js.t = by_id_coerce "userinput" Dom_html.CoerceTo.textarea in
   let execute () =
     let content = Js.to_string textbox##.value##trim in
+    History.push content;
     textbox##.value := Js.string "";
     execute_callback "toplevel" content;
     resize ~container ~textbox () >>= fun () -> container##.scrollTop := container##.scrollHeight;

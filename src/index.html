@@ -89,8 +89,8 @@
             <li id="flexible-mobile-button">
                 <a onclick="editors[Math.max(...Object.keys(editors).map(x => +x))+1] = create_editor(id = Math.max(...Object.keys(editors).map(x => +x))+1, name = 'untitled.ml', theme= editors[Math.min(...Object.keys(editors).map(x => +x))].getOption('theme'));"><i
                         class="material-icons">add</i></a></li>
-            <li><a onclick="exec_all(editors[actual_editor()])"><i class="material-icons">play_arrow</i></a></li>
-            <li><a onclick="save(editors[actual_editor()]);"><i class="material-icons">save</i></a></li>
+            <li><a onclick="exec_all(editors[current_editor()])"><i class="material-icons">play_arrow</i></a></li>
+            <li><a onclick="save(editors[current_editor()]);"><i class="material-icons">save</i></a></li>
             <li>
                 <a>
                     <label for="file-upload" class="custom-file-upload">
@@ -123,7 +123,7 @@
 
 <!-- Quick execute and clean console on mobile -->
 <div class="fixed-action-btn mobile-button hide-on-med-and-up" style="bottom: 15px; right: 15px;">
-    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="exec_all(editors[actual_editor()])"><i
+    <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="exec_all(editors[current_editor()])"><i
             class="material-icons">play_arrow</i></a>
     <a class="btn-floating btn-small waves-effect waves-light zoom-button"
        onclick="toplevelcallback.clear()"><i
@@ -225,7 +225,7 @@
     </div>
     <div class="modal-footer help">
         <button class="btn modal-close waves-effect waves-light zoom-button right"
-                onclick="name_and_save(editors[actual_editor()]);">
+                onclick="name_and_save(editors[current_editor()]);">
             Enregistrer
             <i class="material-icons right">save</i>
         </button>

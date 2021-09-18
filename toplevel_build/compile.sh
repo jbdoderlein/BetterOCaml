@@ -50,8 +50,6 @@
 Build_Toplevel () {
     BUILD_VERSION=$1
 
-    cd js_of_ocaml/toplevel/examples/lwt_toplevel
-
     # Check if OCaml version $BUILD_VERSION is installed
     if [[ -d "$HOME/.opam/$BUILD_VERSION" ]]; then
         VERSION_ALREADY_INSTALLED=true
@@ -70,7 +68,7 @@ Build_Toplevel () {
     # Install dependencies
     echo "Installing dependencies ..."
     eval $(opam env)
-    opam install --yes tyxml ocp-indent higlo cohttp lwt tyxml reactiveData yojson graphics menhirLib cmdliner ppxlib react menhir dune zarith zarith_stubs_js
+    opam install --yes js_of_ocaml.3.9.0 js_of_ocaml-compiler.3.9.1 js_of_ocaml-lwt.3.9.0 js_of_ocaml-ppx.3.9.0 js_of_ocaml-toplevel.3.9.0 js_of_ocaml-tyxml.3.9.0 graphics higlo lwt ocp-indent base zarith zarith_stubs_js
     eval $(opam env)
     
     # Add missing primitive ml_z_mul_overflows
@@ -87,19 +85,20 @@ Build_Toplevel () {
 
     # Build
     echo "Building toplevel-$BUILD_VERSION.js ..."
+    [[-d "_build" ]] && rm -rf "_build"
     dune clean
-    dune build
+    dune build --verbose
 
     # Remove OCaml version $BUILD_VERSION if it wasn't previously installed
     [[ $VERSION_ALREADY_INSTALLED = false && $KEEP = false ]] && opam switch remove --yes $BUILD_VERSION
 
     # Save build
-    cd ../../../..
     [[ ! -d "$OUTPUT_DIR" ]] && mkdir -p "$OUTPUT_DIR"
     [[ -f "$OUTPUT_DIR/toplevel-$BUILD_VERSION.js" ]] && rm -f "$OUTPUT_DIR/toplevel-$BUILD_VERSION.js"
-    cp js_of_ocaml/_build/default/toplevel/examples/lwt_toplevel/toplevel.js "$OUTPUT_DIR/toplevel-$BUILD_VERSION.js"
+    cp _build/default/toplevel.js "$OUTPUT_DIR/toplevel-$BUILD_VERSION.js"
     
     # Clean after build
+    rm -rf "_build"
     dune clean
 }
 
@@ -184,13 +183,6 @@ if [[ $FORCE = false ]]; then
         fi
     done
 fi
-
-# Prepare build by cloning js_of_ocaml and moving files
-[[ ! -d js_of_ocaml ]] && git clone --depth=1 https://github.com/ocsigen/js_of_ocaml
-
-
-cp toplevel.ml js_of_ocaml/toplevel/examples/lwt_toplevel/toplevel.ml
-cp dune js_of_ocaml/toplevel/examples/lwt_toplevel/dune
 
 if [[ " ${VERSIONS[@]} " =~ " all " ]]; then # Build all versions if "all" is set
     for BUILD_VERSION in "${SUPPORTED_OCAML_VERSIONS[@]}"; do

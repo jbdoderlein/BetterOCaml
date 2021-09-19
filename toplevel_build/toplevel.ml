@@ -1,5 +1,4 @@
 open Js_of_ocaml
-open Js_of_ocaml_lwt
 open Js_of_ocaml_tyxml
 open Js_of_ocaml_toplevel
 open Lwt
@@ -22,6 +21,109 @@ let current_position = ref 0
 
 
 (* Custom modules *)
+
+module Ocp_indent = struct
+  let _ = Approx_lexer.enable_extension "lwt"
+  
+  let indent s in_lines =
+    let output =
+      { IndentPrinter.debug = false
+      ; config = IndentConfig.default
+      ; in_lines
+      ; indent_empty = true
+      ; adaptive = true
+      ; kind = IndentPrinter.Print (fun s acc -> acc ^ s)
+      }
+    in
+    let stream = Nstream.of_string s in
+    IndentPrinter.proceed output stream IndentBlock.empty ""
+end
+
+module Indent = struct
+  let textarea (textbox : Dom_html.textAreaElement Js.t) : unit =
+    let rec loop s acc (i, pos') =
+      try
+        let pos = String.index_from s pos' '\n' in
+        loop s ((i, (pos', pos)) :: acc) (succ i, succ pos)
+      with _ -> List.rev ((i, (pos', String.length s)) :: acc)
+    in
+    let rec find (l : (int * (int * int)) list) c =
+      match l with
+      | [] -> assert false
+      | (i, (lo, up)) :: _ when up >= c -> c, i, lo, up
+      | (_, (_lo, _up)) :: rem -> find rem c
+    in
+    let v = textbox##.value in
+    let pos =
+      let c1 = textbox##.selectionStart and c2 = textbox##.selectionEnd in
+      if Js.Opt.test (Js.Opt.return c1) && Js.Opt.test (Js.Opt.return c2)
+      then
+        let l = loop (Js.to_string v) [] (0, 0) in
+        Some (find l c1, find l c2)
+      else None
+    in
+    let f =
+      match pos with
+      | None -> fun _ -> true
+      | Some ((_c1, line1, _lo1, _up1), (_c2, line2, _lo2, _up2)) ->
+          fun l -> l >= line1 + 1 && l <= line2 + 1
+    in
+    let v = Ocp_indent.indent (Js.to_string v) f in
+    textbox##.value := Js.string v;
+    match pos with
+    | Some ((c1, line1, _lo1, up1), (c2, line2, _lo2, up2)) ->
+        let l = loop v [] (0, 0) in
+        let lo1'', up1'' = List.assoc line1 l in
+        let lo2'', up2'' = List.assoc line2 l in
+        let n1 = max (c1 + up1'' - up1) lo1'' in
+        let n2 = max (c2 + up2'' - up2) lo2'' in
+        let () = (Obj.magic textbox)##setSelectionRange n1 n2 in
+        textbox##focus;
+        ()
+    | None -> ()
+end
+
+module Colorize = struct
+  let text ~a_class:cl s = Tyxml_js.Html.(span ~a:[ a_class [ cl ] ] [ txt s ])
+  
+  let ocaml ~a_class:cl s =
+    let tks = Higlo.parse ~lang:"ocaml" s in
+    let span' cl s = Tyxml_js.Html.(span ~a:[ a_class [ cl ] ] [ txt s ]) in
+    let make_span = function
+      | Higlo.Bcomment s -> span' "comment" s
+      | Higlo.Constant s -> span' "constant" s
+      | Higlo.Directive s -> span' "directive" s
+      | Higlo.Escape s -> span' "escape" s
+      | Higlo.Id s -> span' "id" s
+      | Higlo.Keyword (level, s) -> span' (Printf.sprintf "kw%d" level) s
+      | Higlo.Lcomment s -> span' "comment" s
+      | Higlo.Numeric s -> span' "numeric" s
+      | Higlo.String s -> span' "string" s
+      | Higlo.Symbol (level, s) -> span' (Printf.sprintf "sym%d" level) s
+      | Higlo.Text s -> span' "text" s
+    in
+    Tyxml_js.Html.(div ~a:[ a_class [ cl ] ] (List.map make_span tks))
+    
+  let highlight (`Pos from_) to_ e =
+    let _ =
+      List.fold_left
+        (fun pos e ->
+          match Js.Opt.to_option (Dom_html.CoerceTo.element e) with
+          | None -> pos
+          | Some e ->
+              let size = Js.Opt.case e##.textContent (fun () -> 0) (fun t -> t##.length) in
+              if pos + size > from_ && (to_ = `Last || `Pos pos < to_)
+              then e##.classList##add (Js.string "errorloc");
+              pos + size)
+        0
+        (Dom.list_of_nodeList e##.childNodes)
+    in
+    ()
+end
+
+module Ppx_support = struct
+  let init () = Ast_mapper.register "js_of_ocaml" (fun _ -> Ppx_js.mapper)
+end
 
 module Version = struct
   type t = int list

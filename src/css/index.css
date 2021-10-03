@@ -3,6 +3,7 @@
     --editor-font-size : 1.2em;
     --hint-font-size: 0.96em;
     --toplevel-font-size : 1.2em;
+    --shortcut_system: "Ctrl";
 }
 
 body,
@@ -322,6 +323,18 @@ li.CodeMirror-hint-active {
 .config-section {
     margin: 2%;
 }
+.shortcut-button{
+    margin: 2% 2% 4%;
+}
+
+.shortcut-command{
+    font-weight: bold;
+    display: inline;
+}
+
+.ctrl::before{
+    content: var(--shortcut_system);
+}
 
 /* SCROLLBAR */
 
@@ -573,7 +586,7 @@ label {
     border-bottom: 2px solid var(--ui-text-color) !important;
 }
 
-.btn.config-element {
+.btn.config-element, .btn.shortcut-button {
     background-color: var(--form-button-bg-color) !important;
 }
 

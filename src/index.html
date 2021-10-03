@@ -190,19 +190,9 @@
                 OCaml Interpreter</a>
         </div>
         <h4>Help</h4>
+        <a href="#shortcut" class="waves-effect waves-light btn shortcut-button modal-trigger"><i
+                class="material-icons right">code</i>Shortcuts</a>
         <div class="help-section">
-            <blockquote class="commands">
-                <b>Ctrl + Enter / Cmd + Enter</b> : Execute the highlighted code
-            </blockquote>
-            <blockquote class="commands">
-                <b>Ctrl + Shift + Enter / Cmd + Shift + Enter</b> : Execute the entire code
-            </blockquote>
-            <blockquote class="commands">
-                <b>Ctrl + Space / Cmd + Space</b> : Show the autocompletion box
-            </blockquote>
-            <blockquote class="commands">
-                <b>Ctrl + K / Cmd + K</b> : Reset OCaml Toplevel
-            </blockquote>
             <a class="github-button" href="https://github.com/jbdo99/betterocaml" data-size="large"
                aria-label="Issue jbdo99/betterocaml on GitHub">Open in Github</a>
             <a class="github-button" href="https://github.com/jbdo99/betterocaml/issues"
@@ -211,14 +201,66 @@
         </div>
     </div>
     <div class="modal-footer help">
-        <a href="#" class="modal-close waves-effect waves-green btn-flat white-text">Fermer</a>
+        <a href="#" class="modal-close waves-effect waves-green btn-flat white-text">Close</a>
+    </div>
+</div>
+
+<!-- Shortcut modal -->
+<div id="shortcut" class="modal help">
+    <div class="modal-content">
+        <h4>Shortcuts</h4>
+        <h5>Editor</h5>
+        <div class="help-section">
+            <blockquote class="commands">
+                <div class="shortcut-command ctrl"> + Enter </div>  : Execute the highlighted code
+            </blockquote>
+            <blockquote class="commands">
+                <div class="shortcut-command ctrl">+ Shift + Enter </div> : Execute the entire code
+            </blockquote>
+            <blockquote class="commands">
+                <div class="shortcut-command ctrl"> + Space </div> : Show the autocompletion box
+            </blockquote>
+        </div>
+        <h5>Toplevel</h5>
+        <div class="help-section">
+            <blockquote class="commands">
+                <div class="shortcut-command ctrl"> + K </div> : Reset OCaml Toplevel
+            </blockquote>
+        </div>
+        <h5>Search / Replace</h5>
+        <div class="help-section">
+            <blockquote class="commands">
+                <div class="shortcut-command ctrl"> + F </div> : Start searching
+            </blockquote>
+            <blockquote class="commands">
+                <div class="shortcut-command ctrl"> + G </div> : Find next
+            </blockquote>
+            <blockquote class="commands">
+                <div class="shortcut-command ctrl"> + Shift + G </div> : Find previous
+            </blockquote>
+            <blockquote class="commands">
+                <div class="shortcut-command ctrl"> + Shift + F </div> : Replace
+            </blockquote>
+            <blockquote class="commands">
+                <div class="shortcut-command ctrl"> + Shift + R </div> : Replace all
+            </blockquote>
+            <blockquote class="commands">
+                <div class="shortcut-command">Alt + F </div> : Persistent search
+            </blockquote>
+            <blockquote class="commands">
+                <div class="shortcut-command">Alt + G </div> : Jump to line
+            </blockquote>
+        </div>
+    </div>
+    <div class="modal-footer help">
+        <a href="#" class="modal-close waves-effect waves-green btn-flat white-text">Close</a>
     </div>
 </div>
 
 <!-- Save modal-->
 <div id="saveas" class="modal help">
     <div class="modal-content">
-        <h4>Enregistrer sous ...</h4>
+        <h4>Save as ...</h4>
         <div class="input-field col s6">
             <input placeholder="untitled.ml" id="saveas_text" type="text" class="white-text">
         </div>
@@ -226,7 +268,7 @@
     <div class="modal-footer help">
         <button class="btn modal-close waves-effect waves-light zoom-button right"
                 onclick="name_and_save(editors[current_editor()]);">
-            Enregistrer
+            Save
             <i class="material-icons right">save</i>
         </button>
     </div>
@@ -357,6 +399,9 @@
     document.getElementById("toplevel-container").addEventListener("click", (event) => {
         if (event.target === event.currentTarget) document.getElementById('userinput').focus();
     });
+
+    // Shortcut for Mac
+    document.querySelector(':root').style.setProperty('--shortcut_system', /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)?`"Cmd"`:`"Ctrl"`);
 
 
 </script>

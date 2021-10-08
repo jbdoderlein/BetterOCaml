@@ -11,7 +11,7 @@ You need to install opam on your device : [here are the instructions depending o
 Move in the `toplevel_build` directory :  
 `cd BetterOCaml/toplevel_build`  
 Run the compile script with the version you want to compile :  
-`./compile.sh 4.12.0`  
+`./compile.sh 4.13.0`  
 To get help on the options provided by the compile script :  
 `./compile.sh --help`
 

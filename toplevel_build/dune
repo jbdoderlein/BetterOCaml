@@ -47,7 +47,7 @@
       -I .
       --export %{dep:export.txt}
       --toplevel
-      
+      --opt 3
       +base/runtime.js
       +toplevel.js
       +dynlink.js

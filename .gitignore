@@ -8,5 +8,12 @@ release-builds/
 
 toplevel_build/builds/
 
-
-toplevel_build/js_of_ocaml/
+.DS_Store
+lang/.DS_Store
+lang/french/.DS_Store
+src/.DS_Store
+src/css/.DS_Store
+src/icon/.DS_Store
+src/js/.DS_Store
+src/toplevels/.DS_Store
+toplevel_build/.DS_Store

@@ -38,12 +38,12 @@ jobs:
         run: |
           cd toplevel_build
           chmod +x compile.sh
-          bash compile.sh 4.13.0
+          bash compile.sh 4.13.1
           cd ..
-          cp toplevel_build/builds/toplevel-4.13.0.js src/toplevels/toplevel-4.13.0.js
+          cp toplevel_build/builds/toplevel-4.13.1.js src/toplevels/toplevel-4.13.1.js
       
       - name: Check if file exist
-        run: test -f "./toplevel_build/builds/toplevel-4.13.0.js" || exit 1
+        run: test -f "./toplevel_build/builds/toplevel-4.13.1.js" || exit 1
       
       - name: Commit changes
         uses: EndBug/add-and-commit@v7
@@ -51,7 +51,7 @@ jobs:
           author_name: jbdoderlein
           author_email: jean.baptiste.doderlein@gmail.com
           message: 'CI - Update compiled toplevel'
-          add: 'src/toplevels/toplevel-4.13.0.js'
+          add: 'src/toplevels/toplevel-4.13.1.js'
         
       
       

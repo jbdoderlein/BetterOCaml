@@ -27,7 +27,9 @@
 #  -o | --output    Change output directory
 # [versions] can be :
 #  all    Used to compile all version available
+#  4.13.1
 #  4.13.0
+#  4.12.1
 #  4.12.0
 #  4.11.2
 #  4.11.1
@@ -69,7 +71,7 @@ Build_Toplevel () {
     # Install dependencies
     echo "Installing dependencies ..."
     eval $(opam env)
-    opam install --yes js_of_ocaml js_of_ocaml-compiler js_of_ocaml-lwt js_of_ocaml-ppx js_of_ocaml-toplevel js_of_ocaml-tyxml graphics higlo lwt ocp-indent base zarith zarith_stubs_js
+    opam install --yes js_of_ocaml js_of_ocaml-compiler js_of_ocaml-lwt js_of_ocaml-ppx js_of_ocaml-toplevel js_of_ocaml-tyxml graphics higlo lwt ocp-indent base zarith zarith_stubs_js dune
     eval $(opam env)
     
     # Add missing primitive ml_z_mul_overflows
@@ -122,7 +124,7 @@ Usage () {
 
 # These are all the known to work versions
 # You can edit this to try older versions but we cannot guarantee it will work
-SUPPORTED_OCAML_VERSIONS=(4.13.0 4.12.0 4.11.2 4.11.1 4.11.0 4.10.2 4.10.1 4.10.0 4.09.1 4.09.0 4.08.1 4.08.0 4.07.1 4.07.0 4.06.1 4.06.0)
+SUPPORTED_OCAML_VERSIONS=(4.13.1 4.13.0 4.12.1 4.12.0 4.11.2 4.11.1 4.11.0 4.10.2 4.10.1 4.10.0 4.09.1 4.09.0 4.08.1 4.08.0 4.07.1 4.07.0 4.06.1 4.06.0)
 
 KEEP=false
 FORCE=false

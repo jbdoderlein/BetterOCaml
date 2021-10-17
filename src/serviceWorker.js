@@ -47,7 +47,7 @@ const staticAssets = [
     './js/codemirror/dialog.js',
     './js/codemirror/jump-to-line.js',
     './js/codemirror/matchbrackets.min.js',
-    './js/codemirror/mllike.min.js',
+    './js/codemirror/mllike.js',
     './js/codemirror/search.js',
     './js/codemirror/searchcursor.js',
     './js/codemirror/show-hint.js',

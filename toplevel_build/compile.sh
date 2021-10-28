@@ -73,18 +73,6 @@ Build_Toplevel () {
     eval $(opam env)
     opam install --yes js_of_ocaml js_of_ocaml-compiler js_of_ocaml-lwt js_of_ocaml-ppx js_of_ocaml-toplevel js_of_ocaml-tyxml graphics higlo lwt ocp-indent base zarith zarith_stubs_js dune
     eval $(opam env)
-    
-    # Add missing primitive ml_z_mul_overflows
-    ZARITH_STUBS_JS="$HOME/.opam/$BUILD_VERSION/lib/zarith_stubs_js/runtime.js"
-    if [[ $(grep -LF "ml_z_mul_overflows" "$ZARITH_STUBS_JS") ]]; then
-        echo ""                                  >> "$ZARITH_STUBS_JS"
-        echo ""                                  >> "$ZARITH_STUBS_JS"
-        echo "//Provides: ml_z_mul_overflows"    >> "$ZARITH_STUBS_JS"
-        echo "function ml_z_mul_overflows(x,y){" >> "$ZARITH_STUBS_JS"
-        echo "    var z = x*y;"                  >> "$ZARITH_STUBS_JS"
-        echo "    return z != (z|0);"            >> "$ZARITH_STUBS_JS"
-        echo "}"                                 >> "$ZARITH_STUBS_JS"
-    fi
 
     # Build
     echo "Building toplevel-$BUILD_VERSION.js ..."

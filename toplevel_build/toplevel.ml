@@ -3,7 +3,6 @@ open Js_of_ocaml_tyxml
 open Js_of_ocaml_toplevel
 open Lwt
 
-
 (* Global variables *)
 
 let sharp_chan = open_out "/dev/null0"
@@ -16,9 +15,6 @@ let consolecaml_chan = open_out "/dev/null3"
 let consolecaml_ppf = Format.formatter_of_out_channel consolecaml_chan
 let bincaml_chan = open_out "/dev/null3"
 let bincaml_ppf = Format.formatter_of_out_channel bincaml_chan
-
-let current_position = ref 0
-
 
 (* Custom modules *)
 
@@ -294,7 +290,7 @@ let highlight_location loc =
   let x = ref 0 in
   let output = by_id "output" in
   let first =
-    Js.Opt.get (output##.childNodes##item !current_position) (fun _ -> assert false)
+    Js.Opt.get (output##.childNodes##item (by_id "output")##.childNodes##.length) (fun _ -> assert false)
   in
   iter_on_sharp first ~f:(fun e ->
       incr x;
@@ -327,10 +323,7 @@ let execute_callback mode content =
   match mode with
     |"internal" -> JsooTop.execute true ~pp_code:binsharp_ppf ~highlight_location bincaml_ppf content'
     |"console" -> JsooTop.execute true ~pp_code:binsharp_ppf ~highlight_location consolecaml_ppf content'
-    |"toplevel" -> (
-        current_position := (by_id "output")##.childNodes##.length;
-        JsooTop.execute true ~pp_code:sharp_ppf ~highlight_location caml_ppf content';
-      )
+    |"toplevel" -> JsooTop.execute true ~pp_code:sharp_ppf ~highlight_location caml_ppf content';
     |_ -> ()
 
 let run _ =

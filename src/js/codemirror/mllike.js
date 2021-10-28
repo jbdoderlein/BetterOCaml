@@ -51,34 +51,28 @@ CodeMirror.defineMode('mllike', function(_config, parserConfig) {
     if (ch === '"') {
       state.tokenize = tokenString;
       return state.tokenize(stream, state);
-    }
-    if (ch === '{') {
+    } else if (ch === '{') {
       if (stream.eat('|')) {
         state.longString = true;
         state.tokenize = tokenLongString;
         return state.tokenize(stream, state);
       }
-    }
-    if (ch === '(') {
+    } else if (ch === '(') {
       if (stream.eat('*')) {
         state.commentLevel++;
         state.tokenize = tokenComment;
         return state.tokenize(stream, state);
       }
-    }
-    if (ch === '~' || ch === '?') {
+    } else if (ch === '~' || ch === '?') {
       stream.eatWhile(/\w/);
       return 'variable-2';
-    }
-    if (ch === '`') {
+    } else if (ch === '`') {
       stream.eatWhile(/\w/);
       return 'quote';
-    }
-    if (ch === '/' && parserConfig.slashComments && stream.eat('/')) {
+    } else if (ch === '/' && parserConfig.slashComments && stream.eat('/')) {
       stream.skipToEnd();
       return 'comment';
-    }
-    if (/\d/.test(ch)) {
+    } else if (/\d/.test(ch)) {
       if (ch === '0' && stream.eat(/[bB]/)) {
         stream.eatWhile(/[01]/);
       } if (ch === '0' && stream.eat(/[xX]/)) {
@@ -95,11 +89,9 @@ CodeMirror.defineMode('mllike', function(_config, parserConfig) {
         }
       }
       return 'number';
-    }
-    if ( /[+\-*&%=<>!?|@\.~:]/.test(ch)) {
+    } else if ( /[+\-*&%=<>!?|@\.~:]/.test(ch)) {
       return 'operator';
-    }
-    if (/[\w\xa1-\uffff]/.test(ch)) {
+    } else if (/[\w\xa1-\uffff]/.test(ch)) {
       stream.eatWhile(/[\w\xa1-\uffff]/);
       var cur = stream.current();
       return words.hasOwnProperty(cur) ? words[cur] : 'variable';

@@ -286,11 +286,13 @@ let rec iter_on_sharp ~f x =
   | None -> ()
   | Some n -> iter_on_sharp ~f n
 
+let current_position = ref 0
+
 let highlight_location loc =
   let x = ref 0 in
   let output = by_id "output" in
   let first =
-    Js.Opt.get (output##.childNodes##item (by_id "output")##.childNodes##.length) (fun _ -> assert false)
+    Js.Opt.get (output##.childNodes##item !current_position) (fun _ -> assert false)
   in
   iter_on_sharp first ~f:(fun e ->
       incr x;
@@ -332,6 +334,7 @@ let run _ =
   let textbox : 'a Js.t = by_id_coerce "userinput" Dom_html.CoerceTo.textarea in
   let execute () =
     let content = Js.to_string textbox##.value##trim in
+    current_position := output##.childNodes##.length;
     History.push content;
     textbox##.value := Js.string "";
     execute_callback "toplevel" content;

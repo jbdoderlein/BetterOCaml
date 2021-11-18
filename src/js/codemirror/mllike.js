@@ -18,6 +18,7 @@ CodeMirror.defineMode('mllike', function(_config, parserConfig) {
     'else': 'keyword',
     'end': 'keyword',
     'exception': 'keyword',
+    'for': 'keyword',
     'fun': 'keyword',
     'functor': 'keyword',
     'if': 'keyword',

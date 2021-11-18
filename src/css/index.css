@@ -221,7 +221,7 @@ samp {
     background-color: transparent;
     border: none;
     margin-bottom: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-family: monospace, monospace;
 }
 
 #toplevel-container textarea {
@@ -229,7 +229,7 @@ samp {
     border: 0;
     resize: none;
     outline: none;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-family: monospace, monospace;
     font-weight: bold;
     float: left;
     margin: 0;
@@ -239,14 +239,14 @@ samp {
 #toplevel-container #sharp {
     float: left;
     line-height: 18px;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-family: monospace, monospace;
     white-space: pre;
 }
 
 .sharp:before {
     content: "# ";
     line-height: 18px;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-family: monospace, monospace;
 }
 
 /* RESIZER */

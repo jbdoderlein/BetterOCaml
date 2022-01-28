@@ -16,8 +16,8 @@
         --nav-close-btn-bg-color:#202b30;
         /* Editor */
         --editor-bg-color: #263238;
-        --editor-gutter-bg-color:#263238;
-        --editor-gutter-text-color:#546e7a;
+        --editor-gutter-bg-color: #202b30;
+        --editor-gutter-text-color: #7ea5b7;
         --editor-cursor-color: #fc0;
         --editor-selection-bg-color: rgba(128, 203, 196, .2);
         --editor-code-highlight-color: #3849519c;

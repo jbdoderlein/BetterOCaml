@@ -439,8 +439,8 @@ let run _ =
      fun exc ->
        Format.eprintf "exc during Lwt.async: %s@." (Printexc.to_string exc);
        match exc with
-       | Js.Error e -> Firebug.console##log e##.stack
-       | _ -> ());
+        | Js_error.Exn e -> let e = Js_error.to_error e in Firebug.console##log e##.stack
+        | _ -> ());
   Lwt.async (fun () ->
       resize ~container ~textbox ()
       >>= fun () ->

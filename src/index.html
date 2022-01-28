@@ -343,15 +343,12 @@
         if (ev.type === "animationend") {
             document.getElementById("loader-wrapper").style.display = "none";
             $('body').off('DOMNodeInserted');
-            if (autosave_number()>0){
-                if(confirm("Des documents ont été sauvegardé automatiquement lors de la dernière session, voulez vous les restaurer ?")){
+            if (autosave_number() > 0) {
+                if (confirm("Des documents ont été sauvegardé automatiquement lors de la dernière session, voulez vous les restaurer ?")) {
                     restore_editors();
                     remove_editor(0);
-                    clear_autosave();
                 }
-                else {
-                    clear_autosave()
-                }
+                clear_autosave()
             }
         }
     }, false);
@@ -360,6 +357,7 @@
     window.onbeforeunload = function () {
         if (Object.keys(editors).length >= 1) {
             if (!editors[id].is_saved) {
+                autosave_editor(id);
                 return "Your code is not saved, do you really want to leave ?"
             }
         }

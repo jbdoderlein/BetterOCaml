@@ -80,25 +80,76 @@ module Indent = struct
 end
 
 module Colorize = struct
+  let lexeme = Sedlexing.Utf8.lexeme;;
+  
+  let binary = [%sedlex.regexp? "0b", Plus('0' | '1'), Star('0' | '1' | '_')]
+  let octal = [%sedlex.regexp? "0o", Plus('0'..'7'), Star('0'..'7' | '_')]
+  let decimal = [%sedlex.regexp? Plus('0'..'9'), Star('0'..'9' | '_'), Opt('.'), Star('0'..'9' | '_')]
+  let hexadecimal = [%sedlex.regexp? "0x", Plus('0'..'9' | 'A'..'F' | 'a'..'f'), Star('0'..'9' | 'A'..'F' | 'a'..'f' | '_')]
+  let scientific = [%sedlex.regexp? Plus(decimal), ('e' | 'E'), Opt('+' | '-'), Plus('0'..'9' | '_')]
+  
+  let numeric = [%sedlex.regexp? binary | octal | decimal | hexadecimal | scientific]
+  
+  let boolean = [%sedlex.regexp? "true" | "false"]
+  let echar = [%sedlex.regexp? 't' | 'b' | 'n' | 'r' | 'f' | '\\' | '"' | '\'']
+  
+  let escaped_char = [%sedlex.regexp? '\\', echar]
+  let string = [%sedlex.regexp? '"', Star(Compl(0x22) | escaped_char),'"']
+  let char = [%sedlex.regexp? "'", (Compl(0x27) | escaped_char), "'"]
+  
+  let space = [%sedlex.regexp? Plus(' ' | '\n' | '\t' | '\r') ]
+  
+  let capchar = [%sedlex.regexp? 'A'..'Z']
+  let lowchar = [%sedlex.regexp? 'a'..'z']
+  let idchar = [%sedlex.regexp? lowchar | capchar | '0'..'9' | '_']
+  
+  let modname = [%sedlex.regexp? capchar, Star(idchar)]
+  
+  let comment = [%sedlex.regexp? "(*", (Star(Compl(0x2A) | ('*', Compl(')')))), "*)"]
+  
+  let id = [%sedlex.regexp? ('_' | lowchar), Star(idchar)]
+  let cap_id = [%sedlex.regexp? capchar, id]
+  let attr_id = [%sedlex.regexp? (id | cap_id), Star('.', Plus(id | cap_id))]
+  
+  let percent_id = [%sedlex.regexp? '%', attr_id]
+  
+  let decl_kw = [%sedlex.regexp? "and" | "class" | "constraint" | "exception" | "external" | "let" | "fun" | "function" | "functor" | "in" | "include" | "inherit" | "initializer" | "method" | "module" | "mutable" | "nonrec" | "of" | "open" | "private" | "rec" | "type" | "val" | "virtual"]
+  
+  let expr_kw = [%sedlex.regexp? "asr" | "do" | "else" | "for" | "if" | "while" | "as" | "assert" | "begin" | "do" | "done" | "downto" | "else" | "end" | "for" | "if" | "land" | "lazy" | "lor" | "lsl" | "lsr" | "lxor" | "match" | "mod" | "new" | "object" | "or" | "ref" | "sig" | "struct" | "then" | "to" | "try" | "when" | "while" | "with" | "#"]
+  
+  let type_kw = [%sedlex.regexp? "bool" | "int" | "string" | "list" | "array" | "float" | "char" | "unit"]
+  
+  let lwt_kw = [%sedlex.regexp? "lwt" | "raise_lwt" | ">>=" | ">>" | "=<<" | "for_lwt" | "assert_lwt" | "match_lwt" | "while_lwt"]
+  let label = [%sedlex.regexp? '~', id]
+  
+  let directive = [%sedlex.regexp? Opt('\n', Opt('\r')), '#', lowchar, Star(idchar)]
+  
   let text ~a_class:cl s = Tyxml_js.Html.(span ~a:[ a_class [ cl ] ] [ txt s ])
+  let span' cl s = Tyxml_js.Html.(span ~a:[ a_class [ cl ] ] [ txt s ])
   
   let ocaml ~a_class:cl s =
-    let tks = Higlo.parse ~lang:"ocaml" s in
-    let span' cl s = Tyxml_js.Html.(span ~a:[ a_class [ cl ] ] [ txt s ]) in
-    let make_span = function
-      | Higlo.Bcomment s -> span' "comment" s
-      | Higlo.Constant s -> span' "constant" s
-      | Higlo.Directive s -> span' "directive" s
-      | Higlo.Escape s -> span' "escape" s
-      | Higlo.Id s -> span' "id" s
-      | Higlo.Keyword (level, s) -> span' (Printf.sprintf "kw%d" level) s
-      | Higlo.Lcomment s -> span' "comment" s
-      | Higlo.Numeric s -> span' "numeric" s
-      | Higlo.String s -> span' "string" s
-      | Higlo.Symbol (level, s) -> span' (Printf.sprintf "sym%d" level) s
-      | Higlo.Text s -> span' "text" s
+    let lexbuf = Sedlexing.Utf8.from_string s in
+    let rec iter acc = match%sedlex lexbuf with
+      | eof -> List.rev acc
+      | space -> iter ((span' "text" (lexeme lexbuf)) :: acc)
+      | numeric -> iter ((span' "numeric" (lexeme lexbuf)) :: acc)
+      | boolean -> iter ((span' "constant" (lexeme lexbuf)) :: acc)
+      | directive -> iter ((span' "directive" (lexeme lexbuf)) :: acc)
+      | decl_kw -> iter ((span' "kw0" (lexeme lexbuf)) :: acc)
+      | expr_kw -> iter ((span' "kw1" (lexeme lexbuf)) :: acc)
+      | modname -> iter ((span' "kw2" (lexeme lexbuf)) :: acc)
+      | type_kw -> iter ((span' "kw3" (lexeme lexbuf)) :: acc)
+      | percent_id -> iter ((span' "kw5" (lexeme lexbuf)) :: acc)
+      | lwt_kw -> iter ((span' "kw10" (lexeme lexbuf)) :: acc)
+      | label -> iter ((span' "kw4" (lexeme lexbuf)) :: acc)
+      | id -> iter ((span' "id" (lexeme lexbuf)) :: acc)
+      | string -> iter ((span' "string" (lexeme lexbuf)) :: acc)
+      | char -> iter ((span' "string" (lexeme lexbuf)) :: acc)
+      | comment -> iter ((span' "comment" (lexeme lexbuf)) :: acc)
+      | any -> iter ((span' "text" (lexeme lexbuf)) :: acc)
+      | _ -> failwith "Invalid lexer state"
     in
-    Tyxml_js.Html.(div ~a:[ a_class [ cl ] ] (List.map make_span tks))
+    Tyxml_js.Html.(div ~a:[ a_class [ cl ] ] (iter []))
     
   let highlight (`Pos from_) to_ e =
     let _ =
@@ -128,12 +179,9 @@ module Version = struct
   
   let rec comp v v' = match v, v' with
     | [], [] -> 0
-    | [], y::_ -> compare 0 y
-    | x::_, [] -> compare x 0
-    | x::xs, y::ys -> (
-        match compare x y with
-        | 0 -> comp xs ys
-        | n -> n)
+    | [], y::ys -> if y = 0 then comp [] ys else -1
+    | x::xs, [] -> if x = 0 then comp xs [] else 1
+    | x::xs, y::ys -> if x = y then comp xs ys else compare x y
   
   let current = from_string Sys.ocaml_version
 end
@@ -235,13 +283,6 @@ let setup_toplevel () =
   JsooTop.initialize ();
   Sys.interactive := false;
   if Version.comp Version.current [ 4; 07 ] >= 0 then exec' "open Stdlib";
-  exec' "module Lwt_main = \n\
-           struct\n\
-           let run t = match Lwt.state t with\n\
-             | Lwt.Return x -> x\n\
-             | Lwt.Fail e -> raise e\n\
-             | Lwt.Sleep -> failwith \"Lwt_main.run: thread didn't return\"\n\
-         end";
   exec' "print_string (\"        OCaml version \" ^ Sys.ocaml_version);;";
   exec' "#enable \"pretty\";;";
   exec' "#disable \"shortvar\";;";
@@ -272,12 +313,6 @@ let resize ~container ~textbox () =
   := Js.string (Printf.sprintf "%dpx" (max 18 textbox##.scrollHeight));
   container##.scrollTop := container##.scrollHeight;
   Lwt.return ()
-
-let setup_printers () =
-  exec' "let _print_error fmt e = Format.pp_print_string fmt (Js_of_ocaml.Js.string_of_error e)";
-  Topdirs.dir_install_printer Format.std_formatter Longident.(Lident "_print_error");
-  exec' "let _print_unit fmt (_ : 'a) : 'a = Format.pp_print_string fmt \"()\"";
-  Topdirs.dir_install_printer Format.std_formatter Longident.(Lident "_print_unit")
 
 let rec iter_on_sharp ~f x =
   Js.Opt.iter (Dom_html.CoerceTo.element x) (fun e ->
@@ -404,8 +439,8 @@ let run _ =
      fun exc ->
        Format.eprintf "exc during Lwt.async: %s@." (Printexc.to_string exc);
        match exc with
-       | Js.Error e -> Firebug.console##log e##.stack
-       | _ -> ());
+        | Js_error.Exn e -> let e = Js_error.to_error e in Firebug.console##log e##.stack
+        | _ -> ());
   Lwt.async (fun () ->
       resize ~container ~textbox ()
       >>= fun () ->
@@ -425,7 +460,6 @@ let run _ =
   Sys_js.set_channel_filler stdin readline;
   setup_pseudo_fs ();
   setup_toplevel ();
-  setup_printers ();
   History.setup ();
   textbox##.value := Js.string ""
 

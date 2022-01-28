@@ -6,8 +6,7 @@
     --shortcut_system: "Ctrl";
 }
 
-body,
-html {
+body, html {
     margin: 0;
     width: 100%;
     height: 100vh;
@@ -92,8 +91,7 @@ nav ul li {
     min-height: 0;
 }
 
-nav i,
-nav i.material-icons {
+nav i, nav i.material-icons {
     height: inherit;
     line-height: 10vh;
     font-size: 4vh;
@@ -197,13 +195,6 @@ nav i.material-icons {
     border-bottom-style: solid;
 }
 
-code,
-kbd,
-pre,
-samp {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-}
-
 #toplevel-container {
     width: 100%;
     overflow: auto;
@@ -230,7 +221,6 @@ samp {
     resize: none;
     outline: none;
     font-family: monospace, monospace;
-    font-weight: bold;
     float: left;
     margin: 0;
     padding: 0;
@@ -323,16 +313,17 @@ li.CodeMirror-hint-active {
 .config-section {
     margin: 2%;
 }
-.shortcut-button{
+
+.shortcut-button {
     margin: 2% 2% 4%;
 }
 
-.shortcut-command{
+.shortcut-command {
     font-weight: bold;
     display: inline;
 }
 
-.ctrl::before{
+.ctrl::before {
     content: var(--shortcut_system);
 }
 
@@ -393,8 +384,7 @@ nav {
     background-color: var(--nav-bg-color) !important;
 }
 
-nav i,
-nav i.material-icons {
+nav i, nav i.material-icons {
     color: var(--ui-text-color);
 }
 
@@ -428,10 +418,7 @@ nav i.material-icons {
     color: var(--ui-text-color);
 }
 
-code,
-kbd,
-pre,
-samp {
+code, kbd, pre, samp {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
 
@@ -540,9 +527,11 @@ samp {
     bottom: 0;
     border-bottom: unset;
 }
+
 .CodeMirror-search-field{
     width: 75%!important;
 }
+
 .CodeMirror-search-hint{
     display: none;
 }
@@ -590,7 +579,8 @@ label {
     background-color: var(--form-button-bg-color) !important;
 }
 
-/* Code color */
+
+/* Syntax highligthing */
 
 .caml {
     color: var(--code-caml);
@@ -610,32 +600,26 @@ label {
 
 .sharp .id {
     color: var(--code-variable);
-    font-style: italic
 }
 
 .sharp .kw0 {
     color: var(--code-keyword);
-    font-weight: bold;
 }
 
 .sharp .kw1 {
     color: var(--code-keyword);
-    font-weight: bold;
 }
 
 .sharp .kw2 {
     color: var(--code-builtin);
-    font-weight: bold;
 }
 
 .sharp .kw3 {
     color: var(--code-builtin);
-    font-weight: bold;
 }
 
 .sharp .kw4 {
     color: var(--code-builtin);
-    font-weight: bold;
 }
 
 .sharp .comment {
@@ -645,7 +629,6 @@ label {
 
 .sharp .string {
     color: var(--code-string);;
-    font-weight: bold;
 }
 
 .sharp .text {

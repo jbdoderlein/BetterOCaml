@@ -561,7 +561,7 @@ let includer = function (l, w) {
 function hint_prediction(cm, option) {
     return new Promise(function (accept) {
         setTimeout(function () {
-            // Get theword before the cursor position
+            // Get the word before the cursor position
             var cursor = cm.getCursor(), line = cm.getLine(cursor.line)
             var start = cursor.ch, end = cursor.ch
             while (start && /\w/.test(line.charAt(start - 1))) --start
@@ -673,16 +673,21 @@ function create_editor(id, name) {
     editor.name = name
     editor.is_saved = true
     editor.ext_autocomplete = localStorage.getItem("betterocaml-autocomplete") == "true"
+    editor.autocomplete_timeout = Date.now()
     editor.hint_list = MODULE_HINT
     editor.current_marker = editor.markText({line: 0}, {line: 0}, {css: "color: #fe4"});
     editor.on("cursorActivity", cursor_activity);
     editor.on('drop', editor_drop);
     editor.on("keyup", function (cm, event) {
         if (cm.ext_autocomplete && // Only trigger if jetbrain style autocompletion is activated
+            cm.autocomplete_timeout < Date.now() - 500 && // Only trigger if the user stopped typing
             !cm.state.completionActive && /*Enables keyboard navigation in autocomplete list*/
             event.keyCode !== 13) {        /*Enter - do not open autocomplete list just after item has been selected in it*/
-            CodeMirror.commands.autocomplete(cm, null, {completeSingle: false});
+            CodeMirror.commands.autocomplete(cm, null, {completeSingle: false,});
         }
+    });
+    editor.on("endCompletion", function (cm) {
+        cm.autocomplete_timeout = Date.now();
     });
     $tabs.tabs().tabs('select', 'editor_tab_' + String(id));
     return editor

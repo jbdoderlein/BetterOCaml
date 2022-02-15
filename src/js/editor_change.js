@@ -630,7 +630,9 @@ function create_editor(id, name) {
     let editor = CodeMirror.fromTextArea(document.getElementById("editor_" + String(id)), {
         lineNumbers: true,
         autoCloseBrackets: true,
-        indentUnit: 4,
+        indentUnit: 2,
+        tabSize: 2,
+        smartIndent: true,
         dragDrop: true,
         matchBrackets: true,
         readOnly: false,
@@ -645,7 +647,25 @@ function create_editor(id, name) {
             "Cmd-Space": "autocomplete",
             "Alt-F": "findPersistent",
             "Ctrl-S": save,
-            "Cmd-S": save
+            "Cmd-S": save,
+            "Backspace": function (cm) { // If 2 space behind, delete 2 space
+                if (cm.getCursor().ch === 0) {
+                    return CodeMirror.Pass
+                }
+                let line = cm.getLine(cm.getCursor().line);
+                if (line.charAt(cm.getCursor().ch - 1) === ' ' && line.charAt(cm.getCursor().ch - 2) === ' ') {
+                    cm.replaceRange("", {
+                        line: cm.getCursor().line,
+                        ch: cm.getCursor().ch - 2
+                    }, {
+                        line: cm.getCursor().line,
+                        ch: cm.getCursor().ch
+                    })
+                }
+                else { // Else, delete 1 space
+                    CodeMirror.commands.delCharBefore(cm)
+                }
+            },
         },
         hintOptions: {hint: hint_prediction}
     });

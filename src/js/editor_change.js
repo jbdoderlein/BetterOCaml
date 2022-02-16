@@ -633,6 +633,7 @@ function create_editor(id, name) {
         indentUnit: 2,
         tabSize: 2,
         smartIndent: true,
+        indentWithTabs: false,
         dragDrop: true,
         matchBrackets: true,
         readOnly: false,
@@ -666,6 +667,18 @@ function create_editor(id, name) {
                     CodeMirror.commands.delCharBefore(cm)
                 }
             },
+            "Tab": function (cm){
+                if (cm.getMode().name === 'null') {
+                    cm.execCommand('insertTab');
+                } else {
+                    if (cm.somethingSelected()) {
+                        cm.execCommand('indentMore');
+                    } else {
+                        cm.execCommand('insertSoftTab');
+                    }
+                }
+            },
+            'Shift-Tab': function (cm){cm.execCommand('indentLess')},
         },
         hintOptions: {hint: hint_prediction}
     });

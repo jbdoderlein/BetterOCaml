@@ -3,7 +3,7 @@
 <head>
     <title>BetterOCaml</title>
     <meta name="description"
-          content="An efficient, intuitive and cross-platform web IDE for the OCaml language (recent: v4.13.1), with your code interpreted and running in your browser! (no server is needed!)">
+          content="An efficient, intuitive and cross-platform web IDE for the OCaml language (recent: v4.14.0), with your code interpreted and running in your browser! (no server is needed!)">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="manifest" href="manifest.json">
@@ -49,7 +49,8 @@
         let params = new URLSearchParams(window.location.search);
         let version = params.get("version");
 
-        let versions = ["4.13.1", "4.13.0", "4.12.1", "4.12.0", "4.11.2", "4.11.1", "4.11.0", "4.10.2", "4.10.1", "4.10.0", "4.09.1", "4.09.0", "4.08.1", "4.08.0", "4.07.1", "4.07.0", "4.06.1", "4.06.0"];
+        let versions = ["4.14.0", "4.13.1", "4.13.0", "4.12.1", "4.12.0", "4.11.2", "4.11.1", "4.11.0", "4.10.2", "4.10.1", "4.10.0", "4.09.1", "4.09.0", "4.08.1", "4.08.0", "4.07.1", "4.07.0", "4.06.1", "4.06.0"];
+//      let versions = ["4.13.1", "4.13.0", "4.12.1", "4.12.0", "4.11.2", "4.11.1", "4.11.0", "4.10.2", "4.10.1", "4.10.0", "4.09.1", "4.09.0", "4.08.1", "4.08.0", "4.07.1", "4.07.0", "4.06.1", "4.06.0"];
 
         if (!versions.includes(version)) {
             version = versions[0];

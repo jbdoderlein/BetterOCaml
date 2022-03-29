@@ -9,9 +9,6 @@ const staticAssets = [
     './css/index.css',
     './css/codemirror/codemirror.min.css',
     './css/codemirror/dialog.css',
-    './css/iconfont/MaterialIcons-Regular.eot',
-    './css/iconfont/MaterialIcons-Regular.ttf',
-    './css/iconfont/MaterialIcons-Regular.woff',
     './css/iconfont/MaterialIcons-Regular.woff2',
     './css/materialize/materialize.min.css',
     './css/theme/material.css',
@@ -53,7 +50,7 @@ const staticAssets = [
     './js/codemirror/show-hint.js',
     './js/codemirror/sublime.min.js',
     // './toplevels/',
-    './toplevels/toplevel-4.12.0.js',
+    './toplevels/toplevel-4.14.0.js',
 ];
 
 self.addEventListener('install', async event=>{

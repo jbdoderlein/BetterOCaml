@@ -12,13 +12,13 @@
   <a href="https://github.com/jbdoderlein/BetterOCaml/tree/master/lang/french#betterocaml">Français</a>
   </p>
 
-An efficient, intuitive and cross-platform web IDE for the [OCaml](https://www.ocaml.org/) language (recent: v4.13.1), with your code interpreted and running in your browser! (no server is needed!)
+An efficient, intuitive and cross-platform web IDE for the [OCaml](https://www.ocaml.org/) language (recent: v4.14.0), with your code interpreted and running in your browser! (no server is needed!)
 
 ## Installation / Usage
 
 The IDE is hosted [here](https://betterocaml/), <https://BetterOCaml.ml/>, but you can host your own version by simply copying the files from the `src/` directory on your host (on a folder of your laptop, or a folder of your web-server, see <http://ocaml.besson.link/> for an example).
 
-It is a *purely static website*: once your browser downloads the files from the server (about 35 Mb), it will run the OCaml code in its javascript engine, without sending anything to a distant server!
+It is a *purely static website*: once your browser downloads the files from the server (about 7 MB), it will run the OCaml code in its javascript engine, without sending anything to a distant server!
 Your data is secure, and this website does not use any third party service cookie :no_good_man: :cookie:.
 
 Without installing any software on your laptop or smartphone, use [this web-based editor](https://BetterOCaml.ml/) to access to a complete OCaml REPL and text editor, with syntax highlighting, autocompletion, a full support of recent OCaml syntax and [the entire standard library](https://caml.inria.fr/pub/docs/manual-ocaml/libref/) (except for `Graphics`, `Unix` modules and `Sys.command` function), and multiple-files that you can save to or load from your computer.
@@ -62,7 +62,7 @@ BetterOCaml is a fully installable Progressive Web App
 ## OCaml version
 You can change the OCaml version with the url : `https://betterocaml.ml/?version=4.11.0`
 
-Available version : `4.06.0`,`4.06.1`,`4.07.0`,`4.07.1`,`4.08.0`,`4.08.0`,`4.08.1`,`4.09.0`,`4.09.1`,`4.10.0`,`4.10.1`,`4.10.2`,`4.11.0`,`4.11.1`,`4.11.2`,`4.12.0`,`4.12.1`,`4.13.0``4.13.1`
+Available version : `4.06.0`,`4.06.1`,`4.07.0`,`4.07.1`,`4.08.0`,`4.08.0`,`4.08.1`,`4.09.0`,`4.09.1`,`4.10.0`,`4.10.1`,`4.10.2`,`4.11.0`,`4.11.1`,`4.11.2`,`4.12.0`,`4.12.1`,`4.13.0`,`4.13.1`,`4.14.0`
 
 You can also compile the toplevel with any version you want using [the compilation script](https://github.com/jbdoderlein/BetterOCaml/blob/master/toplevel_build/BUILD.md#how-to-build-the-betterocaml-toplevel).
 ##  About this project

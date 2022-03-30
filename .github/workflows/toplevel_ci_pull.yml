@@ -38,12 +38,12 @@ jobs:
         run: |
           cd toplevel_build
           chmod +x compile.sh
-          bash compile.sh 4.13.1
+          bash compile.sh 4.14.0
           cd ..
-          cp toplevel_build/builds/toplevel-4.13.1.js src/toplevels/toplevel-4.13.1.js
+          cp toplevel_build/builds/toplevel-4.14.0.js src/toplevels/toplevel-4.14.0.js
       
       - name: Check if file exist
-        run: test -f "./toplevel_build/builds/toplevel-4.13.1.js" || exit 1
+        run: test -f "./toplevel_build/builds/toplevel-4.14.0.js" || exit 1
         
       
       

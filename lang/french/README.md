@@ -13,7 +13,7 @@
   <span>Français</span>
   </p>
 
-Un IDE web efficace, intuitif et multiplateforme pour le langage [OCaml](https://www.ocaml.org/) (récent : v4.13.1), avec votre code interprété et exécuté dans votre navigateur ! (aucun serveur n'est nécessaire !)
+Un IDE web efficace, intuitif et multiplateforme pour le langage [OCaml](https://www.ocaml.org/) (récent : v4.14.0), avec votre code interprété et exécuté dans votre navigateur ! (aucun serveur n'est nécessaire !)
 
 ## Installation / Utilisation
 

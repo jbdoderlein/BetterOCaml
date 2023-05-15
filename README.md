@@ -1,5 +1,5 @@
 # BetterOCaml
-[![Website betterocaml.ml](https://img.shields.io/website-up-down-green-red/https/betterocaml.ml.svg?style=flat-square)](https://betterocaml.ml/)
+[![Website betterocaml.ml](https://img.shields.io/website-up-down-green-red/https/betterocaml.ml.svg?style=flat-square)]([https://perso.eleves.ens-rennes.fr/people/jean-baptiste.doderlein/betterocaml/?version=4.14.0](https://perso.eleves.ens-rennes.fr/people/jean-baptiste.doderlein/betterocaml/?version=4.14.0))
 [![GitHub license](https://img.shields.io/github/license/jbdoderlein/betterocaml?style=flat-square)](https://github.com/jbdoderlein/betterocaml/blob/master/LICENSE)
 ![GitHub repo size](https://img.shields.io/github/repo-size/jbdoderlein/BetterOCaml?style=flat-square)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=flat-square)](https://GitHub.com/jbdoderlein/BetterOCaml/graphs/commit-activity)
@@ -16,12 +16,12 @@ An efficient, intuitive and cross-platform web IDE for the [OCaml](https://www.o
 
 ## Installation / Usage
 
-The IDE is hosted [here](https://betterocaml/), <https://BetterOCaml.ml/>, but you can host your own version by simply copying the files from the `src/` directory on your host (on a folder of your laptop, or a folder of your web-server, see <http://ocaml.besson.link/> for an example).
+The IDE is hosted [here](https://perso.eleves.ens-rennes.fr/people/jean-baptiste.doderlein/betterocaml/?version=4.14.0), <https://perso.eleves.ens-rennes.fr/people/jean-baptiste.doderlein/betterocaml/?version=4.14.0>, but you can host your own version by simply copying the files from the `src/` directory on your host (on a folder of your laptop, or a folder of your web-server, see <http://ocaml.besson.link/> for an example).
 
 It is a *purely static website*: once your browser downloads the files from the server (about 7 MB), it will run the OCaml code in its javascript engine, without sending anything to a distant server!
 Your data is secure, and this website does not use any third party service cookie :no_good_man: :cookie:.
 
-Without installing any software on your laptop or smartphone, use [this web-based editor](https://BetterOCaml.ml/) to access to a complete OCaml REPL and text editor, with syntax highlighting, autocompletion, a full support of recent OCaml syntax and [the entire standard library](https://caml.inria.fr/pub/docs/manual-ocaml/libref/) (except for `Graphics`, `Unix` modules and `Sys.command` function), and multiple-files that you can save to or load from your computer.
+Without installing any software on your laptop or smartphone, use [this web-based editor](https://perso.eleves.ens-rennes.fr/people/jean-baptiste.doderlein/betterocaml/?version=4.14.0) to access to a complete OCaml REPL and text editor, with syntax highlighting, autocompletion, a full support of recent OCaml syntax and [the entire standard library](https://caml.inria.fr/pub/docs/manual-ocaml/libref/) (except for `Graphics`, `Unix` modules and `Sys.command` function), and multiple-files that you can save to or load from your computer.
 
 ## How to use ?
 
@@ -41,12 +41,12 @@ If you have any suggestion for a new theme, [open an issue](https://github.com/j
 
 ## :sparkles: Use offline?
 ### :computer: On a laptop or desktop
-- If you visit [the editor](https://BetterOCaml.ml/) webpage using your favorite browser, and if it works fine, you can add the link to your :star: "favorites", and then later on, if you open the direct link, it should work and load back BetterOCaml... even if your browser is offline!
+- If you visit [the editor](https://perso.eleves.ens-rennes.fr/people/jean-baptiste.doderlein/betterocaml/?version=4.14.0) webpage using your favorite browser, and if it works fine, you can add the link to your :star: "favorites", and then later on, if you open the direct link, it should work and load back BetterOCaml... even if your browser is offline!
 - This can only work if you don't clean-up or delete the cache of your browser, but it should work even if you turn-off and turn-on again your laptop!
 
 - We [recently](https://github.com/jbdoderlein/BetterOCaml/issues/12) [added](https://github.com/jbdoderlein/BetterOCaml/issues/13) support for an [app manifest](https://github.com/jbdoderlein/BetterOCaml/blob/master/src/manifest.json) and [service workers](https://github.com/jbdoderlein/BetterOCaml/blob/master/src/serviceWorker.js), so this web app is now a *Progressive Web App* (PWA), which can be installed on your laptop and used later on, even if you're offline! After being intalled, the app should appear in your global application menu (it works on Chromium on both Windows and Ubuntu).
 
-> If you can't install it as a PWA, [@Naereen](https://GitHub.com/Naereen) recommends trying [WebCatalog](https://webcatalog.app/), a multi-platform desktop app (for \*NIX, Windows and Mac OS), and you can then use it to "install" [the BetterOCaml editor](https://BetterOCaml.ml), along with its integrated OCaml interpreter (of course), as a "native" desktop app. It then appears in the menu of your system, and it works offline! See [this 1:30min tutorial in video](https://github.com/jbdoderlein/BetterOCaml/issues/6#issuecomment-780269129).
+> If you can't install it as a PWA, [@Naereen](https://GitHub.com/Naereen) recommends trying [WebCatalog](https://webcatalog.app/), a multi-platform desktop app (for \*NIX, Windows and Mac OS), and you can then use it to "install" [the BetterOCaml editor](https://perso.eleves.ens-rennes.fr/people/jean-baptiste.doderlein/betterocaml/?version=4.14.0), along with its integrated OCaml interpreter (of course), as a "native" desktop app. It then appears in the menu of your system, and it works offline! See [this 1:30min tutorial in video](https://github.com/jbdoderlein/BetterOCaml/issues/6#issuecomment-780269129).
 
 ### :phone: On a smartphone
 - It also works fine on smartphone running any recent OS and browser, :ok_hand: and the app should be "responsive" and you can switch to a vertical layout in the settings if your screen is too narrow.

@@ -10,14 +10,28 @@
     ocp-indent.lib
     lwt
     ;; not used directly
-    graphics
-    bigarray
-    zarith
     str
+    zarith
+    dynlink
   )
-  (flags (:standard -rectypes -linkall))
+  (flags 
+    (:standard -rectypes -linkall))
   (modes byte)
   (modules (:standard))
+  (js_of_ocaml
+    (link_flags (:standard))
+    (build_runtime_flags
+    (:standard
+      +base/runtime.js
+      +toplevel.js
+      +dynlink.js
+      +zarith_stubs_js/runtime.js
+      +zarith_stubs_js/biginteger.js
+      ))
+    (flags
+    (:standard
+      --toplevel))
+  )
   (preprocess (pps sedlex.ppx js_of_ocaml-ppx))
 )
 
@@ -26,11 +40,9 @@
   (action
     (run jsoo_listunits -o %{targets}
       stdlib
-      graphics
       str
-      bigarray
-      zarith
       dynlink
+      zarith
     )
   )
 )
@@ -39,16 +51,15 @@
   (targets toplevel.js)
   (action
     (run %{bin:js_of_ocaml}
-      -I %{lib:reactiveData:.}
-      -I %{lib:zarith:.}
-      --export %{dep:export.txt}
-      --toplevel
-      --opt 3
       +base/runtime.js
       +toplevel.js
       +dynlink.js
-      +zarith_stubs_js/biginteger.js
       +zarith_stubs_js/runtime.js
+      +zarith_stubs_js/biginteger.js
+      --export %{dep:export.txt}
+      --toplevel
+      --opt 3
+      --enable=effects
       %{dep:toplevel.bc}
       -o %{targets}
     )

@@ -173,8 +173,6 @@ module Ppx_support = struct
 end
 
 module Version = struct
-  type t = int list
-  
   let from_string v = List.map int_of_string (String.split_on_char '.' v)
   
   let rec comp v v' = match v, v' with
@@ -246,8 +244,6 @@ end
 let by_id s = Dom_html.getElementById s
 
 let by_id_coerce s f = Js.Opt.get (f (Dom_html.getElementById s)) (fun () -> raise Not_found)
-
-let do_by_id s f = try f (Dom_html.getElementById s) with Not_found -> ()
 
 (* load file using a synchronous XMLHttpRequest *)
 let load_resource_aux filename url =
@@ -339,8 +335,11 @@ let highlight_location loc =
         let to_ = if !x = line2 then `Pos col2 else `Last in
         Colorize.highlight from_ to_ e)
 
-let append colorize output cl s =
-  Dom.appendChild output (Tyxml_js.To_dom.of_element (colorize ~a_class:cl s))
+let append colorize output cl (s:string) =
+  if String.length s > 0 then
+    Dom.appendChild output (Tyxml_js.To_dom.of_element (colorize ~a_class:cl s))
+  else 
+    Dom.appendChild output (Tyxml_js.To_dom.of_element (colorize ~a_class:cl "empty output"))
 
 let append_to_console s =
   Firebug.console##log (Js.string s)

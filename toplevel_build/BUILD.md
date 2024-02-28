@@ -1,5 +1,7 @@
 # How to build the BetterOCaml Toplevel
-[![Maintenance](https://img.shields.io/badge/storage%20space%20required-1.3Gb-blue?style=flat-square)]()  
+
+**Warning** : The dune configuration is now modified to work with Dune>3.0 and Ocaml 5.0, to compile for OCaml<5.0, use [this commit](https://github.com/jbdoderlein/BetterOCaml/commit/7e3f428305a3410d0212c1dbe15610170d9f76ed)
+
 With the tool created by math-gout, you can easily compile the
 OCaml toplevel used in BetterOCaml.
 ## Clone repository

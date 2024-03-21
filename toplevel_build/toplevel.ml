@@ -284,6 +284,7 @@ let setup_toplevel () =
   exec' "#disable \"shortvar\";;";
   exec' "#directory \"/static\";;";
   exec' "module Num = Big_int_Z;;";
+  exec' "module Graph = Graphics_js;;";
   Ppx_support.init ();
   let[@alert "-deprecated"] new_directive n k = Hashtbl.add Toploop.directive_table n k in
     new_directive
@@ -445,6 +446,7 @@ let run _ =
       >>= fun () ->
       textbox##focus;
       Lwt.return_unit);
+  Graphics_js.open_canvas (by_id_coerce "test-canvas" Dom_html.CoerceTo.canvas);
   Sys_js.set_channel_flusher caml_chan (append Colorize.ocaml output "caml");
   Sys_js.set_channel_flusher sharp_chan (append Colorize.ocaml output "sharp");
   Sys_js.set_channel_flusher stdout (append Colorize.text output "stdout");

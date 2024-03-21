@@ -10,6 +10,8 @@
     ocp-indent.lib
     lwt
     ;; not used directly
+    graphics
+    js_of_ocaml-lwt.graphics
     str
     zarith
     dynlink
@@ -37,9 +39,23 @@
 
 (rule
   (targets export.txt)
+  (deps
+    (package js_of_ocaml-ppx)
+    (package js_of_ocaml)
+    (package js_of_ocaml-compiler)
+    (package js_of_ocaml-lwt)
+    (package js_of_ocaml-tyxml)
+    (package js_of_ocaml-toplevel)
+  )
   (action
     (run jsoo_listunits -o %{targets}
       stdlib
+      graphics
+      js_of_ocaml-lwt.graphics
+      js_of_ocaml-compiler.runtime
+      js_of_ocaml-lwt.graphics
+      js_of_ocaml-ppx.as-lib
+      js_of_ocaml.deriving
       str
       dynlink
       zarith

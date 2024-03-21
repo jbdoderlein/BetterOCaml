@@ -13,5 +13,5 @@
   "display": "standalone",
   "scope": "/index.html",
   "theme_color": "#263238",
-  "description": "A small but efficient, intuitive and responsive OCaml IDE right in your browser! Ships OCaml v4.14.0, interpreter by your browser (so it works offline!), compiled with js_of_ocaml. Open-source on <a href='https://github.com/jbdo99/BetterOCaml'>GitHub.com/jbdo99/BetterOCaml</a>"
+  "description": "A small but efficient, intuitive and responsive OCaml IDE right in your browser! Ships OCaml v5.1.1, interpreter by your browser (so it works offline!), compiled with js_of_ocaml. Open-source on <a href='https://github.com/jbdoderlein/BetterOCaml'>GitHub.com/jbdoderlein/BetterOCaml</a>"
 }

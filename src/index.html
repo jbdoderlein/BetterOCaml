@@ -49,7 +49,7 @@
         let params = new URLSearchParams(window.location.search);
         let version = params.get("version");
 
-        let versions = ["5.1.0", "4.14.1", "4.14.0", "4.13.1", "4.13.0", "4.12.1", "4.12.0", "4.11.2", "4.11.1", "4.11.0", "4.10.2", "4.10.1", "4.10.0", "4.09.1", "4.09.0", "4.08.1", "4.08.0", "4.07.1", "4.07.0", "4.06.1", "4.06.0"];
+        let versions = ["5.1.1", "5.1.0", "4.14.1", "4.14.0", "4.13.1", "4.13.0", "4.12.1", "4.12.0", "4.11.2", "4.11.1", "4.11.0", "4.10.2", "4.10.1", "4.10.0", "4.09.1", "4.09.0", "4.08.1", "4.08.0", "4.07.1", "4.07.0", "4.06.1", "4.06.0"];
 
         if (!versions.includes(version)) {
             version = versions[0];
@@ -192,6 +192,8 @@
         <h4>Help</h4>
         <a href="#shortcut" class="waves-effect waves-light btn shortcut-button modal-trigger"><i
                 class="material-icons right">code</i>Shortcuts</a>
+        <a href="#graphics" class="waves-effect waves-light btn shortcut-button modal-trigger"><i
+                    class="material-icons right">code</i>Graphics</a>
         <div class="help-section">
             <a class="github-button" href="https://github.com/jbdo99/betterocaml" data-size="large"
                aria-label="Issue jbdo99/betterocaml on GitHub">Open in Github</a>
@@ -271,6 +273,17 @@
             Save
             <i class="material-icons right">save</i>
         </button>
+    </div>
+</div>
+
+<div id="graphics" class="modal help">
+    <div class="modal-content">
+        <h4>Graphics main window</h4>
+        <canvas id="test-canvas">
+        </canvas>
+    </div>
+    <div class="modal-footer help">
+        <a href="#" class="modal-close waves-effect waves-green btn-flat white-text">Close</a>
     </div>
 </div>
 

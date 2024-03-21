@@ -53,7 +53,7 @@ const staticAssets = [
     './js/codemirror/show-hint.js',
     './js/codemirror/sublime.min.js',
     // './toplevels/',
-    './toplevels/toplevel-4.14.0.js',
+    './toplevels/toplevel-5.1.1.js',
 ];
 
 self.addEventListener('install', async event=>{

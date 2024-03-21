@@ -333,6 +333,11 @@ let line_with_last = function (instance) {
     return -1;
 }
 
+// From https://stackoverflow.com/questions/3115150/how-to-escape-regular-expression-special-characters-using-javascript
+function escapeRegExp(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+  }
+
 /**
  * Execute the last command in the editor
  * @param {CodeMirror} instance - CodeMirror instance
@@ -347,7 +352,7 @@ let exec_last = function (instance) {
     let command = clean_content(beforecur).slice(-1)[0];
     let allAfter = clean_content(aftercur);
     if (allAfter!=null && allAfter.length>0) {
-        let possibleNext = [...aftercur.matchAll(allAfter[0])];
+        let possibleNext = [...aftercur.matchAll(escapeRegExp(allAfter[0]))];
         if (possibleNext.length>0) {
             instance.setCursor(
                 instance.posFromIndex(possibleNext[0].index+beforecur.length+allAfter[0].length)

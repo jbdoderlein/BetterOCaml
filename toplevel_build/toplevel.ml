@@ -356,6 +356,8 @@ let sanitize_command cmd =
     else cmd
 
 let execute_callback mode content =
+  let output = by_id "output" in
+  current_position := output##.childNodes##.length;
   let content' = sanitize_command content in
   match mode with
     |"internal" -> JsooTop.execute true ~pp_code:binsharp_ppf ~highlight_location bincaml_ppf content'
@@ -369,7 +371,6 @@ let run _ =
   let textbox : 'a Js.t = by_id_coerce "userinput" Dom_html.CoerceTo.textarea in
   let execute () =
     let content = Js.to_string textbox##.value##trim in
-    current_position := output##.childNodes##.length;
     History.push content;
     textbox##.value := Js.string "";
     execute_callback "toplevel" content;

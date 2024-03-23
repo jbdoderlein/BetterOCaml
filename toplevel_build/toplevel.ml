@@ -354,6 +354,18 @@ let sanitize_command cmd =
     then cmd ^ ";"
     else cmd
 
+let default_print_out_phrase = !Toploop.print_out_phrase
+
+let print_out_phrase ppf p =
+  let output = by_id "output" in
+  match p with
+    | Outcometree.Ophr_exception(exn, _) ->
+      (append Colorize.text output "stderr") (
+        Format.sprintf "Runtime exception : \n%s" (Printexc.to_string exn);)
+    | _ -> default_print_out_phrase ppf p
+
+let () = Toploop.print_out_phrase := print_out_phrase
+
 let execute_callback mode content =
   let output = by_id "output" in
   current_position := output##.childNodes##.length;

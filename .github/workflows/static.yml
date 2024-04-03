@@ -4,6 +4,11 @@ name: Deploy static content to Pages
 on:
   # Runs on pushes targeting the default branch
   push:
+    paths:
+      - 'toplevel_build/**'
+      - '!toplevel_build/BUILD.md'
+      - '!toplevel_build/compile.sh'
+      - 'src/**'
     branches: ["master"]
 
   # Allows you to run this workflow manually from the Actions tab

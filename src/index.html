@@ -349,13 +349,36 @@
     }, false);
 
     // Loading Animation
-    $('body').on('DOMNodeInserted', 'pre', function () {
-        $('#loader-wrapper').addClass("tester")
-    });
+    // Select the body element
+    var targetNode = document.querySelector('body');
+
+    // Options for the observer (which mutations to observe)
+    var config = { childList: true, subtree: true };
+
+    // Callback function to execute when mutations are observed
+    var callback = function(mutationsList, observer) {
+        mutationsList.forEach(function(mutation) {
+            // Check if any new nodes are added
+            mutation.addedNodes.forEach(function(node) {
+                // If the added node is a <pre> element
+                if (node.nodeName === 'SPAN' && node.classList.contains("stdout")) {
+                    // Add the class 'tester' to #loader-wrapper
+                    document.querySelector('#loader-wrapper').classList.add("tester");
+                }
+            });
+        });
+    };
+
+    // Create an observer instance linked to the callback function
+    var observer = new MutationObserver(callback);
+
+    // Start observing the target node for configured mutations
+    observer.observe(targetNode, config);
+
     document.getElementById("loader-wrapper").addEventListener("animationend", (ev) => {
         if (ev.type === "animationend") {
             document.getElementById("loader-wrapper").style.display = "none";
-            $('body').off('DOMNodeInserted');
+            observer.disconnect();
             if (autosave_number() > 0) {
                 if (confirm("Des documents ont été sauvegardé automatiquement lors de la dernière session, voulez vous les restaurer ?")) {
                     restore_editors();

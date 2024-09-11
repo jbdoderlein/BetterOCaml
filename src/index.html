@@ -380,7 +380,7 @@
             document.getElementById("loader-wrapper").style.display = "none";
             observer.disconnect();
             if (autosave_number() > 0) {
-                if (confirm("Des documents ont été sauvegardé automatiquement lors de la dernière session, voulez vous les restaurer ?")) {
+                if (confirm("Des documents ont été sauvegardés automatiquement lors de la dernière session, voulez-vous les restaurer ?")) {
                     restore_editors();
                     remove_editor(0);
                 }

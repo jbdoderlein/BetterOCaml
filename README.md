@@ -69,6 +69,31 @@ Available version : `4.06.0`,`4.06.1`,`4.07.0`,`4.07.1`,`4.08.0`,`4.08.0`,`4.08.
 
 *The dune configuration is now modified to work with Dune>3.0 and Ocaml 5.0, to compile for OCaml<5.0, use [this commit](https://github.com/jbdoderlein/BetterOCaml/commit/7e3f428305a3410d0212c1dbe15610170d9f76ed)*
 
+## Loading a File from a URL
+
+You can load a remote file from a URL using the `load` parameter:  
+`https://link-to-betterocaml/?load=url-to-file`
+
+For example:  
+`https://jbdoderlein.github.io/BetterOCaml/?load=https://jbdoderlein.github.io/BetterOCaml/example.ml`  
+This will start BetterOCaml and load [this file](https://github.com/jbdoderlein/BetterOCaml/blob/master/src/example.ml).
+
+:warning: **The web server hosting the file must allow [CORS](https://developer.mozilla.org/docs/Glossary/CORS)**.  
+The server must include the `Access-Control-Allow-Origin` header to enable BetterOCaml to fetch the file.
+
+If the resource is hosted on the same domain as BetterOCaml, you don’t need the CORS header.
+
+> GitHub's raw source code URLs support CORS. For example:  
+> [Raw URL](https://raw.githubusercontent.com/jbdoderlein/BetterOCaml/refs/heads/master/src/example.ml) for [this file](https://github.com/jbdoderlein/BetterOCaml/blob/master/src/example.ml).
+
+
+### Bypassing CORS
+
+If you don’t have control over the server's CORS settings, you can use a CORS proxy. Several public CORS proxies are available, such as [corsproxy.io](https://corsproxy.io).
+
+For example, the URL above becomes:  
+`https://jbdoderlein.github.io/BetterOCaml/?load=https://corsproxy.io/?url=https://jbdoderlein.github.io/BetterOCaml/example.ml`
+
 ##  About this project
 
 ### :hammer_and_wrench: Dependencies

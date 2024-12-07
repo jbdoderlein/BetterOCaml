@@ -437,6 +437,51 @@
     // Shortcut for Mac
     document.querySelector(':root').style.setProperty('--shortcut_system', /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)?`"Cmd"`:`"Ctrl"`);
 
+    function getFileName(url, content) {
+        const parsedUrl = new URL(url); // Parse l'URL
+        const pathSegments = parsedUrl.pathname.split('/'); // Découpe le chemin en segments
+        const fileName = pathSegments.pop(); // Prend le dernier segment
+
+        if (!fileName || !fileName.endsWith('.ml')) {
+            const firstLine = fileContent.split('\n')[0].trim();
+
+            // Rechercher le motif (* quelquechoseici *)
+            const match = firstLine.match(/^\(\*\s*(.+?)\s*\*\)$/);
+
+            // Si un match est trouvé, retourne la partie extraite, sinon "imported.ml"
+            return match ? match[1] : 'imported.ml';
+        }
+        return fileName 
+    }
+
+    function get_from_url(url) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url);
+        xhr.setRequestHeader('Content-Type', 'text/plain');
+        xhr.overrideMimeType("text/plain");
+        
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status !== 200) {
+                    alert("Error " + xhr.status + " : " + xhr.statusText);
+                    return;
+                }
+                let contents = xhr.responseText;
+                let next = Math.max(...Object.keys(editors).map(x => +x)) + 1;
+                editors[next] = create_editor(id = next, name = getFileName(url));
+                editors[next].setValue(contents)
+                try {
+                    update_pfs(editors[next]);
+                } catch (e) {}
+            }
+        };
+        xhr.send(null);
+    }
+
+    let load_from_url = params.get("load");
+    if (load_from_url) {
+        get_from_url(load_from_url);
+    }
 
 </script>
 

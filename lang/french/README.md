@@ -13,7 +13,7 @@
   <span>Français</span>
   </p>
 
-Un IDE web efficace, intuitif et multiplateforme pour le langage [OCaml](https://www.ocaml.org/) (récent : v4.14.0), avec votre code interprété et exécuté dans votre navigateur ! (aucun serveur n'est nécessaire !)
+Un IDE web efficace, intuitif et multiplateforme pour le langage [OCaml](https://www.ocaml.org/) (récent : v5.3.0), avec votre code interprété et exécuté dans votre navigateur ! (aucun serveur n'est nécessaire !)
 
 ## Installation / Utilisation
 
@@ -61,11 +61,39 @@ BetterOCaml est une Progressive Web App entièrement installable.
 
 [!performance des pwa](https://betterocaml.ml/pwa_performance_2503.svg)](https://pagespeed-insights.herokuapp.com/?url=https://betterocaml.ml)
 ## Version de OCaml
-Vous pouvez changer la version de OCaml avec l'url : `https://betterocaml.ml/?version=4.11.0`
 
-Available version : `4.06.0`,`4.06.1`,`4.07.0`,`4.07.1`,`4.08.0`,`4.08.0`,`4.08.1`,`4.09.0`,`4.09.1`,`4.10.0`,`4.10.1`,`4.10.2`,`4.11.0`,`4.11.1`,`4.11.2`,`4.12.0`,`4.12.1`,`4.13.0`,`4.13.1`
+Vous pouvez changer la version de OCaml avec l'url : `https://link-to-betterocaml/?version=4.11.0`
+
+<https://jbdoderlein.github.io/BetterOCaml> propose `5.3.0`, et `4.14.1`
 
 Vous pouvez également compiler le toplevel avec la version de votre choix en utilisant [le script de compilation](https://github.com/jbdoderlein/BetterOCaml/blob/master/toplevel_build/BUILD.md#how-to-build-the-betterocaml-toplevel).
+
+*La configuration dune est maintenant modifiée pour fonctionner avec Dune>3.0 et OCaml 5.0, pour compiler pour OCaml<5.0, utilisez [ce commit](https://github.com/jbdoderlein/BetterOCaml/commit/7e3f428305a3410d0212c1dbe15610170d9f76ed)*
+
+## Charger un fichier depuis une URL
+
+Vous pouvez charger un fichier distant depuis une URL en utilisant le paramètre `load` :  
+`https://link-to-betterocaml/?load=url-du-fichier`
+
+Par exemple :  
+`https://jbdoderlein.github.io/BetterOCaml/?load=https://jbdoderlein.github.io/BetterOCaml/example.ml`  
+Cela lancera BetterOCaml et chargera [ce fichier](https://github.com/jbdoderlein/BetterOCaml/blob/master/src/example.ml).
+
+:warning: **Le serveur web hébergeant le fichier doit autoriser [CORS](https://developer.mozilla.org/docs/Glossary/CORS)**.  
+Le serveur doit inclure l'en-tête `Access-Control-Allow-Origin` pour permettre à BetterOCaml de récupérer le fichier.
+
+Si la ressource est hébergée sur le même domaine que BetterOCaml, vous n'avez pas besoin de l'en-tête CORS.
+
+> Les URLs de code source brut de GitHub supportent CORS. Par exemple :  
+> [URL brute](https://raw.githubusercontent.com/jbdoderlein/BetterOCaml/refs/heads/master/src/example.ml) pour [ce fichier](https://github.com/jbdoderlein/BetterOCaml/blob/master/src/example.ml).
+
+### Contourner CORS
+
+Si vous n'avez pas le contrôle sur les paramètres CORS du serveur, vous pouvez utiliser un proxy CORS. Plusieurs proxys CORS publics sont disponibles, comme [corsproxy.io](https://corsproxy.io).
+
+Par exemple, l'URL ci-dessus devient :  
+`https://jbdoderlein.github.io/BetterOCaml/?load=https://corsproxy.io/?url=https://jbdoderlein.github.io/BetterOCaml/example.ml`
+
 ## A propos de ce projet
 
 ### :hammer_and_wrench: Dépendances

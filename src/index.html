@@ -49,9 +49,9 @@
         let params = new URLSearchParams(window.location.search);
         let version = params.get("version");
 
-        let versions = ["5.1.1", "5.1.0", "4.14.1", "4.14.0", "4.13.1", "4.13.0", "4.12.1", "4.12.0", "4.11.2", "4.11.1", "4.11.0", "4.10.2", "4.10.1", "4.10.0", "4.09.1", "4.09.0", "4.08.1", "4.08.0", "4.07.1", "4.07.0", "4.06.1", "4.06.0"];
-
-        if (!versions.includes(version)) {
+        let versions = ["5.3.0", "5.1.1", "5.1.0", "4.14.1"];
+        
+        if (version == null) {
             version = versions[0];
             params.set("version", version);
             var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + params.toString();

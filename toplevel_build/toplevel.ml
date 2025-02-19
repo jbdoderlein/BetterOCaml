@@ -308,7 +308,7 @@ let resize ~container ~textbox () =
   textbox##.style##.height := Js.string "auto";
   textbox##.style##.height
   := Js.string (Printf.sprintf "%dpx" (max 18 textbox##.scrollHeight));
-  container##.scrollTop := container##.scrollHeight;
+  container##.scrollTop := Js.number_of_float (float_of_int container##.scrollHeight);
   Lwt.return ()
 
 let rec iter_on_sharp ~f x =
@@ -343,7 +343,7 @@ let append colorize output cl (s:string) =
     Dom.appendChild output (Tyxml_js.To_dom.of_element (colorize ~a_class:cl "empty output"))
 
 let append_to_console s =
-  Firebug.console##log (Js.string s)
+  Console.console##log (Js.string s)
 
 let sanitize_command cmd = 
   let len = String.length cmd in
@@ -386,7 +386,8 @@ let run _ =
     History.push content;
     textbox##.value := Js.string "";
     execute_callback "toplevel" content;
-    resize ~container ~textbox () >>= fun () -> container##.scrollTop := container##.scrollHeight;
+    resize ~container ~textbox () >>= fun () -> 
+    container##.scrollTop := Js.number_of_float (float_of_int container##.scrollHeight);
     Lwt.return_unit
   in
   let history_down _e =
@@ -452,7 +453,7 @@ let run _ =
      fun exc ->
        Format.eprintf "exc during Lwt.async: %s@." (Printexc.to_string exc);
        match exc with
-        | Js_error.Exn e -> let e = Js_error.to_error e in Firebug.console##log e##.stack
+        | Js_error.Exn e -> let e = Js_error.to_error e in Console.console##log e##.stack
         | _ -> ());
   Lwt.async (fun () ->
       resize ~container ~textbox ()

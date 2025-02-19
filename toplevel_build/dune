@@ -14,6 +14,7 @@
     js_of_ocaml-lwt.graphics
     str
     zarith
+    zarith_stubs_js
     dynlink
   )
   (flags 
@@ -28,7 +29,6 @@
       +toplevel.js
       +dynlink.js
       +zarith_stubs_js/runtime.js
-      +zarith_stubs_js/biginteger.js
       ))
     (flags
     (:standard
@@ -71,11 +71,9 @@
       +toplevel.js
       +dynlink.js
       +zarith_stubs_js/runtime.js
-      +zarith_stubs_js/biginteger.js
       --export %{dep:export.txt}
       --toplevel
       --opt 3
-      --enable=effects
       %{dep:toplevel.bc}
       -o %{targets}
     )

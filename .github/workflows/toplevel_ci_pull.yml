@@ -30,7 +30,7 @@ jobs:
       - name: Install opam
         run : |
           sudo apt update
-          sudo apt install opam
+          sudo apt install opam libx11-dev
           opam init
       
       - name: Compile

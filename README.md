@@ -92,6 +92,30 @@ If you don’t have control over the server's CORS settings, you can use a CORS 
 For example, the URL above becomes:  
 `https://jbdoderlein.github.io/BetterOCaml/?load=https://corsproxy.io/?url=https://jbdoderlein.github.io/BetterOCaml/example.ml`
 
+### Performance?
+The OCaml toplevel has been compiled to javascript by [js_of_ocaml](https://ocsigen.org/js_of_ocaml/3.7.0/manual/overview), and should be pretty efficient when compared to other ways of running pure OCaml code on a computer: you can hope for at worst a 10x speed-up factor between a program compiled using `ocamlopt` and its interpretation using [BetterOCaml](https://BetterOCaml.ml)!
+
+However when interpreting code, both in-browser toplevel [BetterOCaml](https://BetterOCaml.ml) and the native toplevel `ocaml` are slower than the same program compiled to bytecode (using `ocamlc`, about 2x slower), which itself is slower than the version compiled to native binary (using `ocamlopt`, about 5-10x slower).
+
+Here is a tiny comparaison of [a small Sudoku solver](https://ocaml.org/learn/tutorials/99problems.html#97-Sudoku-medium), to solve a [difficult Sudoku problem](https://www.telegraph.co.uk/news/science/science-news/9359579/Worlds-hardest-sudoku-can-you-crack-it.html):
+
+- Using in-browser BetterOCaml: **3.74 s**;
+- Using `ocaml` toplevel: **2.29 s** (interpreted, locally);
+- Using progrem compiled to bytecode with `ocamlc`: **2.08 s** (compiled to bytecode, interpreted by `ocamlrun`, locally);
+- Using progrem compiled to bytecode with `ocamlc`: **0.36 s** (compiled to native binary, locally, don't change if I use `-O2` or `-O3` optimizations);
+- <details style="margin-left:3%;">
+  <summary>Experimental platforms running OCaml code online:</summary>
+   <ul>
+    <li>using <a href="https://try.ocamlpro.com/">TryOCaml</a>: <strong>3.88 s</strong> (interpreted, in the browser);</li>
+    <li>using <a href="https://alpha.iodide.io/notebooks/1627/">Dominical = OCaml + Iodide</a> in-browser notebook: <strong>3.78 s</strong> (it uses a similar OCaml toplevel compiled using js_of_ocaml);</li>
+    <li>using <a href="https://andrewray.github.io/iocamljs/full402.html">IOCaml-JS</a> (full 4.02) in-browser notebook: <strong>4.70 s</strong>;</li>
+    <li>using <a href="https://sketch.sh/">Sketch.sh</a> experiment ReasonML and OCaml interactive in-browser notebook: <strong>3.69 s</strong>;</li>
+    <li>using <a href="https://reasonml.github.io/en/try">this ReasonML live programming tool</a>: <strong>[Evaluation timed out!]</strong></li>
+   </ul>
+  </details>
+
+> This tiny benchmark was performed on a Ubuntu 18.04 laptop with i5 Intel core, 12 Gb of Ram, by [@Naereen](https://GitHub.com/Naereen), averaging the time of five runs, using [this program](https://github.com/Naereen/bin/blob/master/sudoku.ml).
+
 ##  About this project
 
 ### :hammer_and_wrench: Dependencies

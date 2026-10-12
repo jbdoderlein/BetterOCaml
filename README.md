@@ -59,7 +59,7 @@ BetterOCaml is a fully installable Progressive Web App
 
 ## OCaml version
 
-You can change the OCaml version with the url : `https://link-to-betterocaml/?version=4.11.0`
+You can change the OCaml version with the url : `https://link-to-betterocaml/?version=5.3.0`
 
 <https://jbdoderlein.github.io/BetterOCaml> offers `5.5.1` (default, with effect handlers), `5.5.1-noeffects` (lighter, without effect handlers), `5.3.0`, and `4.14.1`
 

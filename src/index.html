@@ -3,7 +3,7 @@
 <head>
     <title>BetterOCaml</title>
     <meta name="description"
-          content="An efficient, intuitive and cross-platform web IDE for the OCaml language (recent: v4.14.0), with your code interpreted and running in your browser! (no server is needed!)">
+          content="An efficient, intuitive and cross-platform web IDE for the OCaml language (recent: v5.5.1), with your code interpreted and running in your browser! (no server is needed!)">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="manifest" href="manifest.json">
@@ -50,7 +50,7 @@
         let version = params.get("version");
 
         // 5.5.1 has effect handlers (double-translation), 5.5.1-noeffects is the lighter build without them
-        let versions = ["5.5.1", "5.5.1-noeffects", "5.3.0", "5.1.1", "5.1.0", "4.14.1"];
+        let versions = ["5.5.1", "5.5.1-noeffects", "5.3.0", "4.14.1"];
         
         if (version == null) {
             version = versions[0];

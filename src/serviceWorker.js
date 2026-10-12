@@ -2,9 +2,8 @@ const staticAssets = [
     // './',
     './manifest.json',
     './index.html',
-    './favicon.ico',
+    './icon/favicon.ico',
     // './css/',
-    './css/bootstrap.css',
     './css/icon.css',
     './css/index.css',
     './css/codemirror/codemirror.min.css',
@@ -53,7 +52,7 @@ const staticAssets = [
     './js/codemirror/show-hint.js',
     './js/codemirror/sublime.min.js',
     // './toplevels/',
-    './toplevels/toplevel-5.1.1.js',
+    './toplevels/toplevel-5.5.1.js',
 ];
 
 self.addEventListener('install', async event=>{

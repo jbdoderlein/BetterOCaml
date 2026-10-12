@@ -62,7 +62,7 @@ BetterOCaml est une Progressive Web App entièrement installable.
 [!performance des pwa](https://betterocaml.ml/pwa_performance_2503.svg)](https://pagespeed-insights.herokuapp.com/?url=https://betterocaml.ml)
 ## Version de OCaml
 
-Vous pouvez changer la version de OCaml avec l'url : `https://link-to-betterocaml/?version=4.11.0`
+Vous pouvez changer la version de OCaml avec l'url : `https://link-to-betterocaml/?version=5.3.0`
 
 <https://jbdoderlein.github.io/BetterOCaml> propose `5.5.1` (par défaut, avec les effets), `5.5.1-noeffects` (plus léger, sans les effets), `5.3.0`, et `4.14.1`
 

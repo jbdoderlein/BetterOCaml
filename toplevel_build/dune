@@ -74,6 +74,8 @@
       --export %{dep:export.txt}
       --toplevel
       --opt 3
+      ;; disabled | cps | double-translation, set by compile.sh --effects
+      --effects=%{env:BETTEROCAML_EFFECTS=disabled}
       %{dep:toplevel.bc}
       -o %{targets}
     )

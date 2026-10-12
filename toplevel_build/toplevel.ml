@@ -124,8 +124,9 @@ module Colorize = struct
   
   let directive = [%sedlex.regexp? Opt('\n', Opt('\r')), '#', lowchar, Star(idchar)]
   
-  let text ~a_class:cl s = Tyxml_js.Html.(span ~a:[ a_class [ cl ] ] [ txt s ])
-  let span' cl s = Tyxml_js.Html.(span ~a:[ a_class [ cl ] ] [ txt s ])
+  (* No local open of Tyxml_js.Html here: it defines [s] (strikethrough), which would shadow the argument *)
+  let span' cl s = Tyxml_js.Html.span ~a:[ Tyxml_js.Html.a_class [ cl ] ] [ Tyxml_js.Html.txt s ]
+  let text ~a_class:cl s = span' cl s
   
   let ocaml ~a_class:cl s =
     let lexbuf = Sedlexing.Utf8.from_string s in

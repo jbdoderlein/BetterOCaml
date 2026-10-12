@@ -25,6 +25,8 @@
 #  -f | --force     Bypasses supported OCaml versions check
 #  -y | --overwrite Allows overwrite previous builds
 #  -o | --output    Change output directory
+#  -e | --effects   Effect handlers support: disabled (default), cps or double-translation
+#  -s | --suffix    Suffix added to the output file name (toplevel-<version><suffix>.js)
 # [versions] can be :
 #  all    Used to compile all version available
 #  4.14.0
@@ -76,18 +78,25 @@ Build_Toplevel () {
     eval $(opam env)
 
     # Build
-    echo "Building toplevel-$BUILD_VERSION.js ..."
+    echo "Building toplevel-$BUILD_VERSION$SUFFIX.js (effects=$EFFECTS) ..."
+    if [[ $EFFECTS != "disabled" && $BUILD_VERSION == 4.* ]]; then
+        echo "Warning: OCaml $BUILD_VERSION has no effect handlers, --effects $EFFECTS only makes the build bigger"
+    fi
     [[ -d "_build" ]] && rm -rf "_build"
     dune clean
-    dune build --verbose
+    if ! BETTEROCAML_EFFECTS=$EFFECTS dune build --verbose; then
+        # Keep the switch so that a retry does not reinstall everything
+        echo "toplevel-$BUILD_VERSION$SUFFIX.js : build failed (opam switch $BUILD_VERSION kept)"
+        exit 1
+    fi
 
     # Remove OCaml version $BUILD_VERSION if it wasn't previously installed
     [[ $VERSION_ALREADY_INSTALLED = false && $KEEP = false ]] && opam switch remove --yes $BUILD_VERSION
 
     # Save build
     [[ ! -d "$OUTPUT_DIR" ]] && mkdir -p "$OUTPUT_DIR"
-    [[ -f "$OUTPUT_DIR/toplevel-$BUILD_VERSION.js" ]] && rm -f "$OUTPUT_DIR/toplevel-$BUILD_VERSION.js"
-    cp _build/default/toplevel.js "$OUTPUT_DIR/toplevel-$BUILD_VERSION.js"
+    [[ -f "$OUTPUT_DIR/toplevel-$BUILD_VERSION$SUFFIX.js" ]] && rm -f "$OUTPUT_DIR/toplevel-$BUILD_VERSION$SUFFIX.js"
+    cp _build/default/toplevel.js "$OUTPUT_DIR/toplevel-$BUILD_VERSION$SUFFIX.js"
     
     # Clean after build
     # dune clean
@@ -103,6 +112,8 @@ Usage () {
     echo "  -f | --force     Bypasses supported OCaml versions check"
     echo "  -y | --overwrite Allows overwrite previous builds"
     echo "  -o | --output    Change output directory"
+    echo "  -e | --effects   Effect handlers support: disabled (default), cps or double-translation"
+    echo "  -s | --suffix    Suffix added to the output file name (toplevel-<version><suffix>.js)"
     echo " [versions] can be :"
     echo " all    Used to compile all version available"
     for AVAILABLE_VERSION in "${SUPPORTED_OCAML_VERSIONS[@]}"; do
@@ -114,12 +125,14 @@ Usage () {
 
 # These are all the known to work versions
 # You can edit this to try older versions but we cannot guarantee it will work
-SUPPORTED_OCAML_VERSIONS=(5.3.0 5.1.1 5.1.0 4.14.1 4.14.0 4.13.1 4.13.0 4.12.1 4.12.0 4.11.2 4.11.1 4.11.0 4.10.2 4.10.1 4.10.0 4.09.1 4.09.0 4.08.1 4.08.0 4.07.1 4.07.0 4.06.1 4.06.0)
+SUPPORTED_OCAML_VERSIONS=(5.5.1 5.3.0 5.1.1 5.1.0 4.14.1 4.14.0 4.13.1 4.13.0 4.12.1 4.12.0 4.11.2 4.11.1 4.11.0 4.10.2 4.10.1 4.10.0 4.09.1 4.09.0 4.08.1 4.08.0 4.07.1 4.07.0 4.06.1 4.06.0)
 
 KEEP=false
 FORCE=false
 OVERWRITE=false
 OUTPUT_DIR="builds"
+EFFECTS="disabled"
+SUFFIX=""
 VERSIONS=()
 
 # Check if arguments were supplied
@@ -154,8 +167,28 @@ while [[ "$#" -gt 0 ]]; do
             OUTPUT_DIR="$2"
             shift
         ;;
+        -e|--effects)
+            case $2 in
+                disabled|cps|double-translation) EFFECTS="$2" ;;
+                *)
+                    echo "Invalid effects mode '$2' (expected disabled, cps or double-translation)"
+                    Usage
+                    exit 1
+                ;;
+            esac
+            shift
+        ;;
+        -s|--suffix)
+            if [ -z "$2" ]; then
+                echo "No suffix was supplied"
+                Usage
+                exit 1
+            fi
+            SUFFIX="$2"
+            shift
+        ;;
         -*)
-            echo "Unknown option $arg"
+            echo "Unknown option $1"
             Usage
             exit 1
         ;;
@@ -179,22 +212,22 @@ fi
 
 if [[ " ${VERSIONS[@]} " =~ " all " ]]; then # Build all versions if "all" is set
     for BUILD_VERSION in "${SUPPORTED_OCAML_VERSIONS[@]}"; do
-        if [[ -f "$OUTPUT_DIR/toplevel-$BUILD_VERSION.js" && $OVERWRITE = false ]]; then
+        if [[ -f "$OUTPUT_DIR/toplevel-$BUILD_VERSION$SUFFIX.js" && $OVERWRITE = false ]]; then
             echo "Build $BUILD_VERSION already exists"
         else
             echo "Building version $BUILD_VERSION ..."
             Build_Toplevel $BUILD_VERSION
-            echo "toplevel-$BUILD_VERSION.js : build complete"
+            echo "toplevel-$BUILD_VERSION$SUFFIX.js : build complete"
         fi
     done
 else # Build all versions in parameters
     for BUILD_VERSION in "${VERSIONS[@]}"; do
-        if [[ -f "$OUTPUT_DIR/toplevel-$BUILD_VERSION.js" && $OVERWRITE = false ]]; then
+        if [[ -f "$OUTPUT_DIR/toplevel-$BUILD_VERSION$SUFFIX.js" && $OVERWRITE = false ]]; then
             echo "Build $BUILD_VERSION already exists"
         else
             echo "Building version $BUILD_VERSION ..."
             Build_Toplevel $BUILD_VERSION
-            echo "toplevel-$BUILD_VERSION.js : build complete"
+            echo "toplevel-$BUILD_VERSION$SUFFIX.js : build complete"
         fi
     done
 fi

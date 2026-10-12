@@ -9,7 +9,7 @@
   <a href="https://github.com/jbdoderlein/BetterOCaml/tree/master/lang/french#betterocaml">Français</a>
   </p>
 
-An efficient, intuitive and cross-platform web IDE for the [OCaml](https://www.ocaml.org/) language (recent: v5.3.0), with your code interpreted and running in your browser! (no server is needed!)
+An efficient, intuitive and cross-platform web IDE for the [OCaml](https://www.ocaml.org/) language (recent: v5.5.1), with your code interpreted and running in your browser! (no server is needed!)
 
 ## Installation / Usage
 
@@ -61,7 +61,7 @@ BetterOCaml is a fully installable Progressive Web App
 
 You can change the OCaml version with the url : `https://link-to-betterocaml/?version=4.11.0`
 
-<https://jbdoderlein.github.io/BetterOCaml> offers `5.3.0`, and `4.14.1`
+<https://jbdoderlein.github.io/BetterOCaml> offers `5.5.1` (default, with effect handlers), `5.5.1-noeffects` (lighter, without effect handlers), `5.3.0`, and `4.14.1`
 
 You can also compile the toplevel with any version you want using [the compilation script](https://github.com/jbdoderlein/BetterOCaml/blob/master/toplevel_build/BUILD.md#how-to-build-the-betterocaml-toplevel).
 

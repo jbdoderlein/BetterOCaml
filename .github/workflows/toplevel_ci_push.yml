@@ -37,12 +37,14 @@ jobs:
         run: |
           cd toplevel_build
           chmod +x compile.sh
-          bash compile.sh 5.3.0
+          bash compile.sh -k --effects double-translation 5.5.1
+          bash compile.sh --suffix -noeffects 5.5.1
           cd ..
-          cp toplevel_build/builds/toplevel-5.3.0.js src/toplevels/toplevel-5.3.0.js
+          cp toplevel_build/builds/toplevel-5.5.1.js src/toplevels/toplevel-5.5.1.js
+          cp toplevel_build/builds/toplevel-5.5.1-noeffects.js src/toplevels/toplevel-5.5.1-noeffects.js
       
       - name: Check if file exist
-        run: test -f "./toplevel_build/builds/toplevel-5.3.0.js" || exit 1
+        run: test -f "./toplevel_build/builds/toplevel-5.5.1.js" -a -f "./toplevel_build/builds/toplevel-5.5.1-noeffects.js" || exit 1
       
       - name: Commit changes
         uses: EndBug/add-and-commit@v7
@@ -50,7 +52,7 @@ jobs:
           author_name: jbdoderlein
           author_email: jean.baptiste.doderlein@gmail.com
           message: 'CI - Update compiled toplevel'
-          add: 'src/toplevels/toplevel-5.3.0.js'
+          add: 'src/toplevels/toplevel-5.5.1.js src/toplevels/toplevel-5.5.1-noeffects.js'
         
       
       

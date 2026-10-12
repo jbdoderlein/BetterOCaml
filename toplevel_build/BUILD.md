@@ -14,6 +14,13 @@ Move in the `toplevel_build` directory :
 `cd BetterOCaml/toplevel_build`  
 Run the compile script with the version you want to compile :  
 `./compile.sh 4.13.0`  
+To enable OCaml 5 effect handlers (`Effect.Deep`, `Effect.Shallow`) in the toplevel :  
+`./compile.sh --effects cps 5.3.0`  
+Effects are disabled by default because they make the generated file bigger and the code slower.
+`double-translation` is also accepted (faster code, but an even bigger file).  
+To build several variants of the same version, add a suffix to the output file name :  
+`./compile.sh -k --effects double-translation 5.5.1` then `./compile.sh --suffix -noeffects 5.5.1`  
+gives `toplevel-5.5.1.js` and `toplevel-5.5.1-noeffects.js`, loaded with `?version=5.5.1-noeffects`.  
 To get help on the options provided by the compile script :  
 `./compile.sh --help`
 

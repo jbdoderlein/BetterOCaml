@@ -2,7 +2,6 @@
   (names toplevel)
   (libraries
     js_of_ocaml-compiler
-    js_of_ocaml-tyxml
     js_of_ocaml-toplevel
     js_of_ocaml-ppx
     js_of_ocaml-lwt
@@ -44,7 +43,6 @@
     (package js_of_ocaml)
     (package js_of_ocaml-compiler)
     (package js_of_ocaml-lwt)
-    (package js_of_ocaml-tyxml)
     (package js_of_ocaml-toplevel)
   )
   (action

@@ -27,3 +27,9 @@ To get help on the options provided by the compile script :
 ## Use the new compiled file
 To use the new compiled toplevel, copy the file 
 from `/toplevel_build/builds/` to `/src/toplevels/`
+
+The toplevel runs in a Web Worker, so code that loops forever can be stopped
+without freezing the page. `toplevel.ml` only evaluates code and sends messages;
+the page side is `src/js/toplevel_client.js`. Builds made before this change run
+directly on the page instead: when adding a new build to `/src/toplevels/`, add its
+version to `worker_versions` in `src/index.html`.

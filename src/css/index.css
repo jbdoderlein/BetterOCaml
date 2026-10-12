@@ -745,3 +745,57 @@ label {
     text-decoration: underline;
     color: var(--code-brackets) !important
 }
+
+/* Stop button, shown when OCaml code has been running for a while (see js/toplevel_client.js) */
+.stop-button {
+    visibility: hidden;
+}
+
+html.toplevel-busy .stop-button {
+    visibility: visible;
+    transition: visibility 0s 0.3s;
+}
+
+/* Graphics window, floating above the editor (see show_graphics in js/toplevel_client.js) */
+.graphics-window {
+    display: none;
+    position: fixed;
+    top: 80px;
+    right: 30px;
+    z-index: 999;
+    width: 340px;
+    min-width: 200px;
+    max-width: 95vw;
+    max-height: 90vh;
+    padding: 0 8px 8px 8px;
+    border-radius: 4px;
+    resize: both;
+    overflow: hidden;
+}
+
+.graphics-window.open {
+    display: flex;
+    flex-direction: column;
+}
+
+.graphics-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 0;
+    cursor: move;
+    user-select: none;
+    touch-action: none;
+}
+
+.graphics-close {
+    cursor: pointer;
+    color: inherit;
+}
+
+/* Large canvases (Graphics.open_graph " 900x600") are scaled down to fit the window */
+#test-canvas {
+    max-width: 100%;
+    height: auto;
+    background: white;
+}

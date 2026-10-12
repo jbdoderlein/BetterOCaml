@@ -41,6 +41,7 @@ const staticAssets = [
     './js/jquery.min.js',
     './js/materialize.min.js',
     './js/resizer.js',
+    './js/toplevel_client.js',
     './js/codemirror/closebrackets.js',
     './js/codemirror/codemirror.js',
     './js/codemirror/dialog.js',
@@ -55,28 +56,24 @@ const staticAssets = [
     './toplevels/toplevel-5.5.1.js',
 ];
 
-self.addEventListener('install', async event=>{
-    const cache = await caches.open('static-cache');
-    cache.addAll(staticAssets);
+self.addEventListener('install', event => {
+    // Finish caching before the install completes, and replace any older service worker
+    event.waitUntil(caches.open('static-cache').then(cache => cache.addAll(staticAssets)));
+    self.skipWaiting();
+});
+
+self.addEventListener('activate', event => {
+    // Take control of the page that registered us, so its first visit is already cached
+    event.waitUntil(self.clients.claim());
 });
 
 self.addEventListener('fetch', event => {
     const req = event.request;
-    const url = new URL(req.url);
-
-    if(url.origin === location.url){
-        event.respondWith(cacheFirst(req));
-    } else {
-        event.respondWith(newtorkFirst(req));
-    }
+    if (req.method !== 'GET' || !req.url.startsWith('http')) return;
+    event.respondWith(networkFirst(req));
 });
 
-async function cacheFirst(req){
-    const cachedResponse = caches.match(req);
-    return cachedResponse || fetch(req);
-}
-
-async function newtorkFirst(req){
+async function networkFirst(req){
     const cache = await caches.open('dynamic-cache');
 
     try {
@@ -84,6 +81,9 @@ async function newtorkFirst(req){
         cache.put(req, res.clone());
         return res;
     } catch (error) {
-        return await cache.match(req);
+        // Offline: any cache, then for pages the same URL without "?version=..."
+        return (await caches.match(req))
+            || (req.mode === 'navigate' && await caches.match(req, {ignoreSearch: true}))
+            || Response.error();
     }
 }

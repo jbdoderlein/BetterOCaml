@@ -43,6 +43,7 @@
     <script src="js/codemirror/matchesonscrollbar.js"></script>
     <script async src="js/resizer.js"></script>
     <script async defer src="js/buttons.js"></script>
+    <script src="js/toplevel_client.js"></script>
 
     <script>
         // OCaml Toplevel version loading
@@ -51,7 +52,9 @@
 
         // 5.5.1 has effect handlers (double-translation), 5.5.1-noeffects is the lighter build without them
         let versions = ["5.5.1", "5.5.1-noeffects", "5.3.0", "4.14.1"];
-        
+        // Toplevels built to run in a Web Worker (the others run on the page)
+        let worker_versions = ["5.5.1", "5.5.1-noeffects"];
+
         if (version == null) {
             version = versions[0];
             params.set("version", version);
@@ -59,12 +62,16 @@
             window.history.pushState({path: newUrl}, '', newUrl);
         }
 
-        let script = document.createElement('script');
-        script.async = true;
-        script.type = 'text/javascript';
-        script.src = 'toplevels/toplevel-' + version + '.js';
+        if (worker_versions.includes(version)) {
+            start_toplevel('toplevels/toplevel-' + version + '.js');
+        } else {
+            let script = document.createElement('script');
+            script.async = true;
+            script.type = 'text/javascript';
+            script.src = 'toplevels/toplevel-' + version + '.js';
 
-        document.head.appendChild(script);
+            document.head.appendChild(script);
+        }
     </script>
 </head>
 
@@ -115,8 +122,11 @@
     </li>
 </ul>
 
-<!-- Clean console button -->
+<!-- Clean console button, and stop button while OCaml code is running -->
 <div class="fixed-action-btn hide-on-small-and-down" style="bottom: 15px; right: 15px;">
+    <a class="btn-floating btn-small waves-effect waves-light zoom-button red stop-button" title="Stop the running code"
+       onclick="toplevelcallback.stop()"><i
+            class="material-icons">stop</i></a>
     <a class="btn-floating btn-small waves-effect waves-light zoom-button"
        onclick="toplevelcallback.clear()"><i
             class="material-icons">delete</i></a>
@@ -126,6 +136,9 @@
 <div class="fixed-action-btn mobile-button hide-on-med-and-up" style="bottom: 15px; right: 15px;">
     <a class="btn-floating btn-small waves-effect waves-light zoom-button" onclick="exec_all(editors[current_editor()])"><i
             class="material-icons">play_arrow</i></a>
+    <a class="btn-floating btn-small waves-effect waves-light zoom-button red stop-button"
+       onclick="toplevelcallback.stop()"><i
+            class="material-icons">stop</i></a>
     <a class="btn-floating btn-small waves-effect waves-light zoom-button"
        onclick="toplevelcallback.clear()"><i
             class="material-icons">delete</i></a>
@@ -193,7 +206,7 @@
         <h4>Help</h4>
         <a href="#shortcut" class="waves-effect waves-light btn shortcut-button modal-trigger"><i
                 class="material-icons right">code</i>Shortcuts</a>
-        <a href="#graphics" class="waves-effect waves-light btn shortcut-button modal-trigger"><i
+        <a class="waves-effect waves-light btn shortcut-button modal-close" onclick="show_graphics()"><i
                     class="material-icons right">code</i>Graphics</a>
         <div class="help-section">
             <a class="github-button" href="https://github.com/jbdo99/betterocaml" data-size="large"
@@ -277,15 +290,14 @@
     </div>
 </div>
 
-<div id="graphics" class="modal help">
-    <div class="modal-content">
-        <h4>Graphics main window</h4>
-        <canvas id="test-canvas">
-        </canvas>
+<!-- Graphics window: floating, so the editor stays usable while it is open -->
+<div id="graphics" class="graphics-window help z-depth-3">
+    <div class="graphics-header">
+        <span class="graphics-title">Graphics main window</span>
+        <a class="graphics-close" title="Close" onclick="hide_graphics()"><i class="material-icons">close</i></a>
     </div>
-    <div class="modal-footer help">
-        <a href="#" class="modal-close waves-effect waves-green btn-flat white-text">Close</a>
-    </div>
+    <canvas id="test-canvas">
+    </canvas>
 </div>
 
 <div class="container-boc container horizontal">

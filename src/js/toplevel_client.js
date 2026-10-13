@@ -15,6 +15,7 @@ let toplevel_files = new Map(); // Files sent to the worker, sent again after a 
 let toplevel_stdin = null;
 let toplevel_current_position = 0;
 let toplevel_indent_request = 0;
+let toplevel_escape_time = 0;
 
 /**
  * Start the toplevel worker
@@ -410,8 +411,14 @@ function setup_toplevel_input() {
                 }
                 break;
             case 9:
+                // Tab indents, except in an empty input or just after Escape: then it moves the
+                // focus (keyboard users must be able to leave the input, as in the editor)
+                if (textbox.value.trim() === "" || Date.now() - toplevel_escape_time < 2000) break;
                 request_indent(textbox);
                 e.preventDefault();
+                break;
+            case 27:
+                toplevel_escape_time = Date.now();
                 break;
             case 75:
                 if (meta) {

@@ -54,11 +54,12 @@
         <img alt="BetterOCaml" src="icon/banner.png">
         <h2>Loading OCaml Interpreter</h2>
         <p>BetterOCaml will be ready in a few seconds ...</p>
-        <div class="progress"><div class="indeterminate"></div></div>
+        <div class="progress" role="progressbar" aria-label="Loading the OCaml interpreter"><div class="indeterminate"></div></div>
     </div>
 </div>
 
 <header class="topbar">
+    <h1 class="visually-hidden">BetterOCaml</h1>
     <div id="editor-tabs" class="tabs" role="tablist" aria-label="Files"></div>
     <div class="toolbar">
         <button class="icon-button" type="button" title="New file" aria-label="New file" onclick="new_editor()">
@@ -68,10 +69,10 @@
             <i class="material-icons" aria-hidden="true">play_arrow</i></button>
         <button class="icon-button" type="button" title="Save" aria-label="Save" onclick="save(editors[current_editor()])">
             <i class="material-icons" aria-hidden="true">save</i></button>
-        <label class="icon-button" title="Open a file" aria-label="Open a file">
-            <i class="material-icons" aria-hidden="true">folder</i>
-            <input id="file-upload" type="file" accept=".ml,.mli,.txt" hidden>
-        </label>
+        <button class="icon-button" type="button" title="Open a file" aria-label="Open a file"
+                onclick="document.getElementById('file-upload').click()">
+            <i class="material-icons" aria-hidden="true">folder</i></button>
+        <input id="file-upload" type="file" accept=".ml,.mli,.txt" hidden>
         <button class="icon-button" type="button" title="Settings and help" aria-label="Settings and help"
                 onclick="document.getElementById('help').showModal()">
             <i class="material-icons" aria-hidden="true">settings</i></button>
@@ -89,7 +90,7 @@
     <!-- Toplevel -->
     <div id="box_2" class="box console-box">
         <div id="toplevel-container">
-            <pre id="output"></pre>
+            <pre id="output" role="log" aria-label="Toplevel output"></pre>
             <div class="toplevel-input">
                 <div id="sharp" class="sharp"></div>
                 <textarea id="userinput" autocorrect="off" autocapitalize="none" spellcheck="false"
@@ -180,6 +181,9 @@
         <dt><kbd class="mod"></kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd></dt><dd>Run all the code</dd>
         <dt><kbd class="mod"></kbd> + <kbd>Space</kbd></dt><dd>Show completions</dd>
         <dt><kbd>F12</kbd>, <kbd class="mod"></kbd> + click</dt><dd>Go to definition</dd>
+        <dt><kbd>Alt</kbd> + <kbd>T</kbd></dt><dd>Type and documentation at the cursor</dd>
+        <dt><kbd>F8</kbd></dt><dd>Next error</dd>
+        <dt><kbd class="mod"></kbd> + <kbd>Shift</kbd> + <kbd>M</kbd></dt><dd>List of errors</dd>
         <dt><kbd class="mod"></kbd> + <kbd>S</kbd></dt><dd>Save the file</dd>
         <dt><kbd class="mod"></kbd> + <kbd>/</kbd></dt><dd>Comment or uncomment</dd>
         <dt><kbd class="mod"></kbd> + <kbd>Z</kbd>, <kbd class="mod"></kbd> + <kbd>Shift</kbd> + <kbd>Z</kbd></dt><dd>Undo, redo</dd>
@@ -200,6 +204,13 @@
         <dt><kbd class="mod"></kbd> + <kbd>K</kbd></dt><dd>Clear the toplevel</dd>
         <dt><kbd class="mod"></kbd> + <kbd>L</kbd></dt><dd>Reset the OCaml interpreter</dd>
     </dl>
+    <h3>Keyboard navigation</h3>
+    <dl class="shortcuts">
+        <dt><kbd>Esc</kbd> then <kbd>Tab</kbd></dt><dd>Leave the editor or the toplevel input (<kbd>Tab</kbd> alone indents)</dd>
+        <dt><kbd>Ctrl</kbd> + <kbd>M</kbd> (macOS: <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd>)</dt><dd>In the editor: <kbd>Tab</kbd> moves the focus, until pressed again</dd>
+        <dt><kbd>←</kbd> <kbd>→</kbd>, <kbd>Home</kbd>, <kbd>End</kbd></dt><dd>In the file tabs: change file</dd>
+        <dt><kbd>Delete</kbd></dt><dd>In the file tabs: close the file</dd>
+    </dl>
 </dialog>
 
 <!-- Save as -->
@@ -216,13 +227,13 @@
 </dialog>
 
 <!-- Graphics window: floating, so the editor stays usable while it is open -->
-<div id="graphics" class="graphics-window">
+<div id="graphics" class="graphics-window" role="dialog" aria-labelledby="graphics-title">
     <div class="graphics-header">
-        <span class="graphics-title">Graphics main window</span>
-        <button class="icon-button graphics-close" type="button" aria-label="Close" onclick="hide_graphics()">
+        <span id="graphics-title" class="graphics-title">Graphics main window</span>
+        <button class="icon-button graphics-close" type="button" aria-label="Close the Graphics window" onclick="hide_graphics()">
             <i class="material-icons" aria-hidden="true">close</i></button>
     </div>
-    <canvas id="test-canvas"></canvas>
+    <canvas id="test-canvas" role="img" aria-label="Drawing of the Graphics module"></canvas>
 </div>
 
 <div id="toasts" class="toasts" aria-live="polite"></div>

@@ -17,7 +17,8 @@
 }
 
 html {
-    font-size: 15px;
+    /* 15px with the default browser font size, and follows the user font size setting */
+    font-size: 93.75%;
     height: 100%;
 }
 
@@ -168,7 +169,10 @@ a {
 
 .tab-close {
     display: inline-flex;
-    padding: 4px;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
     border: none;
     border-radius: 4px;
     background-color: var(--nav-close-btn-bg-color);
@@ -192,8 +196,8 @@ a {
     display: flex;
     flex-direction: row;
     min-height: 0;
-    /* Base of the editor and toplevel zoom settings (1.2em by default) */
-    font-size: 13px;
+    /* Base of the editor and toplevel zoom settings (1.2em by default): 13px by default */
+    font-size: 0.8667rem;
 }
 
 /* Toplevel below the editor: setting, or small screens (see change_resize_bar) */
@@ -675,4 +679,28 @@ kbd.mod::before {
 
 .cm-editor .cm-panel button[name=close] {
     color: var(--ui-text-color);
+}
+
+/* ACCESSIBILITY */
+
+/* Read by screen readers, not shown */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* No animation for users who asked their system for less motion */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }

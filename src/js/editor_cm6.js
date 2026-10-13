@@ -68,7 +68,6 @@ const OCAML_EDITOR_THEME = CM.EditorView.theme({
     ".cm-diagnostic": {fontFamily: "monospace", whiteSpace: "pre-wrap"},
     ".cm-diagnostic-error": {borderLeftColor: "var(--code-error)"},
     ".cm-completionDetail": {color: "var(--code-comment)", fontStyle: "normal", marginLeft: "1em"},
-    ".cm-gutter-lint": {width: "0.8em"},
 });
 
 const OCAML_HIGHLIGHT = CM.HighlightStyle.define([
@@ -183,7 +182,10 @@ class OCamlEditor {
                         ...CM.searchKeymap,
                         ...CM.historyKeymap,
                         ...CM.completionKeymap,
+                        ...CM.lintKeymap, // List of errors, next error: errors are not only underlines
                     ]),
+                    // Name read by screen readers
+                    CM.EditorView.contentAttributes.of({"aria-label": "OCaml code editor"}),
                     CM.EditorView.updateListener.of(update => {
                         if (update.docChanged) editor.is_saved = false;
                     }),

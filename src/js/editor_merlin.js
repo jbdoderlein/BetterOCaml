@@ -130,11 +130,11 @@ async function merlin_completions(editor, context) {
 /**
  * Type and documentation of the expression under the mouse
  */
-const merlin_hover = CM.hoverTooltip(async function (view, pos, side) {
-    if (!merlin_is_ready || !merlin_hover_enabled()) return null;
-    let line = view.state.doc.lineAt(pos);
-    let ch = line.text.charAt(pos - line.from - (side < 0 ? 1 : 0));
-    if (!/[\w'.)\]}]/.test(ch)) return null;
+/**
+ * Tooltip with the type and documentation of the expression at pos, or null
+ * @param {boolean} announce - Read by screen readers (shown with the keyboard)
+ */
+async function merlin_type_tooltip(view, pos, announce) {
     let [types, doc] = await Promise.all([
         merlin_request("type", view.state, pos),
         merlin_request("document", view.state, pos),
@@ -147,6 +147,7 @@ const merlin_hover = CM.hoverTooltip(async function (view, pos, side) {
         above: true,
         create() {
             let dom = document.createElement("div");
+            if (announce) dom.setAttribute("role", "status");
             let type = document.createElement("div");
             type.className = "cm-merlin-type";
             type.textContent = t.type;
@@ -160,7 +161,44 @@ const merlin_hover = CM.hoverTooltip(async function (view, pos, side) {
             return {dom};
         },
     };
+}
+
+const merlin_hover = CM.hoverTooltip(async function (view, pos, side) {
+    if (!merlin_is_ready || !merlin_hover_enabled()) return null;
+    let line = view.state.doc.lineAt(pos);
+    let ch = line.text.charAt(pos - line.from - (side < 0 ? 1 : 0));
+    if (!/[\w'.)\]}]/.test(ch)) return null;
+    return merlin_type_tooltip(view, pos, false);
 }, {hoverTime: 400});
+
+// Same tooltip at the cursor, with the keyboard (Alt-T): closed by Escape, or when the
+// code or the cursor changes
+const set_type_tooltip = CM.StateEffect.define();
+const type_tooltip_field = CM.StateField.define({
+    create: () => null,
+    update(tooltip, tr) {
+        for (const e of tr.effects) if (e.is(set_type_tooltip)) return e.value;
+        return tr.docChanged || tr.selection ? null : tooltip;
+    },
+    provide: f => CM.showTooltip.from(f),
+});
+
+async function merlin_show_type(view) {
+    if (!merlin_is_ready) {
+        show_toast(merlin_enabled() ? "Merlin is loading" : "Merlin is disabled in the settings");
+        return true;
+    }
+    let tooltip = await merlin_type_tooltip(view, view.state.selection.main.head, true);
+    if (tooltip === null) show_toast("No type at the cursor");
+    else view.dispatch({effects: set_type_tooltip.of(tooltip)});
+    return true;
+}
+
+function merlin_hide_type(view) {
+    if (view.state.field(type_tooltip_field) === null) return false;
+    view.dispatch({effects: set_type_tooltip.of(null)});
+    return true;
+}
 
 /**
  * Go to the definition of the identifier at pos: in the editor, or tell which library
@@ -191,6 +229,8 @@ async function merlin_goto_definition(view, pos) {
 
 const merlin_goto_keys = CM.keymap.of([
     {key: "F12", run: view => { merlin_goto_definition(view, view.state.selection.main.head); return true; }},
+    {key: "Alt-t", run: view => { merlin_show_type(view); return true; }},
+    {key: "Escape", run: merlin_hide_type},
 ]);
 
 // Ctrl-click (Cmd-click on macOS) goes to the definition
@@ -230,7 +270,7 @@ const merlin_lint = CM.linter(async function (view) {
  * Editor extensions using merlin
  */
 function merlin_extensions() {
-    return [merlin_hover, merlin_lint, CM.lintGutter(), merlin_goto_keys, merlin_goto_click];
+    return [merlin_hover, merlin_lint, CM.lintGutter(), merlin_goto_keys, merlin_goto_click, type_tooltip_field];
 }
 
 // Start merlin once the page and the toplevel are loaded, so it does not slow them down

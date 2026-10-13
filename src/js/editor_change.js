@@ -498,42 +498,65 @@ function new_editor(name = "untitled.ml") {
  * @return {OCamlEditor} Editor instance
  */
 function create_editor(id, name) {
+    // ARIA tabs pattern: the selected tab is focusable, the arrow keys move between tabs and
+    // Delete closes a file. The close icon is for the mouse (a button inside a tab is not allowed).
     let tab = document.createElement("div");
     tab.id = "tab_" + id;
     tab.className = "tab";
     tab.setAttribute("role", "tab");
     tab.setAttribute("aria-controls", "editor_tab_" + id);
-    tab.tabIndex = 0;
+    tab.setAttribute("aria-keyshortcuts", "Delete");
+    tab.tabIndex = -1;
     let label = document.createElement("span");
     label.className = "tab-name";
     label.textContent = name;
-    let close = document.createElement("button");
-    close.type = "button";
+    let close = document.createElement("span");
     close.className = "tab-close";
-    close.setAttribute("aria-label", "Close " + name);
-    close.innerHTML = '<i class="material-icons" aria-hidden="true">close</i>';
+    close.title = "Close (Delete)";
+    close.setAttribute("aria-hidden", "true");
+    close.innerHTML = '<i class="material-icons">close</i>';
     close.addEventListener("click", e => {
         e.stopPropagation();
         remove_editor(id);
     });
     tab.append(label, close);
     tab.addEventListener("click", () => select_editor(id));
-    tab.addEventListener("keydown", e => {
-        if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            select_editor(id);
-        }
-    });
+    tab.addEventListener("keydown", e => tab_keydown(e, id));
     document.getElementById("editor-tabs").appendChild(tab);
 
     let pane = document.createElement("div");
     pane.id = "editor_tab_" + id;
     pane.className = "code-box";
     pane.setAttribute("role", "tabpanel");
+    pane.setAttribute("aria-labelledby", "tab_" + id);
     pane.hidden = true;
     document.getElementById("editorCollection").appendChild(pane);
 
     return new OCamlEditor(id, name, pane);
+}
+
+/**
+ * Keyboard in the file tabs: arrows, Home and End select a file, Delete closes it
+ */
+function tab_keydown(e, id) {
+    let tabs = [...document.querySelectorAll("#editor-tabs .tab")];
+    let index = tabs.findIndex(tab => tab.id === "tab_" + id);
+    let target = null;
+    switch (e.key) {
+        case "ArrowRight": target = tabs[(index + 1) % tabs.length]; break;
+        case "ArrowLeft": target = tabs[(index - 1 + tabs.length) % tabs.length]; break;
+        case "Home": target = tabs[0]; break;
+        case "End": target = tabs[tabs.length - 1]; break;
+        case "Delete":
+            e.preventDefault();
+            remove_editor(id);
+            document.querySelector('#editor-tabs .tab[aria-selected="true"]').focus();
+            return;
+        default: return;
+    }
+    e.preventDefault();
+    select_editor(+target.id.slice(4));
+    target.focus();
 }
 
 /**
@@ -553,6 +576,7 @@ function select_editor(id) {
     for (const tab of document.querySelectorAll("#editor-tabs .tab")) {
         let selected = tab.id === "tab_" + id;
         tab.setAttribute("aria-selected", String(selected));
+        tab.tabIndex = selected ? 0 : -1;
         if (selected) tab.scrollIntoView({block: "nearest", inline: "nearest"});
     }
     for (const pane of document.querySelectorAll("#editorCollection .code-box")) {
@@ -577,9 +601,7 @@ function delete_editor(id) {
  * @param name - new name
  */
 function change_name(id, name) {
-    let tab = document.getElementById("tab_" + id);
-    tab.querySelector(".tab-name").textContent = name;
-    tab.querySelector(".tab-close").setAttribute("aria-label", "Close " + name);
+    document.querySelector("#tab_" + id + " .tab-name").textContent = name;
 }
 
 /**

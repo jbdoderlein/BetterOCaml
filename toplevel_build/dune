@@ -69,6 +69,8 @@
       +toplevel.js
       +dynlink.js
       +zarith_stubs_js/runtime.js
+      ;; Graphics functions that need a version without document, for the worker
+      %{dep:graphics_worker.js}
       --export %{dep:export.txt}
       --toplevel
       --opt 3

@@ -2,17 +2,24 @@
 name: Deploy static content to Pages
 
 on:
-  # Runs on pushes targeting the default branch
+  # Runs on pushes to the default branch, and to the preview branch (published under /preview/).
+  # A push to the preview branch runs that branch's copy of this file: keep it identical on both
+  # branches, and allow the preview branch in Settings > Environments > github-pages.
   push:
     paths:
       - 'toplevel_build/**'
       - '!toplevel_build/BUILD.md'
       - '!toplevel_build/compile.sh'
       - 'src/**'
-    branches: ["master"]
+    branches: ["master", "webworker"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      preview_branch:
+        description: 'Branch published under /preview/ (empty for none)'
+        default: 'webworker'
+        required: false
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -34,15 +41,32 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+      # The main site always comes from master, whichever branch triggered the run
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: master
+      # Test version of another branch, published at <site>/preview/
+      - name: Checkout preview branch
+        id: preview
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.preview_branch != '' }}
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.preview_branch || 'webworker' }}
+          path: preview-checkout
+      - name: Assemble site
+        run: |
+          cp -r src _site
+          if [ "${{ steps.preview.outcome }}" = "success" ]; then
+            cp -r preview-checkout/src _site/preview
+          fi
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
-          path: 'src'
+          path: '_site'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

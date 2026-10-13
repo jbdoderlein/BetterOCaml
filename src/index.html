@@ -26,21 +26,9 @@
     <link href="css/icon.css" rel="stylesheet">
     <link rel="stylesheet" id="css_theme" href="css/theme/material.css">
     <link rel="stylesheet" href="css/materialize/materialize.min.css">
-    <link rel="stylesheet" href="css/codemirror/codemirror.min.css">
-    <link rel="stylesheet" href="css/codemirror/dialog.css"/>
-    <link rel="stylesheet" href="css/codemirror/show-hint.css"/>
     <link rel="stylesheet" href="css/index.css">
-    <script src="js/codemirror/codemirror.js"></script>
-    <script src="js/codemirror/matchbrackets.min.js"></script>
-    <script src="js/codemirror/closebrackets.js"></script>
-    <script src="js/codemirror/mllike.js"></script>
-    <script src="js/codemirror/dialog.js"></script>
-    <script src="js/codemirror/searchcursor.js"></script>
-    <script src="js/codemirror/search.js"></script>
-    <script src="js/codemirror/jump-to-line.js"></script>
-    <script src="js/codemirror/show-hint.js"></script>
-    <script src="js/codemirror/annotatescrollbar.js"></script>
-    <script src="js/codemirror/matchesonscrollbar.js"></script>
+    <!-- CodeMirror 6, built from codemirror_build/ -->
+    <script src="js/codemirror6.js"></script>
     <script async src="js/resizer.js"></script>
     <script async defer src="js/buttons.js"></script>
     <script src="js/toplevel_client.js"></script>
@@ -95,7 +83,7 @@
         </ul>
         <ul id="menu-button" class="right">
             <li id="flexible-mobile-button">
-                <a onclick="editors[Math.max(...Object.keys(editors).map(x => +x))+1] = create_editor(id = Math.max(...Object.keys(editors).map(x => +x))+1, name = 'untitled.ml', theme= editors[Math.min(...Object.keys(editors).map(x => +x))].getOption('theme'));"><i
+                <a onclick="editors[Math.max(...Object.keys(editors).map(x => +x))+1] = create_editor(id = Math.max(...Object.keys(editors).map(x => +x))+1, name = 'untitled.ml');"><i
                         class="material-icons">add</i></a></li>
             <li><a onclick="exec_all(editors[current_editor()])"><i class="material-icons">play_arrow</i></a></li>
             <li><a onclick="save(editors[current_editor()]);"><i class="material-icons">save</i></a></li>
@@ -115,7 +103,7 @@
 <!-- Mobile Sidenav -->
 <ul id="mobile-sidenav" class="sidenav mobile-tabs tabs">
     <li id="add_tab" class="tab col s3 onglet">
-        <a onclick="editors[Math.max(...Object.keys(editors).map(x => +x))+1] = create_editor(id = Math.max(...Object.keys(editors).map(x => +x))+1, name = 'untitled.ml', theme= editors[Math.min(...Object.keys(editors).map(x => +x))].getOption('theme'));">
+        <a onclick="editors[Math.max(...Object.keys(editors).map(x => +x))+1] = create_editor(id = Math.max(...Object.keys(editors).map(x => +x))+1, name = 'untitled.ml');">
             Add file
             <i class="material-icons add-icon">add</i>
         </a>
@@ -324,6 +312,7 @@
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script src="js/materialize.min.js"></script>
 <script src="js/editor_change.js"></script>
+<script src="js/editor_cm6.js"></script>
 <script type="text/javascript">
     // Loading global var
     init_local_storage();

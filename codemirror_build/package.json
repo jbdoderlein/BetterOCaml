@@ -1,0 +1,21 @@
+{
+  "name": "betterocaml-codemirror",
+  "private": true,
+  "description": "Bundles the CodeMirror 6 modules used by BetterOCaml into src/js/codemirror6.js",
+  "scripts": {
+    "build": "esbuild entry.js --bundle --minify --format=iife --global-name=CM --legal-comments=eof --outfile=../src/js/codemirror6.js"
+  },
+  "dependencies": {
+    "@codemirror/autocomplete": "^6.0.0",
+    "@codemirror/commands": "^6.0.0",
+    "@codemirror/language": "^6.0.0",
+    "@codemirror/legacy-modes": "^6.0.0",
+    "@codemirror/search": "^6.0.0",
+    "@codemirror/state": "^6.0.0",
+    "@codemirror/view": "^6.0.0",
+    "@lezer/highlight": "^1.0.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.0"
+  }
+}

@@ -321,42 +321,30 @@ function autoscroll_output() {
     container.scrollTop = container.scrollHeight;
 }
 
-/**
- * Get the last line of the actual command (useful to highlight code)
- * @param {CodeMirror} instance - CodeMirror instance
- * @return {number} The last line number
- */
-let line_with_last = function (instance) {
-    for (let i = instance.getCursor().line; i < instance.lineCount(); i ++) {
-        if (instance.getLine(i).includes(";;")) return i;
-    }
-    return -1;
-}
-
 // From https://stackoverflow.com/questions/3115150/how-to-escape-regular-expression-special-characters-using-javascript
 function escapeRegExp(text) {
     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
   }
 
 /**
- * Execute the last command in the editor
- * @param {CodeMirror} instance - CodeMirror instance
+ * Execute the command under the cursor, and move the cursor to the next one
+ * @param {OCamlEditor} instance - Editor
  * @return {void} Nothing
  */
 let exec_last = function (instance) {
     autosave_editor(instance.id);
-    let last_line = line_with_last(instance);
-    if (last_line == -1) return;
-    let beforecur = instance.getRange({line: 0, ch: 0}, {line: last_line});
-    let aftercur = instance.getRange({line: last_line},{line:instance.lastLine()})
+    let state = instance.view.state;
+    let last_line = phrase_end_line(state);
+    if (last_line === null) return;
+    let beforecur = state.sliceDoc(0, last_line.to);
+    let aftercur = state.sliceDoc(last_line.to);
     let command = clean_content(beforecur).slice(-1)[0];
     let allAfter = clean_content(aftercur);
     if (allAfter!=null && allAfter.length>0) {
         let possibleNext = [...aftercur.matchAll(escapeRegExp(allAfter[0]))];
         if (possibleNext.length>0) {
-            instance.setCursor(
-                instance.posFromIndex(possibleNext[0].index+beforecur.length+allAfter[0].length)
-            );
+            let pos = possibleNext[0].index + beforecur.length + allAfter[0].length;
+            instance.view.dispatch({selection: {anchor: pos}, scrollIntoView: true});
         }
     }
     executecallback.execute("toplevel", command);
@@ -365,7 +353,7 @@ let exec_last = function (instance) {
 
 /**
  * Execute all the code in the editor
- * @param {CodeMirror} instance - CodeMirror instance
+ * @param {OCamlEditor} instance - Editor
  * @return {void} Nothing
  */
 let exec_all = function (instance) {
@@ -381,34 +369,8 @@ let exec_all = function (instance) {
 };
 
 /**
- * Calculate the cursor of the code to highlight
- * @param {CodeMirror} instance - CodeMirror instance
- * @return {*} CodeMirror cursor
- */
-let calculate_highlight = function (instance) {
-    let command_gen = instance.getRange({line: 0, ch: 0}, {line: line_with_last(instance)}).matchAll(CODE_SEPARATOR_REGEX);
-
-    let next = command_gen.next();
-    let start;
-    let end;
-
-    while (!next.done) {
-    const val = next.value;
-    next = command_gen.next();
-        if (next.done){
-            start = instance.posFromIndex(val.index);
-            end = instance.posFromIndex(val.index+val[0].length);
-        }
-    }
-    return {
-        start:start,
-        end:end
-    }
-};
-
-/**
  * Trigger saving process
- * @param {CodeMirror} instance - CodeMirror instance
+ * @param {OCamlEditor} instance - Editor
  * @return {void} Nothing
  */
 function save(instance) {
@@ -421,7 +383,7 @@ function save(instance) {
 
 /**
  * Attribute a name and save file
- * @param {CodeMirror} instance - CodeMirror instance
+ * @param {OCamlEditor} instance - Editor
  * @return {void} Nothing
  */
 function name_and_save(instance) {
@@ -443,7 +405,7 @@ function name_and_save(instance) {
 
 /**
  * Save the file (create a download object)
- * @param {CodeMirror} instance - CodeMirror instance
+ * @param {OCamlEditor} instance - Editor
  * @return {void} Nothing
  */
 let program_save = function (instance) {
@@ -507,28 +469,11 @@ function readSingleFile(e) {
 }
 
 /**
- * CodeMirror editor function : Highlight text on change
- * @param {CodeMirror} instance - CodeMirror instance
- * @param changeObj - CodeMirror change status
+ * Editor drop handler : new editor with the dropped file
+ * @param e - Drop event
+ * @return {boolean} true if a file was dropped
  */
-function cursor_activity(instance, changeObj) {
-    let cursor = calculate_highlight(instance);
-    if (!(cursor.start == undefined) && !(cursor.end == undefined)) {
-        instance.current_marker.clear();
-        instance.current_marker = instance.markText(from = cursor.start, to = cursor.end, options = {
-            className: "code-highlight"
-        });
-    }
-    instance.is_saved = false;
-}
-
-/**
- * CodeMirror editor function : new editor on drop
- * @param data
- * @param e
- * @return {boolean}
- */
-function editor_drop(data, e) {
+function editor_drop(e) {
     let file;
     let files;
     // Check if files were dropped
@@ -547,8 +492,9 @@ function editor_drop(data, e) {
 
         };
         reader.readAsText(file);
-        return false;
+        return true;
     }
+    return false;
 }
 
 /**
@@ -568,67 +514,10 @@ let includer = function (l, w) {
 }
 
 /**
- * CodeMirror editor function : Generate the hint/autocomplete suggestion
- * @param {CodeMirror} cm - CodeMirror instance
- * @param option
- * @return {Promise<unknown>}
- */
-function hint_prediction(cm, option) {
-    return new Promise(function (accept) {
-        setTimeout(function () {
-            // Get the word before the cursor position
-            var cursor = cm.getCursor(), line = cm.getLine(cursor.line)
-            var start = cursor.ch, end = cursor.ch
-            while (start && /\w/.test(line.charAt(start - 1))) --start
-            while (end < line.length && /\w/.test(line.charAt(end))) ++end
-            var word = line.slice(start, end)
-            if (/\./.test(line.charAt(start - 1))) { // Special module case
-                let nstart = start - 1;
-                while (nstart && /\w/.test(line.charAt(nstart - 1))) --nstart
-                let module = line.slice(nstart, start - 1);
-                if (MODULE_HINT.hasOwnProperty(module)) {
-                    if (word.length == 0) {
-                        return accept({
-                            list: MODULE_HINT[module],
-                            from: CodeMirror.Pos(cursor.line, start),
-                            to: CodeMirror.Pos(cursor.line, end)
-                        })
-                    } else if (!MODULE_HINT[module].includes(word)) {
-                        return accept({
-                            list: includer(MODULE_HINT[module], word),
-                            from: CodeMirror.Pos(cursor.line, start),
-                            to: CodeMirror.Pos(cursor.line, end)
-                        })
-                    }
-                }
-            }
-            // Magic formula to remove comment and find all variables
-            let variables = [...new Set(
-                (cm.getValue()
-                    .replace(COMMENT_REGEX, '')
-                    .match(VARIABLE_1_REGEX) || []
-                ).map(x=>x.replace(VARIABLE_2_REGEX, ""))
-            )];
-
-            let possibilities = variables.concat(cm.hint_list["Base"]);
-            let correspondance = includer(possibilities, word);
-            if (word.length !== 0 && correspondance.length !== 0 && !possibilities.includes(word)) {
-                return accept({
-                    list: correspondance.slice(0, 5),
-                    from: CodeMirror.Pos(cursor.line, start),
-                    to: CodeMirror.Pos(cursor.line, end)
-                })
-            }
-            return accept(null)
-        }, 200)
-    })
-}
-
-/**
  * Create the editor instance
  * @param id - Editor id
  * @param name - Editor name
- * @return {CodeMirror} Editor instance
+ * @return {OCamlEditor} Editor instance
  */
 function create_editor(id, name) {
     if (MOBILE){
@@ -640,83 +529,9 @@ function create_editor(id, name) {
     $tabs.children().removeAttr('style');
 
     $tabs.append("<li id='li_tab_" + String(id) + "' class='tab col s3 onglet'><a href='#editor_tab_" + String(id) + "'>" + name + "<i class='material-icons center mini-icon' onclick='remove_editor(" + String(id) + ")'>close</i></a></li>");
-    $("#editorCollection").append("<div id='editor_tab_" + String(id) + "' class='col s12 blue code-box'><textarea name='editor_" + String(id) + "' id='editor_" + String(id) + "' class='materialize-textarea'></textarea></div>");
+    $("#editorCollection").append("<div id='editor_tab_" + String(id) + "' class='col s12 blue code-box'></div>");
 
-    let editor = CodeMirror.fromTextArea(document.getElementById("editor_" + String(id)), {
-        lineNumbers: true,
-        autoCloseBrackets: true,
-        indentUnit: 2,
-        tabSize: 2,
-        smartIndent: true,
-        indentWithTabs: false,
-        dragDrop: true,
-        matchBrackets: true,
-        readOnly: false,
-        theme: localStorage.getItem("betterocaml-theme")||"material",
-        mode: 'text/x-ocaml',
-        extraKeys: {
-            "Ctrl-Enter": exec_last,
-            "Cmd-Enter": exec_last,
-            "Shift-Ctrl-Enter": exec_all,
-            "Shift-Cmd-Enter": exec_all,
-            "Ctrl-Space": "autocomplete",
-            "Cmd-Space": "autocomplete",
-            "Alt-F": "findPersistent",
-            "Ctrl-S": save,
-            "Cmd-S": save,
-            "Backspace": function (cm) { // If 2 space behind, delete 2 space
-                if (cm.getCursor().ch === 0) {
-                    return CodeMirror.Pass
-                }
-                let line = cm.getLine(cm.getCursor().line);
-                if (line.charAt(cm.getCursor().ch - 1) === ' ' && line.charAt(cm.getCursor().ch - 2) === ' ') {
-                    cm.replaceRange("", {
-                        line: cm.getCursor().line,
-                        ch: cm.getCursor().ch - 2
-                    }, {
-                        line: cm.getCursor().line,
-                        ch: cm.getCursor().ch
-                    })
-                }
-                else { // Else, delete 1 space
-                    CodeMirror.commands.delCharBefore(cm)
-                }
-            },
-            "Tab": function (cm){
-                if (cm.getMode().name === 'null') {
-                    cm.execCommand('insertTab');
-                } else {
-                    if (cm.somethingSelected()) {
-                        cm.execCommand('indentMore');
-                    } else {
-                        cm.execCommand('insertSoftTab');
-                    }
-                }
-            },
-            'Shift-Tab': function (cm){cm.execCommand('indentLess')},
-        },
-        hintOptions: {hint: hint_prediction}
-    });
-    editor.id = id
-    editor.name = name
-    editor.is_saved = true
-    editor.ext_autocomplete = localStorage.getItem("betterocaml-autocomplete") == "true"
-    editor.autocomplete_timeout = Date.now()
-    editor.hint_list = MODULE_HINT
-    editor.current_marker = editor.markText({line: 0}, {line: 0}, {css: "color: #fe4"});
-    editor.on("cursorActivity", cursor_activity);
-    editor.on('drop', editor_drop);
-    editor.on("keyup", function (cm, event) {
-        if (cm.ext_autocomplete && // Only trigger if jetbrain style autocompletion is activated
-            cm.autocomplete_timeout < Date.now() - 500 && // Only trigger if the user stopped typing
-            !cm.state.completionActive && /*Enables keyboard navigation in autocomplete list*/
-            event.keyCode !== 13) {        /*Enter - do not open autocomplete list just after item has been selected in it*/
-            CodeMirror.commands.autocomplete(cm, null, {completeSingle: false,});
-        }
-    });
-    editor.on("endCompletion", function (cm) {
-        cm.autocomplete_timeout = Date.now();
-    });
+    let editor = new OCamlEditor(id, name, document.getElementById("editor_tab_" + String(id)));
     $tabs.tabs().tabs('select', 'editor_tab_' + String(id));
     return editor
 }
@@ -845,10 +660,8 @@ function change_configuration(name, value, editors) {
     switch (name) {
         case 'betterocaml-theme':
             let href = document.getElementById('css_theme').href;
+            // The editors use the colors of this file, nothing else to update
             document.getElementById('css_theme').href = href.replace(/[^\/]+$/g, '') + value + ".css"
-            for (let i in editors) {
-                editors[i].setOption("theme", value);
-            }
             break;
         case 'betterocaml-autocomplete':
             for (let i in editors) {
@@ -907,7 +720,7 @@ function navbar_resize() {
         let mobile_button = document.getElementById("flexible-mobile-button");
         mobile_button.children[0].children[0].innerText = "add";
         mobile_button.children[0].removeAttribute("href");
-        mobile_button.children[0].setAttribute("onclick", "editors[Math.max(...Object.keys(editors).map(x => +x))+1] = create_editor(id = Math.max(...Object.keys(editors).map(x => +x))+1, name = 'untitled.ml', theme= editors[Math.min(...Object.keys(editors).map(x => +x))].getOption('theme'));");
+        mobile_button.children[0].setAttribute("onclick", "editors[Math.max(...Object.keys(editors).map(x => +x))+1] = create_editor(id = Math.max(...Object.keys(editors).map(x => +x))+1, name = 'untitled.ml');");
         mobile_button.children[0].removeAttribute("data-target");
         mobile_button.children[0].removeAttribute("class");
         // transfer tabs to navbar

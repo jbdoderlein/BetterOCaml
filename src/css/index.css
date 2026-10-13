@@ -257,28 +257,6 @@ nav i, nav i.material-icons {
 
 /* EDITOR */
 
-.CodeMirror {
-    height: 100% !important;
-    width: 100% !important;
-}
-
-.CodeMirror-hints {
-    max-height: 10rem !important;
-    overflow-y: hidden !important;
-    background: var(--toplevel-bg-color)!important;
-    border: none!important;
-    font-size: var(--hint-font-size)!important;
-}
-
-.CodeMirror-hint {
-    color: var(--code-text-color);
-}
-
-li.CodeMirror-hint-active {
-    background: var(--editor-selection-bg-color);
-    color: var(--code-text-color);
-}
-
 .code-box {
     height: 100% !important;
 }
@@ -332,10 +310,6 @@ li.CodeMirror-hint-active {
 ::-webkit-scrollbar {
     height: 10px;
     width: 10px;
-}
-
-.CodeMirror-scrollbar-filler {
-    background-color: var(--scrollbar-bg-color) !important;
 }
 
 /* LOADING SCREEN */
@@ -449,47 +423,6 @@ code, kbd, pre, samp {
     color: var(--nav-selected-tab-text-color) !important;
 }
 
-.CodeMirror {
-    background-color: var(--editor-bg-color);
-    color: var(--code-text-color);
-}
-
-.CodeMirror .CodeMirror-gutters {
-    background: var(--editor-gutter-bg-color);
-    color: var(--editor-gutter-text-color);
-    border: none
-}
-
-.CodeMirror .CodeMirror-guttermarker,
-.CodeMirror .CodeMirror-guttermarker-subtle,
-.CodeMirror .CodeMirror-linenumber {
-    color: var(--editor-gutter-text-color);
-}
-
-.CodeMirror .CodeMirror-cursor {
-    border-left: 1px solid var(--editor-cursor-color);
-}
-
-.CodeMirror div.CodeMirror-selected {
-    background: var(--editor-selection-bg-color);
-}
-
-.CodeMirror.CodeMirror-focused div.CodeMirror-selected {
-    background: var(--editor-selection-bg-color);
-}
-
-.CodeMirror .CodeMirror-line::selection,
-.CodeMirror .CodeMirror-line > span::selection,
-.CodeMirror .CodeMirror-line > span > span::selection {
-    background: var(--editor-selection-bg-color);
-}
-
-.CodeMirror .CodeMirror-line::-moz-selection,
-.CodeMirror .CodeMirror-line > span::-moz-selection,
-.CodeMirror .CodeMirror-line > span > span::-moz-selection {
-    background: var(--editor-selection-bg-color);
-}
-
 /* Track */
 
 ::-webkit-scrollbar-track {
@@ -518,22 +451,6 @@ code, kbd, pre, samp {
 
 .progress .indeterminate {
     background-color: var(--preloader-progress-bar-color) !important;
-}
-
-.CodeMirror-dialog.CodeMirror-dialog-top{
-    background-color: var(--nav-bg-color);
-    font-family: inherit;
-    top:unset;
-    bottom: 0;
-    border-bottom: unset;
-}
-
-.CodeMirror-search-field{
-    width: 75%!important;
-}
-
-.CodeMirror-search-hint{
-    display: none;
 }
 
 .theme-select,
@@ -578,7 +495,6 @@ label {
 .btn.config-element, .btn.shortcut-button {
     background-color: var(--form-button-bg-color) !important;
 }
-
 
 /* Syntax highligthing */
 
@@ -662,90 +578,6 @@ label {
     color: var(--code-constant);
 }
 
-.CodeMirror .cm-keyword {
-    color: var(--code-keyword)
-}
-
-.CodeMirror .cm-operator {
-    color: var(--code-operator)
-}
-
-.CodeMirror .cm-variable-2 {
-    color: var(--code-variable)
-}
-
-.CodeMirror .cm-type,
-.CodeMirror .cm-variable-3 {
-    color: var(--code-variable)
-}
-
-.CodeMirror .cm-builtin {
-    color: var(--code-builtin)
-}
-
-.CodeMirror .cm-atom {
-    color: var(--code-atom)
-}
-
-.CodeMirror .cm-number {
-    color: var(--code-number)
-}
-
-.CodeMirror .cm-def {
-    color: var(--code-def)
-}
-
-.CodeMirror .cm-string {
-    color: var(--code-string);
-}
-
-.CodeMirror .cm-string-2 {
-    color: var(--code-string)
-}
-
-.CodeMirror .cm-comment {
-    color: var(--code-comment)
-}
-
-.CodeMirror .cm-variable {
-    color: var(--code-variable)
-}
-
-.CodeMirror .cm-tag {
-    color: var(--code-tag)
-}
-
-.CodeMirror .cm-meta {
-    color: var(--code-meta)
-}
-
-.CodeMirror .cm-attribute {
-    color: var(--code-attribute)
-}
-
-.CodeMirror .cm-property {
-    color: var(--code-attribute)
-}
-
-.CodeMirror .cm-qualifier {
-    color: var(--code-qualifier)
-}
-
-.CodeMirror .cm-type,
-.CodeMirror .cm-variable-3 {
-    color: var(--code-variable)
-}
-
-.CodeMirror .cm-error {
-    color: var(--code-text-color);
-    background-color: var(--code-error)
-}
-
-.CodeMirror .CodeMirror-matchingbracket {
-    text-decoration: underline;
-    color: var(--code-brackets) !important
-}
-
 /* Stop button, shown when OCaml code has been running for a while (see js/toplevel_client.js) */
 .stop-button {
     visibility: hidden;
@@ -798,4 +630,53 @@ html.toplevel-busy .stop-button {
     max-width: 100%;
     height: auto;
     background: white;
+}
+
+/* CodeMirror panels (search, go to line): undo the materialize form styles */
+.cm-editor .cm-panel input.cm-textfield {
+    width: auto;
+    height: auto;
+    margin: 2px 4px;
+    padding: 2px 6px;
+    border: 1px solid var(--help-margin-color);
+    border-radius: 3px;
+    box-sizing: border-box;
+    box-shadow: none;
+    background-color: var(--editor-bg-color);
+    color: var(--code-text-color);
+    font-size: 90%;
+}
+
+.cm-editor .cm-panel input.cm-textfield:focus {
+    border: 1px solid var(--editor-cursor-color);
+    box-shadow: none;
+}
+
+.cm-editor .cm-panel input[type=checkbox] {
+    position: static;
+    opacity: 1;
+    pointer-events: auto;
+    margin: 0 4px 0 6px;
+    vertical-align: middle;
+}
+
+.cm-editor .cm-panel label {
+    font-size: 90%;
+    color: var(--ui-text-color);
+}
+
+.cm-editor .cm-panel .cm-button {
+    background-image: none;
+    background-color: var(--form-button-bg-color);
+    color: var(--ui-text-color);
+    border: none;
+    border-radius: 3px;
+}
+
+.cm-editor .cm-panel button[name=close] {
+    color: var(--ui-text-color);
+}
+
+.cm-editor .cm-panel.cm-search {
+    white-space: normal;
 }

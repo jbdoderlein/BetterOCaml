@@ -168,7 +168,7 @@ const merlin_hover = CM.hoverTooltip(async function (view, pos, side) {
  */
 async function merlin_goto_definition(view, pos) {
     if (!merlin_is_ready) {
-        M.toast({html: merlin_enabled() ? "Merlin is loading" : "Merlin is disabled in the settings"});
+        show_toast(merlin_enabled() ? "Merlin is loading" : "Merlin is disabled in the settings");
         return;
     }
     let r = await merlin_request("locate", view.state, pos);
@@ -179,20 +179,14 @@ async function merlin_goto_definition(view, pos) {
         // stdlib__List.mli -> Stdlib.List
         let module = r.file.replace(/\.mli?$/, "").split("__")
             .map(m => m.charAt(0).toUpperCase() + m.slice(1)).join(".");
-        M.toast({html: "Defined in the library module " + escape_html(module)});
+        show_toast("Defined in the library module " + module);
     } else if (r !== null && r.library !== undefined) {
         // Merlin: "'Stdlib.List.map' seems to originate from 'List' whose MLI file could not be found"
         let m = r.library.match(/^'([^']+)' seems to originate from/);
-        M.toast({html: escape_html(m ? m[1] + " is defined in the OCaml library" : r.library)});
+        show_toast(m ? m[1] + " is defined in the OCaml library" : r.library);
     } else {
-        M.toast({html: "Definition not found"});
+        show_toast("Definition not found");
     }
-}
-
-function escape_html(text) {
-    let div = document.createElement("div");
-    div.textContent = text;
-    return div.innerHTML;
 }
 
 const merlin_goto_keys = CM.keymap.of([

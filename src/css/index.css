@@ -1,248 +1,235 @@
-/* BODY */
+/* BetterOCaml page style. Colors come from the theme in css/theme/*.css */
+
 :root {
-    --editor-font-size : 1.2em;
+    --editor-font-size: 1.2em;
+    --toplevel-font-size: 1.2em;
     --hint-font-size: 0.96em;
-    --toplevel-font-size : 1.2em;
     --shortcut_system: "Ctrl";
+    --topbar-height: 48px;
+    --ui-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    --code-font: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
 }
 
-body, html {
+/* PAGE */
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 15px;
+    height: 100%;
+}
+
+body {
     margin: 0;
-    width: 100%;
-    height: 100vh;
-    min-height: 100vh;
-    overflow: hidden;
-    background-color: #101010;
-    font-size: 1em;
-    min-height: -webkit-fill-available;
-}
-
-.container-boc {
+    height: 100%;
     display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    font-family: var(--ui-font);
+    line-height: 1.5;
+    color: var(--ui-text-color);
+    background-color: var(--editor-bg-color);
+    scrollbar-color: var(--scrollbar-track-color) var(--scrollbar-bg-color);
+}
+
+button, input, select, textarea {
+    font: inherit;
+    color: inherit;
+}
+
+a {
+    color: inherit;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--scrollbar-bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-track-color);
+}
+
+/* BUTTONS */
+
+.icon-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--topbar-height);
+    height: var(--topbar-height);
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--ui-text-color);
+    cursor: pointer;
+}
+
+.icon-button:hover,
+.icon-button:focus-visible {
+    background-color: var(--nav-selected-tab-bg-color);
+}
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--form-button-bg-color);
+    color: var(--ui-text-color);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.button:hover,
+.button:focus-visible {
+    filter: brightness(1.15);
+}
+
+.button-primary {
+    background-color: var(--action-button);
+}
+
+.button .material-icons {
+    font-size: 20px;
+}
+
+.small-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: var(--action-button);
+    color: var(--ui-text-color);
+    cursor: pointer;
+}
+
+.small-button .material-icons {
+    font-size: 20px;
+}
+
+:focus-visible {
+    outline: 2px solid var(--editor-cursor-color);
+    outline-offset: -2px;
+}
+
+/* TOP BAR: file tabs and actions */
+
+.topbar {
+    flex: 0 0 var(--topbar-height);
+    display: flex;
+    min-width: 0;
+    background-color: var(--nav-bg-color);
+}
+
+.tabs {
     flex: 1 1 auto;
-    width: 100% !important;
-    max-width: 80000px !important;
-    height: 90vh;
+    display: flex;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    /* With many files, the tabs scroll with the mouse wheel (see app.js), a trackpad or touch */
+    scrollbar-width: none;
 }
 
-.horizontal {
+.tab {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 8px 0 16px;
+    background-color: var(--nav-unselected-tab-bg-color);
+    color: var(--nav-unselected-tab-text-color);
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+}
+
+.tab[aria-selected="true"] {
+    background-color: var(--nav-selected-tab-bg-color);
+    color: var(--nav-selected-tab-text-color);
+}
+
+.tab-close {
+    display: inline-flex;
+    padding: 4px;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--nav-close-btn-bg-color);
+    color: inherit;
+    cursor: pointer;
+}
+
+.tab-close .material-icons {
+    font-size: 14px;
+}
+
+.toolbar {
+    flex: 0 0 auto;
+    display: flex;
+}
+
+/* WORKSPACE: editor | resizer | toplevel */
+
+.workspace {
+    flex: 1 1 auto;
+    display: flex;
     flex-direction: row;
+    min-height: 0;
+    /* Base of the editor and toplevel zoom settings (1.2em by default) */
+    font-size: 13px;
 }
 
-@media (max-width: 600px) {
-    .horizontal {
-        flex-direction: column;
-    }
-}
-
-.vertical {
+/* Toplevel below the editor: setting, or small screens (see change_resize_bar) */
+.workspace.stacked {
     flex-direction: column;
 }
 
 .box {
     flex: 1 1 0;
     display: flex;
-    overflow-x: hidden;
-    overflow-y: auto;
-    white-space: nowrap;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    background-color: var(--editor-bg-color);
 }
 
-.editor-box{
+.editor-box {
+    flex-direction: column;
     font-size: var(--editor-font-size);
 }
 
-.console-box{
+.console-box {
     font-size: var(--toplevel-font-size);
 }
 
-.fixedab {
-    position: fixed;
-    bottom: 23px;
-    padding-top: 15px;
-    margin-bottom: 0;
-    z-index: 997;
-}
-
-.zoom-button {
-    margin: 2px;
-}
-
-/*  NAVBAR */
-
-nav {
-    line-height: 0 !important;
-}
-
-.nav-extended {
-    height: 10vh !important;
-}
-
-.nav-wrapper {
-    height: inherit !important;
-    min-height: 0 !important;
-}
-
-.nav-wrapper ul {
-    height: inherit !important;
-}
-
-nav ul li {
-    height: inherit;
+.editor-collection,
+.code-box {
+    flex: 1 1 auto;
+    width: 100%;
+    height: 100%;
     min-height: 0;
 }
 
-nav i, nav i.material-icons {
-    height: inherit;
-    line-height: 10vh;
-    font-size: 4vh;
-}
-
-@media (max-height: 700px) {
-    nav i,
-    nav i.material-icons {
-        font-size: 5vh;
-    }
-}
-
-.normal-tabs {
-    display: flex;
-    height: inherit;
-    font-size: 0.9rem;
-}
-
-.normal-tabs .tab {
-    height: inherit;
-    text-transform: none !important;
-    line-height: 10vh;
-}
-
-.normal-tabs .tab a {
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-}
-
-.normal-tabs .tab a.active {
-    font-size: 1.1rem !important;
-}
-
-/* Tweak against materialize */
-
-@media (max-width: 992px) {
-    .normal-tabs .tab {
-        -webkit-box-flex: 0;
-        -webkit-flex-grow: 0;
-        -ms-flex-positive: 0;
-        flex-grow: 0;
-    }
-}
-
-.mobile-tabs {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-}
-
-.mobile-tabs .tab {
-    -webkit-box-flex: unset;
-    -webkit-flex-grow: unset;
-    -ms-flex-positive: unset;
-    flex-grow: unset;
-    text-transform: unset;
-}
-
-.mobile-tabs .tab i {
-    margin-bottom: 12px !important;
-    margin-top: 12px !important;
-    line-height: 12px !important;
-    height: 24px !important;
-    color: var(--text-color) !important;
-}
-
-.sidenav-trigger {
-    margin: unset !important;
-    height: inherit !important;
-}
-
-.indicator {
-    display: none;
-}
-
-.mini-icon {
-    display: inline !important;
-    font-size: 0.9rem !important;
-    margin-left: 8px;
-    padding: 6px;
-    border-radius: 4px;
-    background-color: var(--nav-close-btn-bg-color);
-}
-
-.add-icon {
-    display: inline !important;
-    font-size: 1.2rem !important;
-    margin-left: 8px;
-    padding: 6px;
-    cursor: pointer;
-}
-
-#add_tab {
-    cursor: pointer;
-}
-
-/* TOPLEVEL */
-
-.errorloc {
-    border-bottom-width: 3px;
-    border-bottom-style: solid;
-}
-
-#toplevel-container {
-    width: 100%;
-    overflow: auto;
-    overflow-x: hidden;
-    height: 100%;
-    float: right;
-    padding: 20px 10px 10px;
-}
-
-#toplevel-container pre#output {
-    align-content: center;
-}
-
-#toplevel-container #output {
-    background-color: transparent;
-    border: none;
-    margin-bottom: 0;
-    font-family: monospace, monospace;
-}
-
-#toplevel-container textarea {
-    width: 95%;
-    border: 0;
-    resize: none;
-    outline: none;
-    font-family: monospace, monospace;
-    float: left;
-    margin: 0;
-    padding: 0;
-}
-
-#toplevel-container #sharp {
-    float: left;
-    line-height: 18px;
-    font-family: monospace, monospace;
-    white-space: pre;
-}
-
-.sharp:before {
-    content: "# ";
-    line-height: 18px;
-    font-family: monospace, monospace;
-}
-
-/* RESIZER */
-
 .resizer {
     flex: 0 0 auto;
+    background-color: var(--resizer-bg-color);
 }
 
 .resizer[data-resizer-type=H] {
@@ -255,327 +242,113 @@ nav i, nav i.material-icons {
     cursor: row-resize;
 }
 
-/* EDITOR */
-
-.code-box {
-    height: 100% !important;
-}
-
-#vertical-line {
-    border-left: 4px solid lightgrey;
-    position: absolute;
-    left: 50%;
-    top: 0;
-    margin-left: -2px;
-    height: 100%;
-}
-
-.editorCollection {
-    height: 100%;
-}
-
-/* CONFIG MODAL */
-
-.config-element {
-    margin-top: 4%;
-}
-
-.switch label input[type=checkbox]:before {
-    background-color: black;
-}
-
-.switch label input[type=checkbox]:after {
-    background-color: whitesmoke;
-}
-
-.config-section {
-    margin: 2%;
-}
-
-.shortcut-button {
-    margin: 2% 2% 4%;
-}
-
-.shortcut-command {
-    font-weight: bold;
-    display: inline;
-}
-
-.ctrl::before {
-    content: var(--shortcut_system);
-}
-
-/* SCROLLBAR */
-
-::-webkit-scrollbar {
-    height: 10px;
-    width: 10px;
-}
-
-/* LOADING SCREEN */
-
-#loader-wrapper {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1000;
-}
-
-#loader {
-    z-index: 1001;
-    /* anything higher than z-index: 1000 of .loader-section */
-    height: 100%;
-}
-
-.tester {
-    -webkit-animation: fadeinout 1s ease-in-out forwards;
-    animation: fadeinout 1s ease-in-out forwards;
-}
-
-@keyframes fadeinout {
-    10% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.1;
-    }
-    100% {
-        opacity: 0;
-    }
-}
-
-img {
-    max-width: 100%;
-    max-height: 100%;
-}
-
-.progress {
-    top: 30% !important;
-}
-
-nav {
-    background-color: var(--nav-bg-color) !important;
-}
-
-nav i, nav i.material-icons {
-    color: var(--ui-text-color);
-}
-
-.zoom-button {
-    background-color: var(--action-button) !important;
-}
-
-.resizer[data-resizer-type=H] {
-    background: var(--resizer-bg-color);
-}
-
-.resizer[data-resizer-type=V] {
-    background: var(--resizer-bg-color);
-}
-
-.code-highlight {
-    background-color: var(--editor-code-highlight-color);
-}
-
-.commands {
-    color: var(--ui-text-color);
-    border-left-color: var(--help-margin-color);
-}
-
-.box {
-    background: var(--editor-bg-color) !important;
-}
-
-.help {
-    background-color: var(--help-bg-color) !important;
-    color: var(--ui-text-color);
-}
-
-code, kbd, pre, samp {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-}
+/* TOPLEVEL */
 
 #toplevel-container {
-    background-color: var(--toplevel-bg-color) !important;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 20px 10px 10px;
+    background-color: var(--toplevel-bg-color);
     color: var(--code-text-color);
+    font-family: var(--code-font);
 }
 
-#toplevel-container textarea {
+#output {
+    margin: 0;
+    font-family: inherit;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.toplevel-input {
+    display: flex;
+}
+
+#sharp {
+    flex: 0 0 auto;
+    white-space: pre;
+}
+
+.sharp::before {
+    content: "# ";
+}
+
+#userinput {
+    flex: 1 1 auto;
+    height: 1.5em;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: none;
+    resize: none;
+    background: transparent;
     color: var(--code-text-color);
+    font-family: inherit;
+    line-height: inherit;
 }
 
-.tabs {
-    background-color: var(--nav-bg-color) !important;
-    color: var(--ui-text-color) !important;
-}
-
-.onglet {
-    background-color: var(--nav-unselected-tab-bg-color) !important;
-}
-
-.tabs .tab a {
-    color: var(--nav-unselected-tab-text-color) !important;
-}
-
-.tabs .tab a.active {
-    background-color: var(--nav-selected-tab-bg-color) !important;
-    color: var(--nav-selected-tab-text-color) !important;
-}
-
-/* Track */
-
-::-webkit-scrollbar-track {
-    background: var(--scrollbar-bg-color);
-}
-
-/* Handle */
-
-::-webkit-scrollbar-thumb {
-    background: var(--scrollbar-track-color);
-}
-
-/* Handle on hover */
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--scrollbar-track-color);
-}
-
-#loader-wrapper {
-    background: var(--preloader-bg-color);
-}
-
-.progress {
-    background-color: var(--preloader-bg-color) !important;
-}
-
-.progress .indeterminate {
-    background-color: var(--preloader-progress-bar-color) !important;
-}
-
-.theme-select,
-.select-dropdown {
-    color: var(--ui-text-color) !important;
-}
-
-.caret {
-    fill: var(--ui-text-color) !important;
-}
-
-.select-wrapper input.select-dropdown:focus {
-    border-bottom: 1px solid var(--ui-text-color) !important;
-}
-
-label {
-    color: var(--ui-text-color) !important;
-}
-
-.dropdown-content {
-    background-color: var(--form-dropdown-bg-color) !important;
-}
-
-.dropdown-content li > a,
-.dropdown-content li > span {
-    color: var(--form-dropdown-text-color) !important;
-}
-
-.switch label input[type=checkbox]:checked + .lever {
-    background-color: var(--form-switch-border-color) !important;
-}
-
-.switch label input[type=checkbox]:checked + .lever:after {
-    background-color: var(--ui-text-color) !important;
-}
-
-[type="checkbox"]:checked + span:not(.lever):before {
-    border-right: 2px solid var(--ui-text-color) !important;
-    border-bottom: 2px solid var(--ui-text-color) !important;
-}
-
-.btn.config-element, .btn.shortcut-button {
-    background-color: var(--form-button-bg-color) !important;
-}
-
-/* Syntax highligthing */
-
-.caml {
-    color: var(--code-caml);
-}
-
-.stderr {
-    color: var(--code-error);
-}
-
-.stdout {
-    color: var(--code-text-color);
-}
+/* Toplevel output colors */
+.caml { color: var(--code-caml); }
+.stderr { color: var(--code-error); }
+.stdout { color: var(--code-text-color); }
 
 .errorloc {
-    border-bottom-color: var(--code-error);
+    border-bottom: 3px solid var(--code-error);
 }
 
-.sharp .id {
-    color: var(--code-variable);
+.sharp .text { color: var(--code-text-color); }
+.sharp .id { color: var(--code-variable); }
+.sharp .kw0,
+.sharp .kw1 { color: var(--code-keyword); }
+.sharp .kw2,
+.sharp .kw3,
+.sharp .kw4 { color: var(--code-builtin); }
+.sharp .string { color: var(--code-string); }
+.sharp .numeric { color: var(--code-number); }
+.sharp .constant { color: var(--code-constant); }
+.sharp .comment { color: var(--code-comment); font-style: italic; }
+.sharp .directive { color: var(--code-def); font-style: italic; }
+
+/* FLOATING BUTTONS: run (small screens), stop, clear */
+
+.fab-group {
+    position: fixed;
+    right: 15px;
+    bottom: 15px;
+    z-index: 10;
+    display: flex;
+    gap: 6px;
 }
 
-.sharp .kw0 {
-    color: var(--code-keyword);
+.fab {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: var(--action-button);
+    color: var(--ui-text-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
 }
 
-.sharp .kw1 {
-    color: var(--code-keyword);
+.fab-stop {
+    background-color: var(--code-error);
 }
 
-.sharp .kw2 {
-    color: var(--code-builtin);
+.mobile-only {
+    display: none;
 }
 
-.sharp .kw3 {
-    color: var(--code-builtin);
-}
-
-.sharp .kw4 {
-    color: var(--code-builtin);
-}
-
-.sharp .comment {
-    color: var(--code-comment);
-    font-style: italic;
-}
-
-.sharp .string {
-    color: var(--code-string);;
-}
-
-.sharp .text {
-    color: var(--code-text-color);
-}
-
-.sharp .numeric {
-    color: var(--code-number);
-}
-
-.sharp .directive {
-    font-style: italic;
-    color: var(--code-def);
-}
-
-.sharp .escape {
-    color: var(--code-escape);
-}
-
-.sharp .symbol0 {
-    color: var(--code-symbol);
-    font-weight: bold;
-}
-
-.sharp .symbol1 {
-    color: var(--code-symbol);
-    font-weight: bold;
-}
-
-.sharp .constant {
-    color: var(--code-constant);
+@media (max-width: 600px) {
+    .mobile-only {
+        display: inline-flex;
+    }
 }
 
 /* Stop button, shown when OCaml code has been running for a while (see js/toplevel_client.js) */
@@ -588,7 +361,237 @@ html.toplevel-busy .stop-button {
     transition: visibility 0s 0.3s;
 }
 
-/* Graphics window, floating above the editor (see show_graphics in js/toplevel_client.js) */
+/* DIALOGS: settings, shortcuts, save as */
+
+.dialog {
+    width: min(640px, calc(100vw - 32px));
+    max-height: calc(100% - 32px);
+    padding: 16px 24px 24px;
+    border: none;
+    border-radius: 6px;
+    background-color: var(--help-bg-color);
+    color: var(--ui-text-color);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+
+.dialog-small {
+    width: min(400px, calc(100vw - 32px));
+}
+
+.dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.dialog h2 {
+    margin: 8px 0 16px;
+    font-size: 1.6rem;
+    font-weight: 400;
+}
+
+.dialog h3 {
+    margin: 20px 0 8px;
+    font-size: 1.15rem;
+    font-weight: 400;
+}
+
+.dialog-close {
+    float: right;
+}
+
+.dialog-close .icon-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.settings {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    align-items: center;
+    gap: 12px 24px;
+}
+
+.settings select {
+    max-width: 100%;
+    padding: 4px 8px;
+    border: 1px solid var(--help-margin-color);
+    border-radius: 4px;
+    background-color: var(--form-dropdown-bg-color);
+    color: var(--form-dropdown-text-color);
+}
+
+.zoom-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.checkboxes {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 20px 0;
+}
+
+.checkboxes label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.checkboxes input {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: var(--action-button);
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.dialog input[type=text] {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid var(--help-margin-color);
+    border-radius: 4px;
+    background-color: var(--editor-bg-color);
+    color: var(--code-text-color);
+}
+
+.dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.shortcuts {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: 6px 20px;
+    margin: 0;
+    padding-left: 12px;
+    border-left: 4px solid var(--help-margin-color);
+}
+
+.shortcuts dt {
+    white-space: nowrap;
+}
+
+.shortcuts dd {
+    margin: 0;
+}
+
+kbd {
+    display: inline-block;
+    min-width: 1.8em;
+    padding: 0 6px;
+    border: 1px solid var(--help-margin-color);
+    border-radius: 4px;
+    font-family: var(--ui-font);
+    font-size: 0.9em;
+    text-align: center;
+}
+
+kbd.mod::before {
+    content: var(--shortcut_system);
+}
+
+/* TOASTS */
+
+.toasts {
+    position: fixed;
+    left: 50%;
+    bottom: 70px;
+    z-index: 1100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+
+.toast {
+    max-width: calc(100vw - 32px);
+    padding: 10px 20px;
+    border-radius: 4px;
+    background-color: #323232;
+    color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    transition: opacity 0.4s;
+}
+
+.toast-hide {
+    opacity: 0;
+}
+
+/* LOADING SCREEN */
+
+#loader-wrapper {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background-color: var(--preloader-bg-color);
+    color: white;
+    text-align: center;
+}
+
+#loader {
+    width: min(700px, 100%);
+}
+
+#loader img {
+    max-width: 100%;
+}
+
+#loader h2 {
+    margin: 16px 0 8px;
+    font-weight: 400;
+}
+
+#loader-wrapper.fade-out {
+    animation: fade-out 1s ease-in-out forwards;
+}
+
+@keyframes fade-out {
+    10% { opacity: 1; }
+    50% { opacity: 0.1; }
+    100% { opacity: 0; }
+}
+
+.progress {
+    position: relative;
+    height: 4px;
+    margin-top: 24px;
+    overflow: hidden;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.progress .indeterminate {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 40%;
+    background-color: var(--preloader-progress-bar-color);
+    animation: progress 1.5s ease-in-out infinite;
+}
+
+@keyframes progress {
+    from { left: -40%; }
+    to { left: 100%; }
+}
+
+/* GRAPHICS WINDOW, floating above the editor (see show_graphics in js/toplevel_client.js) */
+
 .graphics-window {
     display: none;
     position: fixed;
@@ -603,6 +606,9 @@ html.toplevel-busy .stop-button {
     border-radius: 4px;
     resize: both;
     overflow: hidden;
+    background-color: var(--help-bg-color);
+    color: var(--ui-text-color);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
 }
 
 .graphics-window.open {
@@ -621,8 +627,9 @@ html.toplevel-busy .stop-button {
 }
 
 .graphics-close {
-    cursor: pointer;
-    color: inherit;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
 }
 
 /* Large canvases (Graphics.open_graph " 900x600") are scaled down to fit the window */
@@ -632,30 +639,23 @@ html.toplevel-busy .stop-button {
     background: white;
 }
 
-/* CodeMirror panels (search, go to line): undo the materialize form styles */
+/* CODEMIRROR panels (search, go to line) */
+
 .cm-editor .cm-panel input.cm-textfield {
-    width: auto;
-    height: auto;
     margin: 2px 4px;
     padding: 2px 6px;
     border: 1px solid var(--help-margin-color);
     border-radius: 3px;
-    box-sizing: border-box;
-    box-shadow: none;
     background-color: var(--editor-bg-color);
     color: var(--code-text-color);
     font-size: 90%;
 }
 
 .cm-editor .cm-panel input.cm-textfield:focus {
-    border: 1px solid var(--editor-cursor-color);
-    box-shadow: none;
+    border-color: var(--editor-cursor-color);
 }
 
 .cm-editor .cm-panel input[type=checkbox] {
-    position: static;
-    opacity: 1;
-    pointer-events: auto;
     margin: 0 4px 0 6px;
     vertical-align: middle;
 }
@@ -675,8 +675,4 @@ html.toplevel-busy .stop-button {
 
 .cm-editor .cm-panel button[name=close] {
     color: var(--ui-text-color);
-}
-
-.cm-editor .cm-panel.cm-search {
-    white-space: normal;
 }

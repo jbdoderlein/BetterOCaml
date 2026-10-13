@@ -4,13 +4,6 @@ const CODE_SEPARATOR_REGEX = new RegExp(/[\S][\s\S]*?(;;)/g);
 const VARIABLE_1_REGEX = new RegExp(/((let rec \w+)|(let \w+)|(and \w+))/g);
 const VARIABLE_2_REGEX = new RegExp(/(let )|(rec )|(and )/g);
 
-// HTML Elements
-const wrapper = document.getElementsByClassName("nav-wrapper")[0];
-const files = document.getElementById("editor-files");
-const mobile_sidenav = document.getElementById("mobile-sidenav");
-const buttons =document.getElementById("menu-button");
-
-var MOBILE = false;
 var MODULE_HINT = {
     'Base': [
         "and", "as", "assert", "asr", "begin", "class", "constraint", "decr", "Division_by_zero", "do", "done", "downto", "else", "end", "epsilon_float", "exception", "external", "Failure", "failwith", "false", "for", "fst", "function", "functor", "if", "in", "include", "incr", "inherit", "initializer", "Invalid_argument", "land", "lazy", "let", "lor", "lsl", "lsr", "lxor", "match", "max_float", "max_int", "method", "min_float", "min_int", "mod", "module", "mutable", "new", "nonrec", "not", "object", "of", "open", "or", "Out_of_memory", "private", "raise", "rec", "ref", "sig", "snd", "struct", "then", "to", "true", "try", "type", "val", "virtual", "when", "while", "with", "prerr_endline", "print_int", "print_float", "print_string", "print_endline", "print_newline", "int_of_float", "float_of_int", "int_of_string", "float_of_string", "bool_of_string", "string_of_int", "string_of_float", "string_of_bool", "int_of_char", "char_of_int", "sqrt", "max", "min", "exp", "log", "log10", "cos", "acos", "sin", "asin", "tan", "atan", "atan2", "hypot", "cosh", "sinh", "tanh", "floor", "ceil", "truncate", "abs_float", "abs",
@@ -369,103 +362,87 @@ let exec_all = function (instance) {
 };
 
 /**
- * Trigger saving process
+ * Save the file, asking for a name if it has none yet
  * @param {OCamlEditor} instance - Editor
  * @return {void} Nothing
  */
 function save(instance) {
     if (instance.name == "untitled.ml") {
-        M.Modal.getInstance(document.getElementById('saveas')).open()
+        document.getElementById('saveas').showModal();
     } else {
         program_save(instance);
     }
 }
 
 /**
- * Attribute a name and save file
+ * Save the file with the name typed in the "Save as" dialog
  * @param {OCamlEditor} instance - Editor
  * @return {void} Nothing
  */
 function name_and_save(instance) {
-    let potential_filename = document.getElementById('saveas_text').value;
-    let fileNameToSaveAs = "untitled.ml";
-    if (potential_filename !== "") {
-        if (potential_filename.substr(-3, 3) == ".ml") {
-            fileNameToSaveAs = potential_filename
-        } else {
-            fileNameToSaveAs = potential_filename + ".ml"
-        }
-    }
-    instance.name = fileNameToSaveAs;
-    change_name(instance.id, fileNameToSaveAs);
+    let name = document.getElementById('saveas_text').value.trim();
+    if (name === "") name = "untitled.ml";
+    else if (!name.endsWith(".ml")) name += ".ml";
+    instance.name = name;
+    change_name(instance.id, name);
     document.getElementById('saveas_text').value = "";
-
     program_save(instance);
 }
 
 /**
- * Save the file (create a download object)
+ * Save the file (download it)
  * @param {OCamlEditor} instance - Editor
  * @return {void} Nothing
  */
 let program_save = function (instance) {
-    let textToWrite = instance.getValue()
-
-    //var textToWrite = textToWrite.replace(/\n/g, "\r\n");
-    let textFileAsBlob = new Blob([textToWrite], {type: 'text/x-ocaml'});
-
-    // filename to save as
-    let fileNameToSaveAs = instance.name;
-
-    let downloadLink = document.createElement("a");
-    downloadLink.download = fileNameToSaveAs;
-
-// hidden link title name
-    downloadLink.innerHTML = "LINKTITLE";
-
-    window.URL = window.URL || window.webkitURL;
-
-    downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
-
-    downloadLink.onclick = destroyClickedElement;
-    downloadLink.style.display = "none";
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    M.toast({html: 'File saved'})
+    let blob = new Blob([instance.getValue()], {type: 'text/x-ocaml'});
+    let link = document.createElement("a");
+    link.download = instance.name;
+    link.href = URL.createObjectURL(blob);
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+    show_toast('File saved');
     instance.is_saved = true;
-    localStorage.removeItem("betterocaml-autosave-"+instance.id)
-    update_pfs(instance)
+    localStorage.removeItem("betterocaml-autosave-" + instance.id);
+    update_pfs(instance);
 }
 
 /**
- * Destroy the element on event
- * @param event
+ * Open a file in a new editor, replacing the first editor if it is still empty
+ * @param {string} name - File name
+ * @param {string} contents - File contents
+ * @return {OCamlEditor} The new editor
  */
-function destroyClickedElement(event) {
-    document.body.removeChild(event.target);
+function open_contents(name, contents) {
+    let ids = Object.keys(editors);
+    let first = editors[ids[0]];
+    let replace = ids.length === 1 && first.name === "untitled.ml" && first.getValue() === "";
+    let editor = new_editor(name);
+    editor.setValue(contents);
+    editor.is_saved = true;
+    update_pfs(editor);
+    if (replace) remove_editor(first.id);
+    return editor;
 }
 
 /**
- * Create a new editor with the file in e
- * @param e - The file
- * @return {boolean}
+ * Open a file in a new editor
+ * @param {File} file - The file
+ */
+function open_file(file) {
+    let reader = new FileReader();
+    reader.onload = e => open_contents(file.name, e.target.result);
+    reader.readAsText(file);
+}
+
+/**
+ * File input handler: open the chosen file
+ * @param e - Change event
  */
 function readSingleFile(e) {
     let file = e.target.files[0];
-    if (!file) {
-        return;
-    }
-    let reader = new FileReader();
-    reader.onload = function (e) {
-        let contents = e.target.result;
-        let next = Math.max(...Object.keys(editors).map(x => +x)) + 1;
-        editors[next] = create_editor(id = next, name = file.name);
-        editors[next].setValue(contents)
-        update_pfs(editors[next]);
-
-    };
-    reader.readAsText(file);
-    return false;
+    if (file) open_file(file);
+    e.target.value = ""; // The same file can be opened again
 }
 
 /**
@@ -474,27 +451,11 @@ function readSingleFile(e) {
  * @return {boolean} true if a file was dropped
  */
 function editor_drop(e) {
-    let file;
-    let files;
-    // Check if files were dropped
-    files = e.dataTransfer.files;
-    if (files.length > 0) {
-        e.preventDefault();
-        e.stopPropagation();
-        file = files[0];
-        let reader = new FileReader();
-        reader.onload = function (e) {
-            var contents = e.target.result;
-            let next = Math.max(...Object.keys(editors).map(x => +x)) + 1;
-            editors[next] = create_editor(next, file.name);
-            editors[next].setValue(contents)
-            update_pfs(editors[next]);
-
-        };
-        reader.readAsText(file);
-        return true;
-    }
-    return false;
+    if (e.dataTransfer.files.length === 0) return false;
+    e.preventDefault();
+    e.stopPropagation();
+    open_file(e.dataTransfer.files[0]);
+    return true;
 }
 
 /**
@@ -513,88 +474,101 @@ let includer = function (l, w) {
     return r;
 }
 
+// Editor tabs
+
+let current_editor_id = null;
+
 /**
- * Create the editor instance
+ * Create an editor in a new tab, with the next free id
+ * @param {string} name - File name
+ * @return {OCamlEditor} The new editor, also in the editors list
+ */
+function new_editor(name = "untitled.ml") {
+    let ids = Object.keys(editors).map(x => +x);
+    let id = ids.length > 0 ? Math.max(...ids) + 1 : 0;
+    editors[id] = create_editor(id, name);
+    select_editor(id);
+    return editors[id];
+}
+
+/**
+ * Create the editor instance and its tab
  * @param id - Editor id
  * @param name - Editor name
  * @return {OCamlEditor} Editor instance
  */
 function create_editor(id, name) {
-    if (MOBILE){
-        var $tabs = $('#mobile-sidenav');
-    }
-    else {
-        var $tabs = $('#editor-files');
-    }
-    $tabs.children().removeAttr('style');
+    let tab = document.createElement("div");
+    tab.id = "tab_" + id;
+    tab.className = "tab";
+    tab.setAttribute("role", "tab");
+    tab.setAttribute("aria-controls", "editor_tab_" + id);
+    tab.tabIndex = 0;
+    let label = document.createElement("span");
+    label.className = "tab-name";
+    label.textContent = name;
+    let close = document.createElement("button");
+    close.type = "button";
+    close.className = "tab-close";
+    close.setAttribute("aria-label", "Close " + name);
+    close.innerHTML = '<i class="material-icons" aria-hidden="true">close</i>';
+    close.addEventListener("click", e => {
+        e.stopPropagation();
+        remove_editor(id);
+    });
+    tab.append(label, close);
+    tab.addEventListener("click", () => select_editor(id));
+    tab.addEventListener("keydown", e => {
+        if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            select_editor(id);
+        }
+    });
+    document.getElementById("editor-tabs").appendChild(tab);
 
-    $tabs.append("<li id='li_tab_" + String(id) + "' class='tab col s3 onglet'><a href='#editor_tab_" + String(id) + "'>" + name + "<i class='material-icons center mini-icon' onclick='remove_editor(" + String(id) + ")'>close</i></a></li>");
-    $("#editorCollection").append("<div id='editor_tab_" + String(id) + "' class='col s12 blue code-box'></div>");
+    let pane = document.createElement("div");
+    pane.id = "editor_tab_" + id;
+    pane.className = "code-box";
+    pane.setAttribute("role", "tabpanel");
+    pane.hidden = true;
+    document.getElementById("editorCollection").appendChild(pane);
 
-    let editor = new OCamlEditor(id, name, document.getElementById("editor_tab_" + String(id)));
-    $tabs.tabs().tabs('select', 'editor_tab_' + String(id));
-    return editor
+    return new OCamlEditor(id, name, pane);
 }
 
 /**
- * Get the focused editor id in editors list
+ * Get the id of the editor shown
  * @return {number} focused editor id
  */
 function current_editor() {
-    var actual_instance, actual_id
-    if (MOBILE){
-        actual_instance = M.Tabs.getInstance(document.getElementById('mobile-sidenav'));
-    }
-    else {
-        actual_instance = M.Tabs.getInstance(document.getElementById('editor-files'));
-    }
-    try {
-        actual_id = actual_instance.$tabLinks[actual_instance.index].href.match(/editor_tab_[0-9]+/g)[0].substr(11)
-    }
-    catch (e){
-        actual_id = Math.max(...Object.keys(editors).map(x => +x))
-    }
-    return actual_id;
+    return current_editor_id;
 }
 
 /**
- * Delete the editor instance
- * @param id - editor id in editors list
- */
-function delete_editor(id) {
-    if (MOBILE){
-        var $tabs = $('#mobile-sidenav');
-    }
-    else {
-        var $tabs = $('#editor-files');
-    }
-    localStorage.removeItem("betterocaml-autosave-"+id)
-    $tabs.children().removeAttr('style');
-    $tabs.children().remove('#li_tab_' + String(id));
-    $("#editorCollection").children().remove('#editor_tab_' + String(id)); // codebox
-    $tabs.tabs();
-}
-
-/**
- * Select the editor
+ * Show the editor
  * @param id - editor id in editors list
  */
 function select_editor(id) {
-    if (MOBILE){
-        let instance = M.Tabs.getInstance(document.getElementById('mobile-sidenav'));
-        instance.select('editor_tab_' + String(id));
-        setTimeout(function () {
-            document.querySelector('a[href="#editor_tab_' + String(id) + '"]').click();
-        }, 5);
+    current_editor_id = id;
+    for (const tab of document.querySelectorAll("#editor-tabs .tab")) {
+        let selected = tab.id === "tab_" + id;
+        tab.setAttribute("aria-selected", String(selected));
+        if (selected) tab.scrollIntoView({block: "nearest", inline: "nearest"});
     }
-    else {
-        let instance = M.Tabs.getInstance(document.getElementById('editor-files'));
-        instance.select('editor_tab_' + String(id));
-        setTimeout(function () {
-            document.querySelector('a[href="#editor_tab_' + String(id) + '"]').click();
-        }, 5);
+    for (const pane of document.querySelectorAll("#editorCollection .code-box")) {
+        pane.hidden = pane.id !== "editor_tab_" + id;
     }
+    if (editors[id]) editors[id].view.requestMeasure();
+}
 
+/**
+ * Remove the tab and the editor of the page
+ * @param id - editor id in editors list
+ */
+function delete_editor(id) {
+    localStorage.removeItem("betterocaml-autosave-" + id);
+    document.getElementById("tab_" + id).remove();
+    document.getElementById("editor_tab_" + id).remove();
 }
 
 /**
@@ -603,47 +577,36 @@ function select_editor(id) {
  * @param name - new name
  */
 function change_name(id, name) {
-    let ele = document.querySelector('a[href="#editor_tab_' + String(id) + '"]');
-    ele.innerHTML = name + ele.innerHTML.substr(-79);
+    let tab = document.getElementById("tab_" + id);
+    tab.querySelector(".tab-name").textContent = name;
+    tab.querySelector(".tab-close").setAttribute("aria-label", "Close " + name);
 }
 
 /**
- * Change the orientation of the resize bar
+ * Change the layout: editor and toplevel side by side (H) or one below the other (V).
+ * Small screens always use V, without changing the saved setting.
  * @param resize_obj
  * @param {string} type - type to change (H or V)
  */
 function change_resize_bar(resize_obj, type) {
+    localStorage.setItem("betterocaml-resize-bar", type);
+    if (window.matchMedia("(max-width: 600px)").matches) type = "V";
     resize_obj.resizer.type = type;
     resize_obj.resizer.node.setAttribute('data-resizer-type', type);
-    if (type=="H"){
-        document.getElementsByClassName("horizontal")[0].style.flexDirection = "row";
-    }
-    else{
-        document.getElementsByClassName("horizontal")[0].style.flexDirection = "column";
-    }
-    localStorage.setItem("betterocaml-resize-bar", type);
+    document.getElementById("workspace").classList.toggle("stacked", type === "V");
 }
 
 /**
- * Remove the editor instance
+ * Close an editor (the last one stays)
  * @param id
  */
 function remove_editor(id) {
-    if (Object.keys(editors).length > 1) {
-        let cur = current_editor();
-        if (!editors[id].is_saved){
-            if (!confirm("Document non sauvegardé, voulez vous continuer ?")) {
-                return
-            }
-        }
-        delete editors[id];
-        delete_editor(id);
-        if (id == cur) {
-            select_editor(Math.max(...Object.keys(editors).map(x => +x)));
-        }
-        else {
-            select_editor(cur);
-        }
+    if (Object.keys(editors).length <= 1) return;
+    if (!editors[id].is_saved && !confirm(editors[id].name + " is not saved, close it anyway?")) return;
+    delete editors[id];
+    delete_editor(id);
+    if (id == current_editor_id) {
+        select_editor(Math.max(...Object.keys(editors).map(x => +x)));
     }
 }
 
@@ -703,44 +666,16 @@ function init_local_storage() {
 }
 
 /**
- * Setup custom files navbar for mobile devices
+ * Show a short message at the bottom of the page
+ * @param {string} text - Message
  */
-function navbar_resize() {
-    files.style.width = ((wrapper.offsetWidth - buttons.offsetWidth - 5)) + "px";
-    if (!MOBILE && window.innerWidth<=600){
-        MOBILE = true;
-        // Change add button to mobile sidenav
-        let mobile_button = document.getElementById("flexible-mobile-button");
-        mobile_button.children[0].children[0].innerText = "menu";
-        mobile_button.children[0].setAttribute("href", "#");
-        mobile_button.children[0].removeAttribute("onclick");
-        mobile_button.children[0].setAttribute("data-target", "mobile-sidenav");
-        mobile_button.children[0].setAttribute("class", "sidenav-trigger");
-        // transfer tabs to sidenav
-        [...files.children].map(function (li){
-            mobile_sidenav.appendChild(li)
-        });
-        $('.mobile-tabs').tabs();
-
-    }
-    if (MOBILE && window.innerWidth>600){
-        MOBILE = false;
-        // Change mobile sidenav button to add
-        let mobile_button = document.getElementById("flexible-mobile-button");
-        mobile_button.children[0].children[0].innerText = "add";
-        mobile_button.children[0].removeAttribute("href");
-        mobile_button.children[0].setAttribute("onclick", "editors[Math.max(...Object.keys(editors).map(x => +x))+1] = create_editor(id = Math.max(...Object.keys(editors).map(x => +x))+1, name = 'untitled.ml');");
-        mobile_button.children[0].removeAttribute("data-target");
-        mobile_button.children[0].removeAttribute("class");
-        // transfer tabs to navbar
-        [...mobile_sidenav.children].map(function (li){
-            if (li.id !== "add_tab"){
-                files.appendChild(li)
-            }
-        });
-        $('.normal-tabs').tabs();
-
-    }
+function show_toast(text) {
+    let toast = document.createElement("div");
+    toast.className = "toast";
+    toast.textContent = text;
+    document.getElementById("toasts").appendChild(toast);
+    setTimeout(() => toast.classList.add("toast-hide"), 3000);
+    setTimeout(() => toast.remove(), 3500);
 }
 
 // Autosave
@@ -750,8 +685,8 @@ function navbar_resize() {
  * @param editor_id
  */
 function autosave_editor(editor_id) {
-    content = {name:editors[editor_id].name, text: editors[editor_id].getValue()}
-    localStorage.setItem("betterocaml-autosave-"+editor_id, JSON.stringify(content))
+    let content = {name: editors[editor_id].name, text: editors[editor_id].getValue()};
+    localStorage.setItem("betterocaml-autosave-" + editor_id, JSON.stringify(content));
 }
 
 /**
@@ -785,11 +720,10 @@ function autosave_number() {
 function restore_editors() {
     for (const [key, value] of Object.entries(localStorage).reverse()) {
         if (key.split("-").slice(-2,-1)[0] === "autosave"){
-            let editor_value = JSON.parse(value)
-            let next = Math.max(...Object.keys(editors).map(x => +x)) + 1;
-            editors[next] = create_editor(id = next, name = editor_value.name);
-            editors[next].setValue(editor_value.text);
-            update_pfs(editors[next]);
+            let editor_value = JSON.parse(value);
+            let editor = new_editor(editor_value.name);
+            editor.setValue(editor_value.text);
+            update_pfs(editor);
         }
     }
 }

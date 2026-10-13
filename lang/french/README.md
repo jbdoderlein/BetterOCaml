@@ -98,9 +98,10 @@ Par exemple, l'URL ci-dessus devient :
 
 ### :hammer_and_wrench: Dépendances
 BetterOCaml est réalisé avec ces outils open-source :
-- [js_of_ocaml](https://ocsigen.org/js_of_ocaml/3.7.0/manual/overview) v3.7.0 : compile le toplevel OCaml en javascript ;
-- [Materialize](https://materializecss.com/) : framework CSS et javascript ;
-- [Codemirror](https://codemirror.net/) : éditeur de code javascript.
+- [js_of_ocaml](https://ocsigen.org/js_of_ocaml/) : compile le toplevel OCaml en javascript ;
+- [CodeMirror 6](https://codemirror.net/) : éditeur de code javascript ;
+- [Merlin](https://github.com/ocaml/merlin), avec du code de [merlin-js](https://github.com/voodoos/merlin-js) : complétion, types et erreurs dans l'éditeur ;
+- [Material Icons](https://fonts.google.com/icons) : icônes.
 
 ### Contribuer ?
 Les pull requests sont les bienvenues. Pour les changements majeurs, veuillez [ouvrir d'abord une issue](https://github.com/jbdoderlein/BetterOCaml/issues/new) pour discuter de ce que vous souhaitez changer.

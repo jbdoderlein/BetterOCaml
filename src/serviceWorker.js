@@ -38,6 +38,7 @@ const staticAssets = [
     './js/codemirror6.js',
     './js/editor_change.js',
     './js/editor_cm6.js',
+    './js/editor_merlin.js',
     './js/jquery.min.js',
     './js/materialize.min.js',
     './js/resizer.js',

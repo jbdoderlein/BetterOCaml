@@ -1,0 +1,17 @@
+(executable
+ (name merlin_worker)
+ (modes js)
+ (preprocess
+  (pps js_of_ocaml-ppx))
+ (js_of_ocaml
+  (javascript_files merlin_stubs.js)
+  (flags
+   (:standard --opt 3)))
+ (libraries
+  merlin-lib.kernel
+  merlin-lib.utils
+  merlin-lib.query_protocol
+  merlin-lib.query_commands
+  merlin-lib.ocaml_parsing
+  merlin-lib.ocaml_typing
+  js_of_ocaml))

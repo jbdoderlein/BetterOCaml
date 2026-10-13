@@ -5,8 +5,9 @@ export {EditorState, StateField, StateEffect, Prec, Compartment, EditorSelection
 export {
     EditorView, keymap, lineNumbers, highlightActiveLineGutter, highlightSpecialChars,
     drawSelection, dropCursor, rectangularSelection, crosshairCursor, highlightActiveLine,
-    Decoration
+    Decoration, hoverTooltip
 } from "@codemirror/view";
+export {linter, lintGutter, forceLinting} from "@codemirror/lint";
 export {
     defaultKeymap, history, historyKeymap, indentMore, indentLess, deleteCharBackward,
     insertTab

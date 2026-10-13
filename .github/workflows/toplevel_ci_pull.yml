@@ -10,6 +10,8 @@ on:
       - 'toplevel_build/**'
       - '!toplevel_build/BUILD.md'
       - '!toplevel_build/compile.sh'
+      - 'merlin_build/**'
+      - '!merlin_build/README.md'
     branches: [ master ]
 
   # Allows you to run this workflow manually from the Actions tab
@@ -38,10 +40,18 @@ jobs:
           cd toplevel_build
           chmod +x compile.sh
           bash compile.sh -k --effects double-translation 5.5.1
-          bash compile.sh --suffix -noeffects 5.5.1
+          bash compile.sh -k --suffix -noeffects 5.5.1
           cd ..
           cp toplevel_build/builds/toplevel-5.5.1.js src/toplevels/toplevel-5.5.1.js
           cp toplevel_build/builds/toplevel-5.5.1-noeffects.js src/toplevels/toplevel-5.5.1-noeffects.js
+
+      # Merlin for the editor, built in the switch of the toplevel so that the .cmi files match
+      - name: Build merlin worker
+        run: |
+          eval $(opam env --switch=5.5.1)
+          opam install --yes merlin-lib
+          bash merlin_build/build.sh
+          test -f src/merlin/merlin_worker.js -a -f src/merlin/cmis/stdlib.cmi
       
       - name: Check if file exist
         run: test -f "./toplevel_build/builds/toplevel-5.5.1.js" -a -f "./toplevel_build/builds/toplevel-5.5.1-noeffects.js" || exit 1

@@ -43,6 +43,32 @@ const OCAML_EDITOR_THEME = CM.EditorView.theme({
         color: "var(--ui-text-color)",
     },
     ".cm-searchMatch": {backgroundColor: "var(--editor-code-highlight-color)", outline: "1px solid var(--code-constant)"},
+    // Merlin: type on hover, errors
+    ".cm-tooltip": {
+        backgroundColor: "var(--help-bg-color)",
+        color: "var(--ui-text-color)",
+        border: "1px solid var(--help-margin-color)",
+    },
+    ".cm-merlin-type": {
+        fontFamily: "monospace",
+        padding: "2px 6px",
+        whiteSpace: "pre-wrap",
+        maxWidth: "60vw",
+    },
+    ".cm-merlin-doc": {
+        padding: "4px 6px",
+        borderTop: "1px solid var(--help-margin-color)",
+        whiteSpace: "pre-wrap",
+        maxWidth: "60vw",
+        maxHeight: "40vh",
+        overflowY: "auto",
+        fontSize: "90%",
+    },
+    ".cm-completionInfo": {whiteSpace: "pre-wrap", maxHeight: "40vh", overflowY: "auto", fontSize: "90%"},
+    ".cm-diagnostic": {fontFamily: "monospace", whiteSpace: "pre-wrap"},
+    ".cm-diagnostic-error": {borderLeftColor: "var(--code-error)"},
+    ".cm-completionDetail": {color: "var(--code-comment)", fontStyle: "normal", marginLeft: "1em"},
+    ".cm-gutter-lint": {width: "0.8em"},
 });
 
 const OCAML_HIGHLIGHT = CM.HighlightStyle.define([
@@ -137,9 +163,10 @@ class OCamlEditor {
                     OCAML_EDITOR_THEME,
                     code_highlight_field,
                     CM.autocompletion({
-                        override: [context => ocaml_completions(editor, context)],
+                        override: [context => merlin_completions(editor, context)],
                         activateOnTypingDelay: 200,
                     }),
+                    ...merlin_extensions(),
                     CM.Prec.highest(CM.keymap.of([
                         {key: "Mod-Enter", run: run(exec_last)},
                         {key: "Shift-Mod-Enter", run: run(exec_all)},

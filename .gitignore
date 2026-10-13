@@ -8,6 +8,7 @@ release-builds/
 
 toplevel_build/builds/
 toplevel_build/_build/
+merlin_build/_build/
 
 .DS_Store
 lang/.DS_Store

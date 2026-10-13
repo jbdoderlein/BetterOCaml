@@ -10,17 +10,17 @@
     /* Nav */
     --nav-bg-color: #07a;
     --nav-unselected-tab-bg-color: #006994;
-    --nav-unselected-tab-text-color: #b5b5b5;
-    --nav-selected-tab-bg-color: #0084bf;
+    --nav-unselected-tab-text-color: #dedede;
+    --nav-selected-tab-bg-color: #007ab0;
     --nav-selected-tab-text-color: white;
     --nav-close-btn-bg-color:#099bda;
     /* Editor */
     --editor-bg-color: #fff;
     --editor-gutter-bg-color:#f7f7f7;
-    --editor-gutter-text-color:#aaa;
+    --editor-gutter-text-color:#717171;
     --editor-cursor-color: #222;
     --editor-selection-bg-color: #cfc;
-    --editor-code-highlight-color: #ace2ac;
+    --editor-code-highlight-color: #d4f0d4;
     /* Scrollbar */
     --scrollbar-bg-color: #017db3;
     --scrollbar-track-color: #006994;
@@ -35,19 +35,19 @@
     --action-button: #0097a7;
 
     /* Code color */
-    --code-text-color: #747474;
-    --code-caml:rgb(110, 110, 201);
-    --code-error:#d9534f;
-    --code-string:#07a;
-    --code-number:#ca7841;
-    --code-constant:#777;
-    --code-keyword:#6262FF;
-    --code-operator:#cda869;
-    --code-variable:#07a;
-    --code-builtin:#9B7536;
-    --code-atom:#F90;
-    --code-def:#8DA6CE;
-    --code-comment:#546e7a;
+    --code-text-color: #696969;
+    --code-caml:#5d5dc3;
+    --code-error:#c52f2b;
+    --code-string:#0070a0;
+    --code-number:#9b582b;
+    --code-constant:#696969;
+    --code-keyword:#4b4bff;
+    --code-operator:#83632c;
+    --code-variable:#0070a0;
+    --code-builtin:#82622d;
+    --code-atom:#965a00;
+    --code-def:#4669a2;
+    --code-comment:#526b77;
     --code-brackets:#0b0;
     --code-escape:#409290;
     --code-symbol:#f8f8f2;

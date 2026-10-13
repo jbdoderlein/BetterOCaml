@@ -17,7 +17,7 @@
     /* Editor */
     --editor-bg-color: #2b2b2b;
     --editor-gutter-bg-color:#2b2b2b;
-    --editor-gutter-text-color:#808080;
+    --editor-gutter-text-color:#929292;
     --editor-cursor-color: #fc0;
     --editor-selection-bg-color: rgba(33, 66, 131, 1);
     --editor-code-highlight-color: rgba(66, 132, 255, .1);
@@ -36,18 +36,18 @@
 
     /* Code color */
     --code-text-color: white;
-    --code-caml:rgb(110, 110, 201);
-    --code-error:#ff5370;
-    --code-string:#629755;
-    --code-number:#6897bb;
+    --code-caml:#a4a4dd;
+    --code-error:#ff8398;
+    --code-string:#87b57c;
+    --code-number:#89aeca;
     --code-constant:#ffcb6b;
-    --code-keyword:#cc7832;
+    --code-keyword:#da9c69;
     --code-operator:#a9b7c6;
     --code-variable:#a9b7c6;
     --code-builtin:#ffc66d;
     --code-atom:#f78c6c;
     --code-def:#82aaff;
-    --code-comment:#808080;
+    --code-comment:#a9a9a9;
     --code-brackets:#fff;
     --code-escape:#409290;
     --code-symbol:#94558D;

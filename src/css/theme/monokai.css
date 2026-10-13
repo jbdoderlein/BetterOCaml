@@ -36,18 +36,18 @@
 
     /* Code color */
     --code-text-color: white;
-    --code-caml:rgb(110, 110, 201);
-    --code-error:#d9534f;
+    --code-caml:#bcbce6;
+    --code-error:#edafad;
     --code-string:#e6db74;
-    --code-number:#ae81ff;
+    --code-number:#cdb1ff;
     --code-constant:#66d9ef;
-    --code-keyword:#f92672;
+    --code-keyword:#fca5c4;
     --code-operator:#89ddff;
     --code-variable:#f8f8f2;
     --code-builtin:#66d9ef;
-    --code-atom:#ae81ff;
-    --code-def:#fd971f;
-    --code-comment:#546e7a;
+    --code-atom:#cdb1ff;
+    --code-def:#fdae52;
+    --code-comment:#b0c1c9;
     --code-brackets:#f8f8f2;
     --code-escape:#409290;
     --code-symbol:#f8f8f2;

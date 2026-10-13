@@ -7,7 +7,7 @@ export {
     drawSelection, dropCursor, rectangularSelection, crosshairCursor, highlightActiveLine,
     Decoration, hoverTooltip
 } from "@codemirror/view";
-export {linter, lintGutter, forceLinting} from "@codemirror/lint";
+export {linter, lintGutter, forceLinting, setDiagnostics} from "@codemirror/lint";
 export {
     defaultKeymap, history, historyKeymap, indentMore, indentLess, deleteCharBackward,
     insertTab

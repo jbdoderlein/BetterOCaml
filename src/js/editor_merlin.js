@@ -10,8 +10,17 @@ let merlin_is_ready = false;
 let merlin_next_id = 0;
 let merlin_pending = new Map();
 
+// Settings (configuration panel), on by default
+function merlin_enabled() {
+    return localStorage.getItem("betterocaml-merlin") !== "false";
+}
+
+function merlin_hover_enabled() {
+    return localStorage.getItem("betterocaml-merlin-hover") !== "false";
+}
+
 function start_merlin() {
-    if (merlin_worker !== null || !window.Worker) return;
+    if (merlin_worker !== null || !window.Worker || !merlin_enabled()) return;
     try {
         merlin_worker = new Worker("merlin/merlin_worker.js");
     } catch (e) {
@@ -23,7 +32,10 @@ function start_merlin() {
         if (m.type === "ready") {
             merlin_is_ready = true;
             // Show the errors of the code already in the editors
-            for (let i in editors) CM.forceLinting(editors[i].view);
+            for (let i in editors) {
+                editors[i].view.dispatch({effects: merlin_refresh.of(null)});
+                CM.forceLinting(editors[i].view);
+            }
             return;
         }
         let resolve = merlin_pending.get(m.id);
@@ -37,6 +49,21 @@ function start_merlin() {
         for (const resolve of merlin_pending.values()) resolve(null);
         merlin_pending.clear();
     };
+}
+
+/**
+ * Stop merlin (disabled in the settings): back to the simple completion, no errors shown
+ */
+function stop_merlin() {
+    if (merlin_worker !== null) merlin_worker.terminate();
+    merlin_worker = null;
+    merlin_is_ready = false;
+    for (const resolve of merlin_pending.values()) resolve(null);
+    merlin_pending.clear();
+    // Remove the errors already shown
+    for (let i in editors) {
+        editors[i].view.dispatch(CM.setDiagnostics(editors[i].view.state, []));
+    }
 }
 
 /**
@@ -104,6 +131,7 @@ async function merlin_completions(editor, context) {
  * Type and documentation of the expression under the mouse
  */
 const merlin_hover = CM.hoverTooltip(async function (view, pos, side) {
+    if (!merlin_is_ready || !merlin_hover_enabled()) return null;
     let line = view.state.doc.lineAt(pos);
     let ch = line.text.charAt(pos - line.from - (side < 0 ? 1 : 0));
     if (!/[\w'.)\]}]/.test(ch)) return null;
@@ -139,6 +167,10 @@ const merlin_hover = CM.hoverTooltip(async function (view, pos, side) {
  * defines it (their sources are not available)
  */
 async function merlin_goto_definition(view, pos) {
+    if (!merlin_is_ready) {
+        M.toast({html: merlin_enabled() ? "Merlin is loading" : "Merlin is disabled in the settings"});
+        return;
+    }
     let r = await merlin_request("locate", view.state, pos);
     if (r !== null && r.offset !== undefined) {
         view.dispatch({selection: {anchor: r.offset}, scrollIntoView: true});
@@ -179,6 +211,9 @@ const merlin_goto_click = CM.EditorView.domEventHandlers({
     },
 });
 
+// Ask for the errors again without a change of the code (when merlin becomes ready)
+const merlin_refresh = CM.StateEffect.define();
+
 /**
  * Errors and warnings, underlined in the editor
  */
@@ -192,7 +227,10 @@ const merlin_lint = CM.linter(async function (view) {
         if (to === from && from < length) to = from + 1; // Visible even when empty
         return {from: from, to: to, severity: e.severity, message: e.message};
     });
-}, {delay: 600});
+}, {
+    delay: 600,
+    needsRefresh: update => update.transactions.some(tr => tr.effects.some(e => e.is(merlin_refresh))),
+});
 
 /**
  * Editor extensions using merlin

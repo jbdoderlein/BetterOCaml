@@ -668,6 +668,13 @@ function change_configuration(name, value, editors) {
                 editors[i].ext_autocomplete = Boolean(value);
             }
             break;
+        case 'betterocaml-merlin':
+            if (value) start_merlin();
+            else stop_merlin();
+            break;
+        case 'betterocaml-merlin-hover':
+            // Read by the hover tooltip each time
+            break;
         default:
             console.log("no config");
     }
@@ -681,6 +688,8 @@ function init_local_storage() {
     let initial_parameter = {
         'betterocaml-theme': "material",
         'betterocaml-autocomplete' : "true",
+        'betterocaml-merlin' : "true",
+        'betterocaml-merlin-hover' : "true",
         'betterocaml-text-box_1' : "1.2em",
         'betterocaml-text-box_2' : "1.2em",
         'betterocaml-resize-bar' : "H",

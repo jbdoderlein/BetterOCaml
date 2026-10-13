@@ -167,6 +167,24 @@
                 </label>
             </p>
 
+            <p class="config-element">
+                <label>
+                    <input id="merlin-checkbox" type="checkbox" onclick="
+                    change_configuration('betterocaml-merlin', this.checked, editors)
+                "/>
+                    <span>Merlin (errors, types, documentation)</span>
+                </label>
+            </p>
+
+            <p class="config-element">
+                <label>
+                    <input id="merlin-hover-checkbox" type="checkbox" onclick="
+                    change_configuration('betterocaml-merlin-hover', this.checked, editors)
+                "/>
+                    <span>Type and documentation on hover</span>
+                </label>
+            </p>
+
             <div class="zoom-option config-element">
                 Editor zoom :
                 <a class="btn-floating btn-small waves-effect waves-light zoom-button"
@@ -418,6 +436,8 @@
         $('#theme-select').find('option[value=' + (localStorage.getItem('betterocaml-theme') || 'material') + ']').prop('selected', true);
         $("#theme-select").formSelect();
         $("#autocomplete-checkbox").prop("checked", localStorage.getItem('betterocaml-autocomplete') === "true");
+        $("#merlin-checkbox").prop("checked", merlin_enabled());
+        $("#merlin-hover-checkbox").prop("checked", merlin_hover_enabled());
         $("#rbar-checkbox").prop("checked", localStorage.getItem('betterocaml-resize-bar') === "H");
     });
 
